@@ -705,18 +705,352 @@ const ServicesPage = () => {
 
 // Portfolio Page Component
 const PortfolioPage = () => {
+  const [filter, setFilter] = useState('all');
+  
+  const projects = [
+    // 2025 Projects
+    {
+      id: 1,
+      title: "ULoveWhysper",
+      category: "Content Creator Branding",
+      description: "A content creator and competitive player who steamed from Apex to Marvel Rivals!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper-YbNqBQR7ykClLJ2q.jpg",
+      tags: ["Branding", "Gaming", "Content Creator"],
+      year: 2025,
+      featured: true,
+      type: "branding"
+    },
+    {
+      id: 2,
+      title: "Midas Networks",
+      category: "Gaming Network",
+      description: "A Multi-Game Hosting Network based in Garry's Mod, FiveM, Arma, Squad and more!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas-for-website-Yyv0nV0WMjCMk3pq.jpg",
+      tags: ["Gaming", "Network", "Multi-Game"],
+      year: 2025,
+      featured: true,
+      type: "gaming"
+    },
+    // 2024 Projects
+    {
+      id: 3,
+      title: "Eternals Studio",
+      category: "Studio Branding",
+      description: "A GFX, VFX, Coding, Music Production Studio!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg",
+      tags: ["Studio", "Branding", "Creative"],
+      year: 2024,
+      featured: true,
+      type: "branding"
+    },
+    {
+      id: 4,
+      title: "Eternals GGs",
+      category: "Esports Organization",
+      description: "A Content Creation and Esports Organization based in a wide variety of competitive games. Also our parent organization. They also provide content across multiple platforms.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg",
+      tags: ["Esports", "Content Creation", "Organization"],
+      year: 2024,
+      featured: true,
+      type: "esports"
+    },
+    {
+      id: 5,
+      title: "Deceptive Grounds",
+      category: "Gaming Community",
+      description: "A multi-game based community. They host servers on games such as Garry's Mod and Arma 3.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg",
+      tags: ["Gaming", "Community", "Servers"],
+      year: 2024,
+      featured: false,
+      type: "gaming"
+    },
+    {
+      id: 6,
+      title: "Team UK & Ireland",
+      category: "Esports Team",
+      description: "A new upcoming Organization that represents the spirit of Ireland and United Kingdom together.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png",
+      tags: ["Esports", "Team", "International"],
+      year: 2024,
+      featured: false,
+      type: "esports"
+    },
+    {
+      id: 7,
+      title: "Shinto Gaming Club",
+      category: "Gaming Club",
+      description: "A new esports gaming club that is partaking in various esports tournaments.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg",
+      tags: ["Gaming", "Club", "Tournaments"],
+      year: 2024,
+      featured: false,
+      type: "gaming"
+    },
+    {
+      id: 8,
+      title: "HP League",
+      category: "Esports League",
+      description: "A new Esports league that was partaking in XDefiant and PUBG.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png",
+      tags: ["Esports", "League", "XDefiant", "PUBG"],
+      year: 2024,
+      featured: false,
+      type: "esports"
+    },
+    {
+      id: 9,
+      title: "NeverFPS",
+      category: "Content Creator",
+      description: "A variety streamer turned game developer.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg",
+      tags: ["Streaming", "Game Development", "Content"],
+      year: 2024,
+      featured: false,
+      type: "branding"
+    },
+    {
+      id: 10,
+      title: "YouTube Thumbnails",
+      category: "Thumbnail Design",
+      description: "Thumbnails are used to engage and draw audiences to a particular video.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
+      tags: ["Design", "YouTube", "Thumbnails"],
+      year: 2024,
+      featured: false,
+      type: "design"
+    },
+    {
+      id: 11,
+      title: "3D Work Collection",
+      category: "3D Modeling",
+      description: "This is a collection of our completed 3D Work.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png",
+      tags: ["3D", "Modeling", "Animation"],
+      year: 2024,
+      featured: false,
+      type: "3d"
+    },
+    {
+      id: 12,
+      title: "7 Cubed Films",
+      category: "Film Production",
+      description: "A SFM animation artist that specializes in a Star Wars: The Clone Wars setting and has over 5+ Million Views",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png",
+      tags: ["Animation", "Star Wars", "SFM", "5M+ Views"],
+      year: 2024,
+      featured: true,
+      type: "animation"
+    },
+    {
+      id: 13,
+      title: "Esports Posters",
+      category: "Poster Design",
+      description: "Posters were made as an advertisement tool to help people engage in the esports communities and drive engagement.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg",
+      tags: ["Posters", "Esports", "Marketing"],
+      year: 2024,
+      featured: false,
+      type: "design"
+    }
+  ];
+
+  const filteredProjects = filter === 'all' ? projects : projects.filter(project => project.type === filter);
+  const featuredProjects = projects.filter(project => project.featured);
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
       <FloatingElements />
       <div className="relative z-10 py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
-            Our <span className="gradient-text">Portfolio</span>
-          </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 mb-12">
-            Showcasing our creative excellence and client success stories
-          </p>
-          {/* Add portfolio gallery here */}
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              Our <span className="gradient-text">Portfolio</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
+              Discover our latest projects and see how we've helped businesses transform their digital presence across gaming, esports, and creative industries.
+            </p>
+            
+            {/* Stats */}
+            <div className="flex justify-center items-center space-x-8 mb-12">
+              <div className="text-center">
+                <div className="text-2xl font-bold gradient-text">{projects.length}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Total Projects</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold gradient-text">{featuredProjects.length}</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Featured</div>
+              </div>
+              <div className="text-center">
+                <div className="text-2xl font-bold gradient-text">2</div>
+                <div className="text-sm text-slate-600 dark:text-slate-400">Years Active</div>
+              </div>
+            </div>
+
+            {/* Filter */}
+            <div className="flex justify-center items-center space-x-4">
+              <Filter className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <span className="text-slate-600 dark:text-slate-400">Filter by category:</span>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant={filter === 'all' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('all')}
+                  className={filter === 'all' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  All Projects
+                </Button>
+                <Button 
+                  variant={filter === 'branding' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('branding')}
+                  className={filter === 'branding' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Branding
+                </Button>
+                <Button 
+                  variant={filter === 'gaming' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('gaming')}
+                  className={filter === 'gaming' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Gaming
+                </Button>
+                <Button 
+                  variant={filter === 'esports' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('esports')}
+                  className={filter === 'esports' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Esports
+                </Button>
+                <Button 
+                  variant={filter === '3d' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('3d')}
+                  className={filter === '3d' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  3D Work
+                </Button>
+                <Button 
+                  variant={filter === 'animation' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('animation')}
+                  className={filter === 'animation' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Animation
+                </Button>
+                <Button 
+                  variant={filter === 'design' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('design')}
+                  className={filter === 'design' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Design
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Projects Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {filteredProjects.map((project) => (
+              <Card key={project.id} className="group border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden hover:-translate-y-2">
+                <div className="relative">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {project.featured && (
+                    <Badge className="absolute top-4 left-4 bg-gradient-to-r from-teal-500 to-purple-500 text-white">
+                      Featured
+                    </Badge>
+                  )}
+                  <Badge className="absolute top-4 right-4 bg-black/50 text-white">
+                    {project.year}
+                  </Badge>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <div className="flex gap-2">
+                        <Button size="sm" className="bg-white/90 text-black hover:bg-white flex-1">
+                          <ExternalLink className="w-4 h-4 mr-1" />
+                          View Project
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {project.category}
+                    </Badge>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed line-clamp-3">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, index) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Bottom Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center mb-16">
+            <div>
+              <div className="text-4xl font-bold gradient-text mb-2">{projects.length}+</div>
+              <div className="text-slate-600 dark:text-slate-400">Projects Completed</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold gradient-text mb-2">15+</div>
+              <div className="text-slate-600 dark:text-slate-400">Happy Clients</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold gradient-text mb-2">7</div>
+              <div className="text-slate-600 dark:text-slate-400">Industries Served</div>
+            </div>
+            <div>
+              <div className="text-4xl font-bold gradient-text mb-2">100%</div>
+              <div className="text-slate-600 dark:text-slate-400">Client Satisfaction</div>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 backdrop-blur-sm">
+              <CardContent className="p-8">
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                  Ready to Start Your Project?
+                </h2>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+                  Let's discuss how we can help bring your vision to life with our expertise in gaming, esports, and creative design.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/contact">
+                    <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Start Your Project
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/about">
+                    <Button size="lg" variant="outline">
+                      Learn More About Us
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
