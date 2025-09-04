@@ -696,3 +696,719 @@ const HomePage = () => {
     </div>
   );
 };
+
+// Project Detail Page Component
+const ProjectDetailPage = () => {
+  const { projectId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Get project data passed from Portfolio page or find by ID
+  const [project, setProject] = useState(location.state?.project || null);
+  
+  // All projects data
+  const allProjects = [
+    // 2025 Projects
+    {
+      id: 1,
+      title: "ULoveWhysper",
+      category: "Content Creator Branding",
+      description: "A content creator and competitive player who steamed from Apex to Marvel Rivals!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper-YbNqBQR7ykClLJ2q.jpg",
+      tags: ["Branding", "Gaming", "Content Creator"],
+      year: 2025,
+      featured: true,
+      type: "branding",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_avi-01-preview-mP42OaJv8vi3174j.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_avi-02-preview-1-mp8qWZ5JbJt8ll2j.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_avi-03-preview-1-Yanq1XPJg5f36bKx.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_twitch-header-1-A1aBPEG5ODiVNDOp.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_twitter-header-1-YBge70aOoBt4K04D.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_weekly-schedule-1-YBge70aWZqSawbN7.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=504,fit=crop/YNqO7k0WyEUyB3w6/whysper_offline-screen-1-m2Wa87VGPkSQ6N0a.png"
+      ]
+    },
+    {
+      id: 2,
+      title: "Midas Networks",
+      category: "Gaming Network",
+      description: "A Multi-Game Hosting Network based in Garry's Mod, FiveM, Arma, Squad and more!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas-for-website-Yyv0nV0WMjCMk3pq.jpg",
+      tags: ["Gaming", "Network", "Multi-Game"],
+      year: 2025,
+      featured: true,
+      type: "gaming",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas_banner_p1-mxBXQVKj28TxkKoM.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas-group-color-palette-AMq8GogalBi5B4MR.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=224,fit=crop/YNqO7k0WyEUyB3w6/midas-group-text_red-orange-mxBXQVKlwwu68EOy.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=224,fit=crop/YNqO7k0WyEUyB3w6/midas-group-logo-text_red-orange-YleQjVaE3RHvBJLX.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=437,h=328,fit=crop/YNqO7k0WyEUyB3w6/midas-black-YX4x5J9JKPIvpQK4.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=437,h=328,fit=crop/YNqO7k0WyEUyB3w6/midas-white-A1a5kvDQOnCMPJzN.png"
+      ]
+    }
+  ];
+
+  useEffect(() => {
+    if (!project && projectId) {
+      const foundProject = allProjects.find(p => p.id === parseInt(projectId));
+      setProject(foundProject);
+    }
+  }, [projectId, project]);
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative flex items-center justify-center">
+        <FloatingElements />
+        <div className="relative z-10 text-center">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+            Project Not Found
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-8">
+            The project you're looking for doesn't exist.
+          </p>
+          <Link to="/portfolio">
+            <Button className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+              Back to Portfolio
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Back Button */}
+          <div className="mb-8">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/portfolio')}
+              className="flex items-center space-x-2"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              <span>Back to Portfolio</span>
+            </Button>
+          </div>
+
+          {/* Project Header */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Badge variant="secondary">{project.category}</Badge>
+              <Badge className="bg-gradient-to-r from-teal-500 to-purple-500 text-white">
+                {project.year}
+              </Badge>
+              {project.featured && (
+                <Badge className="bg-yellow-500 text-black">Featured</Badge>
+              )}
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              <span className="gradient-text">{project.title}</span>
+            </h1>
+            
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+
+          {/* Hero Image */}
+          <div className="mb-16">
+            <div className="relative overflow-hidden rounded-2xl">
+              <img 
+                src={project.image} 
+                alt={project.title}
+                className="w-full h-96 md:h-[500px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Project Gallery */}
+          {project.gallery && project.gallery.length > 1 && (
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8 text-center">
+                Project Gallery
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {project.gallery.map((image, index) => (
+                  <div key={index} className="relative group overflow-hidden rounded-lg">
+                    <img 
+                      src={image} 
+                      alt={`${project.title} - Image ${index + 1}`}
+                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4">
+                        <p className="text-white text-sm font-medium">Image {index + 1}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 backdrop-blur-sm">
+              <CardContent className="p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                  Interested in Similar Work?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+                  Let's discuss how we can help bring your vision to life with our expertise in {project.category.toLowerCase()}.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/contact">
+                    <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Start Your Project
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/portfolio">
+                    <Button size="lg" variant="outline">
+                      View More Projects
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Services Page Component
+const ServicesPage = () => {
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+            Our <span className="gradient-text">Services</span>
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-3xl mx-auto">
+            Comprehensive creative solutions designed to bring your vision to life
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Portfolio Page Component
+const PortfolioPage = () => {
+  const [filter, setFilter] = useState('all');
+  const navigate = useNavigate();
+
+  const handleViewProject = (project) => {
+    navigate(`/project/${project.id}`, { state: { project } });
+  };
+  
+  const projects = [
+    // 2025 Projects
+    {
+      id: 1,
+      title: "ULoveWhysper",
+      category: "Content Creator Branding",
+      description: "A content creator and competitive player who steamed from Apex to Marvel Rivals!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper-YbNqBQR7ykClLJ2q.jpg",
+      tags: ["Branding", "Gaming", "Content Creator"],
+      year: 2025,
+      featured: true,
+      type: "branding"
+    },
+    {
+      id: 2,
+      title: "Midas Networks",
+      category: "Gaming Network",
+      description: "A Multi-Game Hosting Network based in Garry's Mod, FiveM, Arma, Squad and more!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas-for-website-Yyv0nV0WMjCMk3pq.jpg",
+      tags: ["Gaming", "Network", "Multi-Game"],
+      year: 2025,
+      featured: true,
+      type: "gaming"
+    },
+    // 2024 Projects
+    {
+      id: 3,
+      title: "Eternals Studio",
+      category: "Studio Branding",
+      description: "A GFX, VFX, Coding, Music Production Studio!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg",
+      tags: ["Studio", "Branding", "Creative"],
+      year: 2024,
+      featured: true,
+      type: "branding"
+    },
+    {
+      id: 4,
+      title: "Eternals GGs",
+      category: "Esports Organization",
+      description: "A Content Creation and Esports Organization based in a wide variety of competitive games. Also our parent organization. They also provide content across multiple platforms.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg",
+      tags: ["Esports", "Content Creation", "Organization"],
+      year: 2024,
+      featured: true,
+      type: "esports"
+    }
+  ];
+
+  const filteredProjects = filter === 'all' ? projects : projects.filter(project => project.type === filter);
+  const featuredProjects = projects.filter(project => project.featured);
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              Our <span className="gradient-text">Portfolio</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
+              Discover our latest projects and see how we've helped businesses transform their digital presence across gaming, esports, and creative industries.
+            </p>
+            
+            {/* Filter */}
+            <div className="flex justify-center items-center space-x-4 mb-12">
+              <Filter className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <span className="text-slate-600 dark:text-slate-400">Filter by category:</span>
+              <div className="flex flex-wrap gap-2">
+                <Button 
+                  variant={filter === 'all' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('all')}
+                  className={filter === 'all' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  All Projects
+                </Button>
+                <Button 
+                  variant={filter === 'branding' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('branding')}
+                  className={filter === 'branding' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Branding
+                </Button>
+                <Button 
+                  variant={filter === 'gaming' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('gaming')}
+                  className={filter === 'gaming' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Gaming
+                </Button>
+                <Button 
+                  variant={filter === 'esports' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('esports')}
+                  className={filter === 'esports' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Esports
+                </Button>
+              </div>
+            </div>
+          </div>
+
+          {/* Projects Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {filteredProjects.map((project) => (
+              <Card key={project.id} className="group border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden hover:-translate-y-2">
+                <div className="relative">
+                  <img 
+                    src={project.image} 
+                    alt={project.title}
+                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  {project.featured && (
+                    <Badge className="absolute top-4 left-4 bg-gradient-to-r from-teal-500 to-purple-500 text-white">
+                      Featured
+                    </Badge>
+                  )}
+                  <Badge className="absolute top-4 right-4 bg-black/50 text-white">
+                    {project.year}
+                  </Badge>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute bottom-4 left-4 right-4">
+                      <div className="flex gap-2">
+                        <Button 
+                          size="sm" 
+                          className="bg-white/90 text-black hover:bg-white flex-1"
+                          onClick={() => handleViewProject(project)}
+                        >
+                          <ExternalLink className="w-4 h-4 mr-1" />
+                          View Project
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {project.category}
+                    </Badge>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                    {project.title}
+                  </h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-4 leading-relaxed line-clamp-3">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag, index) => (
+                      <Badge key={index} variant="outline" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Store Page Component
+const StorePage = () => {
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+            Our <span className="gradient-text">Store</span>
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-400 mb-12">
+            Premium design resources and exclusive templates
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// About Page Component
+const AboutPage = () => {
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+            About <span className="gradient-text">Eternals Studio</span>
+          </h1>
+          <p className="text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-3xl mx-auto">
+            Learn more about our journey, values, and the team behind the creative magic
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Contact Page Component
+const ContactPage = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+  };
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              Get In <span className="gradient-text">Touch</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+              Ready to bring your vision to life? Let's discuss your project and create something amazing together.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12">
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl gradient-text">Send us a message</CardTitle>
+                <CardDescription className="text-slate-600 dark:text-slate-400">
+                  Fill out the form below and we'll get back to you within 24 hours.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="subject">Subject</Label>
+                    <Input
+                      id="subject"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Message</Label>
+                    <Textarea
+                      id="message"
+                      rows={6}
+                      value={formData.message}
+                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      required
+                    />
+                  </div>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white"
+                  >
+                    Send Message
+                    <Send className="w-4 h-4 ml-2" />
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+
+            <div className="space-y-8">
+              <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 bg-gradient-to-r from-teal-100 to-teal-200 dark:from-teal-900/30 dark:to-teal-800/30 rounded-full">
+                      <Mail className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-slate-900 dark:text-white">Email Us</h3>
+                      <p className="text-slate-600 dark:text-slate-400">hello@eternalsstudio.com</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Auth Page Component
+const AuthPage = () => {
+  const [isLogin, setIsLogin] = useState(true);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    full_name: '',
+    company: ''
+  });
+  const { login, register } = useAuth();
+  const { toast } = useToast();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (isLogin) {
+        await login(formData.email, formData.password);
+        toast({
+          title: "Success",
+          description: "Logged in successfully!",
+        });
+      } else {
+        await register(formData);
+        toast({
+          title: "Success",
+          description: "Account created successfully! Please log in.",
+        });
+        setIsLogin(true);
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.response?.data?.detail || 'An error occurred',
+        variant: "destructive",
+      });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-md mx-auto">
+          <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+            <CardHeader className="text-center">
+              <CardTitle className="text-2xl gradient-text">
+                {isLogin ? 'Sign In' : 'Sign Up'}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Tabs value={isLogin ? 'login' : 'register'} onValueChange={(value) => setIsLogin(value === 'login')}>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="login">Sign In</TabsTrigger>
+                  <TabsTrigger value="register">Sign Up</TabsTrigger>
+                </TabsList>
+                <TabsContent value="login" className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Sign In
+                    </Button>
+                  </form>
+                </TabsContent>
+                <TabsContent value="register" className="space-y-4">
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="full_name">Full Name</Label>
+                      <Input
+                        id="full_name"
+                        value={formData.full_name}
+                        onChange={(e) => setFormData({...formData, full_name: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="password">Password</Label>
+                      <Input
+                        id="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={(e) => setFormData({...formData, password: e.target.value})}
+                        required
+                      />
+                    </div>
+                    <Button type="submit" className="w-full bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Sign Up
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Dashboard Component (placeholder)
+const Dashboard = () => {
+  const { user, logout } = useAuth();
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              Welcome, <span className="gradient-text">{user?.full_name || 'User'}</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
+              Your dashboard is coming soon!
+            </p>
+            <Button onClick={logout} variant="outline">
+              <LogOut className="w-4 h-4 mr-2" />
+              Logout
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Main App Component
+const App = () => {
+  return (
+    <ThemeProvider>
+      <AuthProvider>
+        <Router>
+          <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
+            <Navigation />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/portfolio" element={<PortfolioPage />} />
+              <Route path="/project/:projectId" element={<ProjectDetailPage />} />
+              <Route path="/store" element={<StorePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/auth" element={<AuthPage />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Routes>
+            <Toaster />
+          </div>
+        </Router>
+      </AuthProvider>
+    </ThemeProvider>
+  );
+};
+
+export default App;
