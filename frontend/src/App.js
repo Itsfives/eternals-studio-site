@@ -452,7 +452,252 @@ const StatsCounter = ({ end, label, suffix = '+' }) => {
 
 // Home Page Component
 const HomePage = () => {
-const ProjectDetailPage = () => {
+  const services = [
+    {
+      icon: <Code className="w-8 h-8" />,
+      title: "Web Development",
+      description: "Custom websites, web applications, and e-commerce solutions built with modern technologies.",
+      color: "teal"
+    },
+    {
+      icon: <Palette className="w-8 h-8" />,
+      title: "Graphic Design",
+      description: "Stunning visual identities, branding, logos, and marketing materials that captivate audiences.",
+      color: "purple"
+    },
+    {
+      icon: <Box className="w-8 h-8" />,
+      title: "3D Modeling",
+      description: "Detailed 3D models, product visualizations, and architectural renderings.",
+      color: "teal"
+    },
+    {
+      icon: <Video className="w-8 h-8" />,
+      title: "Animation",
+      description: "Bring your ideas to life with smooth 2D and 3D animations, motion graphics, and visual effects.",
+      color: "purple"
+    },
+    {
+      icon: <Music className="w-8 h-8" />,
+      title: "Music Production",
+      description: "Professional music composition, sound design, and audio production for all your projects.",
+      color: "teal"
+    },
+    {
+      icon: <Video className="w-8 h-8" />,
+      title: "Video Editing",
+      description: "Professional video editing, color grading, and post-production services.",
+      color: "purple"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      
+      {/* Hero Section */}
+      <section className="relative py-20 px-4 min-h-screen flex items-center">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <div className="space-y-8">
+            <div className="space-y-6">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-slate-900 dark:text-white leading-tight">
+                Welcome to
+                <span className="block gradient-text">
+                  Eternals Studio
+                </span>
+              </h1>
+              <h2 className="text-xl md:text-2xl text-slate-700 dark:text-slate-300 font-semibold mb-4">
+                Transform Your Vision into Reality
+              </h2>
+              <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 leading-relaxed max-w-4xl mx-auto">
+                Where Ideas Become Reality
+              </p>
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed max-w-4xl mx-auto">
+                We are dedicated to enhancing the success of individuals and organizations across various fields, including business and esports, through our exceptional graphical expertise. We understand that compelling visuals are essential in capturing attention and communicating ideas effectively. Whether it's creating stunning logos, immersive esports graphics, or engaging promotional materials, our team is committed to delivering high-quality solutions that elevate brands and drive growth.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white px-8 py-3 text-lg">
+                Start Your Project
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button size="lg" variant="outline" className="border-2 border-purple-500 text-purple-600 hover:bg-purple-50 dark:hover:bg-purple-900/20 px-8 py-3 text-lg">
+                <Play className="w-5 h-5 mr-2" />
+                Watch Our Work
+              </Button>
+            </div>
+
+            {/* Stats Section */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-slate-200 dark:border-slate-700">
+              <StatsCounter end={4} label="Projects Completed" />
+              <StatsCounter end={10} label="Happy Clients" />
+              <StatsCounter end={5} label="Years Experience" />
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
+                  24/7
+                </div>
+                <div className="text-slate-600 dark:text-slate-400 text-sm">
+                  Support Available
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-20 px-4 bg-slate-50 dark:bg-slate-800/50 relative">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+              Our Services
+            </h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+              From concept to completion, we offer comprehensive creative services to bring your vision to life.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {services.map((service, index) => (
+              <Card 
+                key={index} 
+                className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:-translate-y-2 group"
+              >
+                <CardHeader className="text-center pb-4">
+                  <div className={`mx-auto mb-4 p-4 bg-gradient-to-r ${
+                    service.color === 'teal' 
+                      ? 'from-teal-100 to-teal-200 dark:from-teal-900/30 dark:to-teal-800/30' 
+                      : 'from-purple-100 to-purple-200 dark:from-purple-900/30 dark:to-purple-800/30'
+                  } rounded-full w-fit group-hover:scale-110 transition-transform duration-300`}>
+                    <div className={service.color === 'teal' ? 'text-teal-600 dark:text-teal-400' : 'text-purple-600 dark:text-purple-400'}>
+                      {service.icon}
+                    </div>
+                  </div>
+                  <CardTitle className="text-xl font-semibold text-slate-900 dark:text-white">
+                    {service.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-slate-600 dark:text-slate-400 text-center leading-relaxed">
+                    {service.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 px-4 relative">
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <div className="bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50">
+            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+              Ready to start your project?{' '}
+              <span className="gradient-text">Let's talk!</span>
+            </h3>
+            <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white px-8 py-3 text-lg">
+              Get In Touch
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className="py-20 px-4 bg-slate-50 dark:bg-slate-800/50 relative">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
+              What Our Clients Say
+            </h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+              Don't just take our word for it - hear from clients who've experienced our exceptional service
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-8">
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-center space-x-2 mb-4">
+                  <Quote className="w-6 h-6 text-teal-500" />
+                  <Quote className="w-6 h-6 text-teal-500" />
+                </div>
+                
+                <div className="text-center">
+                  <div className="flex justify-center items-center space-x-1 mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="w-6 h-6 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                  <h3 className="text-2xl font-bold gradient-text mb-4">10/10 service.</h3>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6 text-left">
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-slate-700 dark:text-slate-300">
+                        <strong>Efficient Communication:</strong> Capable of getting what you want done to the finest point!
+                      </p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-slate-700 dark:text-slate-300">
+                        <strong>Design Quality</strong> is perfect and what you'd be looking for!
+                      </p>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-slate-700 dark:text-slate-300">
+                        <strong>Great at giving feedback</strong> compared to individuals I have worked with before
+                      </p>
+                    </div>
+                    <div className="flex items-start space-x-3">
+                      <CheckCircle className="w-5 h-5 text-teal-500 mt-0.5 flex-shrink-0" />
+                      <p className="text-slate-700 dark:text-slate-300">
+                        <strong>Reasonable prices</strong> for the amount you get! Bang for your buck!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <blockquote className="text-slate-600 dark:text-slate-400 italic leading-relaxed border-l-4 border-teal-500 pl-6 my-6">
+                  "I had such a wonderful time working with Fives when it came to making my graphics, at no point did I feel rushed or hurried into giving design ideas and he even gave some of his own input allowing for a high quality design in the long run! I am super happy with how my logo's came out as well as the price for what I received them at! If your looking for fantastic graphics and having seen the entire teams portfolio I can happily tell you all that these individuals here who create Graphics are arguably the best at what they do here!"
+                </blockquote>
+
+                <div className="flex items-center justify-center space-x-4 pt-6 border-t border-slate-200 dark:border-slate-700">
+                  <Avatar className="w-12 h-12">
+                    <AvatarImage src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=48,h=48,fit=crop/YNqO7k0WyEUyB3w6/dg_avi-m5Kw9r0g6WUEeL1E.jpg" alt="Tronus" />
+                    <AvatarFallback className="bg-gradient-to-r from-teal-500 to-purple-500 text-white font-semibold">
+                      TR
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="text-center">
+                    <div className="font-semibold text-slate-900 dark:text-white">Tronus</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Client</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center mt-12">
+            <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Thank you!</h3>
+            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              We appreciate the trust our clients place in us and strive to exceed expectations every time.
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+// Project Detail Page Component
   const { projectId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
