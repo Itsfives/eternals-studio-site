@@ -479,6 +479,175 @@ class EternalsStudioAPITester:
             print(f"   ❌ FAILED - Error: {str(e)}")
             return False
 
+    def test_counter_statistics(self):
+        """Test counter statistics API endpoints"""
+        print("\n" + "="*60)
+        print("📊 TESTING COUNTER STATISTICS")
+        print("="*60)
+        
+        # Test GET counter stats (no authentication required)
+        success, response = self.run_test(
+            "Get counter statistics",
+            "GET",
+            "counter-stats",
+            200
+        )
+        
+        if success:
+            # Verify default values are present
+            expected_defaults = {
+                "projects_completed": 13,
+                "happy_clients": 15,
+                "team_members": 6,
+                "support_available": "24/7"
+            }
+            
+            print("   🔍 Verifying default counter statistics values...")
+            all_defaults_correct = True
+            for key, expected_value in expected_defaults.items():
+                actual_value = response.get(key)
+                if actual_value == expected_value:
+                    print(f"   ✅ {key}: {actual_value} (correct)")
+                else:
+                    print(f"   ❌ {key}: expected {expected_value}, got {actual_value}")
+                    all_defaults_correct = False
+            
+            # Verify required fields are present
+            required_fields = ["id", "last_updated"]
+            for field in required_fields:
+                if field in response:
+                    print(f"   ✅ {field}: present")
+                else:
+                    print(f"   ❌ {field}: missing")
+                    all_defaults_correct = False
+            
+            if all_defaults_correct:
+                print("   ✅ All default values and required fields are correct")
+            
+            # Store original stats for comparison
+            self.test_data["original_stats"] = response
+        
+        # Test unauthorized update (client should fail)
+        if "client" in self.tokens:
+            updated_stats = {
+                "id": response.get("id", str(uuid.uuid4())),
+                "projects_completed": 25,
+                "happy_clients": 30,
+                "team_members": 8,
+                "support_available": "24/7"
+            }
+            
+            self.run_test(
+                "Update counter stats (client - should fail)",
+                "PUT",
+                "counter-stats",
+                403,  # Expecting forbidden
+                data=updated_stats,
+                token=self.tokens["client"]
+            )
+        
+        # Test authorized update (admin should succeed)
+        if "admin" in self.tokens:
+            updated_stats = {
+                "id": response.get("id", str(uuid.uuid4())),
+                "projects_completed": 25,
+                "happy_clients": 30,
+                "team_members": 8,
+                "support_available": "24/7"
+            }
+            
+            success, update_response = self.run_test(
+                "Update counter stats (admin)",
+                "PUT",
+                "counter-stats",
+                200,
+                data=updated_stats,
+                token=self.tokens["admin"]
+            )
+            
+            if success:
+                # Verify the update was applied
+                print("   🔍 Verifying counter statistics update...")
+                expected_updates = {
+                    "projects_completed": 25,
+                    "happy_clients": 30,
+                    "team_members": 8,
+                    "support_available": "24/7"
+                }
+                
+                all_updates_correct = True
+                for key, expected_value in expected_updates.items():
+                    actual_value = update_response.get(key)
+                    if actual_value == expected_value:
+                        print(f"   ✅ {key}: {actual_value} (updated correctly)")
+                    else:
+                        print(f"   ❌ {key}: expected {expected_value}, got {actual_value}")
+                        all_updates_correct = False
+                
+                # Verify updated_by field is set
+                if update_response.get("updated_by"):
+                    print(f"   ✅ updated_by: {update_response.get('updated_by')} (set correctly)")
+                else:
+                    print("   ❌ updated_by: not set")
+                    all_updates_correct = False
+                
+                # Verify last_updated is recent
+                if update_response.get("last_updated"):
+                    print(f"   ✅ last_updated: {update_response.get('last_updated')} (updated)")
+                else:
+                    print("   ❌ last_updated: not updated")
+                    all_updates_correct = False
+                
+                if all_updates_correct:
+                    print("   ✅ Counter statistics update successful")
+                
+                # Verify persistence by getting stats again
+                success, verify_response = self.run_test(
+                    "Verify counter stats persistence",
+                    "GET",
+                    "counter-stats",
+                    200
+                )
+                
+                if success:
+                    print("   🔍 Verifying data persistence in MongoDB...")
+                    persistence_correct = True
+                    for key, expected_value in expected_updates.items():
+                        actual_value = verify_response.get(key)
+                        if actual_value == expected_value:
+                            print(f"   ✅ {key}: {actual_value} (persisted correctly)")
+                        else:
+                            print(f"   ❌ {key}: expected {expected_value}, got {actual_value}")
+                            persistence_correct = False
+                    
+                    if persistence_correct:
+                        print("   ✅ All counter statistics data persisted correctly in MongoDB")
+                        return True
+                    else:
+                        print("   ❌ Counter statistics data persistence failed")
+                        return False
+        
+        # Test super_admin access if available
+        if "super_admin" in self.tokens:
+            super_admin_stats = {
+                "id": response.get("id", str(uuid.uuid4())),
+                "projects_completed": 50,
+                "happy_clients": 60,
+                "team_members": 12,
+                "support_available": "24/7"
+            }
+            
+            self.run_test(
+                "Update counter stats (super_admin)",
+                "PUT",
+                "counter-stats",
+                200,
+                data=super_admin_stats,
+                token=self.tokens["super_admin"]
+            )
+        
+        return success
+
     def test_authorization_controls(self):
         """Test role-based access controls"""
         print("\n" + "="*60)
