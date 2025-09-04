@@ -1380,17 +1380,232 @@ const StorePage = () => {
 
 // About Page Component
 const AboutPage = () => {
+  const teamMembers = [
+    {
+      name: "In Gloom Media",
+      role: "COO",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/gipivnpn_400x400-mxBZn8j445hBNVxv.jpg",
+      description: "Chief Operations Officer overseeing all studio operations and strategic planning."
+    },
+    {
+      name: "Kiran",
+      role: "Owner",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/cw2cevgn_400x400-YZ9VkX2rnbt4wERz.jpg",
+      description: "Founder and owner of Eternals Studio, driving the vision and creative direction."
+    },
+    {
+      name: "Fives",
+      role: "Designer",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/avi-A0xwJrW1WjtajWrk.jpg",
+      description: "Lead graphic designer specializing in branding and visual identity creation."
+    },
+    {
+      name: "Psyphonic",
+      role: "Designer",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/8-jisol9_400x400-AGB6kvvqPJCxpqEe.jpg",
+      description: "Creative designer focused on innovative visual solutions and brand experiences."
+    },
+    {
+      name: "Griff",
+      role: "Texture Designer",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/griff-YX4ykEq1Nzcy4RgW.jpg",
+      description: "Expert in 3D texturing and digital asset creation for gaming and multimedia projects."
+    },
+    {
+      name: "Corbyn",
+      role: "Website Coder",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/social-avatar-ca-AMqbkJ1bl7C87xWE.jpg",
+      description: "Full-stack developer responsible for web development and technical implementations."
+    }
+  ];
+
+  const services = [
+    "Graphic Designing",
+    "Model Texturing", 
+    "Model Creating",
+    "Videography",
+    "Photography",
+    "Web Development",
+    "Brand Identity",
+    "3D Animation"
+  ];
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
       <FloatingElements />
       <div className="relative z-10 py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
-            About <span className="gradient-text">Eternals Studio</span>
-          </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-3xl mx-auto">
-            Learn more about our journey, values, and the team behind the creative magic
-          </p>
+        <div className="max-w-7xl mx-auto">
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              About <span className="gradient-text">Eternals Studio</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-3xl mx-auto">
+              Dedicated to delivering excellence and top-notch quality in every project we undertake
+            </p>
+          </div>
+
+          {/* Hero Image */}
+          <div className="mb-16">
+            <div className="relative overflow-hidden rounded-2xl">
+              <img 
+                src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1920,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg"
+                alt="Eternals Studio"
+                className="w-full h-96 md:h-[500px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+              <div className="absolute bottom-8 left-8 right-8 text-white">
+                <h2 className="text-2xl md:text-3xl font-bold mb-2">Creating Visual Excellence</h2>
+                <p className="text-lg opacity-90">Where creativity meets professional craftsmanship</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Mission Statement */}
+          <div className="mb-20">
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                  Our <span className="gradient-text">Mission</span>
+                </h2>
+                <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                  At Eternals Studio, we believe that graphics serve as the forefront for organizations and businesses, playing a crucial role in shaping their identity and presence in the market. Intricate and well-crafted designs are essential for effectively pushing products and attracting consumer interest.
+                </p>
+                <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                  Our team understands that compelling graphics are not just decorative; they create an imprint of a brand that resonates with the target audience. By prioritizing quality and creativity in our designs, we strive to help our clients stand out and make a lasting impact in their respective industries.
+                </p>
+                <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                  We recognize that exceptional graphics are the key to success in today's competitive landscape.
+                </p>
+              </div>
+              <div className="relative">
+                <img 
+                  src="https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=761,h=424,fit=crop/YNqO7k0WyEUyB3w6/106ca2c5-2a87-4917-a688-63ba1833fcf6_rw_3840-YKb6ZE6xbVH1ZKpx.png"
+                  alt="Our Mission"
+                  className="w-full h-80 object-cover rounded-2xl shadow-xl"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Services Grid */}
+          <div className="mb-20">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+                Our <span className="gradient-text">Expertise</span>
+              </h2>
+              <p className="text-lg text-slate-600 dark:text-slate-400">
+                Discover our expertise across multiple creative disciplines
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {services.map((service, index) => (
+                <Card key={index} className="border-0 shadow-lg bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:-translate-y-2 transition-all duration-300 group">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                      <CheckCircle className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 dark:text-white">
+                      {service}
+                    </h3>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Team Section */}
+          <div className="mb-20">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                Meet Our <span className="gradient-text">Team</span>
+              </h2>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                Our talented creators with impressive portfolios are ready to bring your vision to life
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {teamMembers.map((member, index) => (
+                <Card key={index} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm hover:-translate-y-2 group">
+                  <CardContent className="p-6 text-center">
+                    <div className="relative mb-6">
+                      <div className="w-24 h-24 mx-auto rounded-full overflow-hidden ring-4 ring-teal-500/20 group-hover:ring-teal-500/40 transition-all duration-300">
+                        <img 
+                          src={member.avatar} 
+                          alt={member.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
+                      <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2">
+                        <Badge className="bg-gradient-to-r from-teal-500 to-purple-500 text-white text-xs">
+                          {member.role}
+                        </Badge>
+                      </div>
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">
+                      {member.name}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+                      {member.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Stats Section */}
+          <div className="mb-20">
+            <div className="bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">13+</div>
+                  <div className="text-slate-600 dark:text-slate-400">Projects Completed</div>
+                </div>
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">15+</div>
+                  <div className="text-slate-600 dark:text-slate-400">Happy Clients</div>
+                </div>
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">6</div>
+                  <div className="text-slate-600 dark:text-slate-400">Team Members</div>
+                </div>
+                <div>
+                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">100%</div>
+                  <div className="text-slate-600 dark:text-slate-400">Client Satisfaction</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 backdrop-blur-sm">
+              <CardContent className="p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                  Ready to Work with Us?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+                  Contact us today to discuss your project and discover how our talented team can bring your vision to life.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/contact">
+                    <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Get In Touch
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/portfolio">
+                    <Button size="lg" variant="outline">
+                      View Our Work
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
