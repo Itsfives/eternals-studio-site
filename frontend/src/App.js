@@ -450,7 +450,412 @@ const StatsCounter = ({ end, label, suffix = '+' }) => {
   );
 };
 
-// Home Page Component
+// Project Detail Page Component
+const ProjectDetailPage = () => {
+  const { projectId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  
+  // Get project data passed from Portfolio page or find by ID
+  const [project, setProject] = useState(location.state?.project || null);
+  
+  useEffect(() => {
+    if (!project && projectId) {
+      // Find project by ID from the projects data
+      const allProjects = [
+        // 2025 Projects
+        {
+          id: 1,
+          title: "ULoveWhysper",
+          category: "Content Creator Branding",
+          description: "A content creator and competitive player who steamed from Apex to Marvel Rivals!",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper-YbNqBQR7ykClLJ2q.jpg",
+          tags: ["Branding", "Gaming", "Content Creator"],
+          year: 2025,
+          featured: true,
+          type: "branding",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_avi-01-preview-mP42OaJv8vi3174j.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_avi-02-preview-1-mp8qWZ5JbJt8ll2j.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_avi-03-preview-1-Yanq1XPJg5f36bKx.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_twitch-header-1-A1aBPEG5ODiVNDOp.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_twitter-header-1-YBge70aOoBt4K04D.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_weekly-schedule-1-YBge70aWZqSawbN7.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=504,fit=crop/YNqO7k0WyEUyB3w6/whysper_offline-screen-1-m2Wa87VGPkSQ6N0a.png"
+          ]
+        },
+        {
+          id: 2,
+          title: "Midas Networks",
+          category: "Gaming Network",
+          description: "A Multi-Game Hosting Network based in Garry's Mod, FiveM, Arma, Squad and more!",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas-for-website-Yyv0nV0WMjCMk3pq.jpg",
+          tags: ["Gaming", "Network", "Multi-Game"],
+          year: 2025,
+          featured: true,
+          type: "gaming",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas_banner_p1-mxBXQVKj28TxkKoM.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/midas-group-color-palette-AMq8GogalBi5B4MR.jpg",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=224,fit=crop/YNqO7k0WyEUyB3w6/midas-group-text_red-orange-mxBXQVKlwwu68EOy.png",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=224,fit=crop/YNqO7k0WyEUyB3w6/midas-group-logo-text_red-orange-YleQjVaE3RHvBJLX.png",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=437,h=328,fit=crop/YNqO7k0WyEUyB3w6/midas-black-YX4x5J9JKPIvpQK4.png",
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=437,h=328,fit=crop/YNqO7k0WyEUyB3w6/midas-white-A1a5kvDQOnCMPJzN.png"
+          ]
+        },
+        // 2024 Projects
+        {
+          id: 3,
+          title: "Eternals Studio",
+          category: "Studio Branding",
+          description: "A GFX, VFX, Coding, Music Production Studio!",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg",
+          tags: ["Studio", "Branding", "Creative"],
+          year: 2024,
+          featured: true,
+          type: "branding",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg"
+          ]
+        },
+        {
+          id: 4,
+          title: "Eternals GGs",
+          category: "Esports Organization",
+          description: "A Content Creation and Esports Organization based in a wide variety of competitive games. Also our parent organization. They also provide content across multiple platforms.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg",
+          tags: ["Esports", "Content Creation", "Organization"],
+          year: 2024,
+          featured: true,
+          type: "esports",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg"
+          ]
+        },
+        {
+          id: 5,
+          title: "Deceptive Grounds",
+          category: "Gaming Community",
+          description: "A multi-game based community. They host servers on games such as Garry's Mod and Arma 3.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg",
+          tags: ["Gaming", "Community", "Servers"],
+          year: 2024,
+          featured: false,
+          type: "gaming",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg"
+          ]
+        },
+        {
+          id: 6,
+          title: "Team UK & Ireland",
+          category: "Esports Team",
+          description: "A new upcoming Organization that represents the spirit of Ireland and United Kingdom together.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png",
+          tags: ["Esports", "Team", "International"],
+          year: 2024,
+          featured: false,
+          type: "esports",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png"
+          ]
+        },
+        {
+          id: 7,
+          title: "Shinto Gaming Club",
+          category: "Gaming Club",
+          description: "A new esports gaming club that is partaking in various esports tournaments.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg",
+          tags: ["Gaming", "Club", "Tournaments"],
+          year: 2024,
+          featured: false,
+          type: "gaming",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg"
+          ]
+        },
+        {
+          id: 8,
+          title: "HP League",
+          category: "Esports League",
+          description: "A new Esports league that was partaking in XDefiant and PUBG.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png",
+          tags: ["Esports", "League", "XDefiant", "PUBG"],
+          year: 2024,
+          featured: false,
+          type: "esports",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png"
+          ]
+        },
+        {
+          id: 9,
+          title: "NeverFPS",
+          category: "Content Creator",
+          description: "A variety streamer turned game developer.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg",
+          tags: ["Streaming", "Game Development", "Content"],
+          year: 2024,
+          featured: false,
+          type: "branding",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg"
+          ]
+        },
+        {
+          id: 10,
+          title: "YouTube Thumbnails",
+          category: "Thumbnail Design",
+          description: "Thumbnails are used to engage and draw audiences to a particular video.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
+          tags: ["Design", "YouTube", "Thumbnails"],
+          year: 2024,
+          featured: false,
+          type: "design",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg"
+          ]
+        },
+        {
+          id: 11,
+          title: "3D Work Collection",
+          category: "3D Modeling",
+          description: "This is a collection of our completed 3D Work.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png",
+          tags: ["3D", "Modeling", "Animation"],
+          year: 2024,
+          featured: false,
+          type: "3d",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png"
+          ]
+        },
+        {
+          id: 12,
+          title: "7 Cubed Films",
+          category: "Film Production",
+          description: "A SFM animation artist that specializes in a Star Wars: The Clone Wars setting and has over 5+ Million Views",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png",
+          tags: ["Animation", "Star Wars", "SFM", "5M+ Views"],
+          year: 2024,
+          featured: true,
+          type: "animation",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png"
+          ]
+        },
+        {
+          id: 13,
+          title: "Esports Posters",
+          category: "Poster Design",
+          description: "Posters were made as an advertisement tool to help people engage in the esports communities and drive engagement.",
+          image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg",
+          tags: ["Posters", "Esports", "Marketing"],
+          year: 2024,
+          featured: false,
+          type: "design",
+          gallery: [
+            "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg"
+          ]
+        }
+      ];
+      
+      const foundProject = allProjects.find(p => p.id === parseInt(projectId));
+      setProject(foundProject);
+    }
+  }, [projectId, project]);
+
+  if (!project) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative flex items-center justify-center">
+        <FloatingElements />
+        <div className="relative z-10 text-center">
+          <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+            Project Not Found
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400 mb-8">
+            The project you're looking for doesn't exist.
+          </p>
+          <Link to="/portfolio">
+            <Button className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+              Back to Portfolio
+            </Button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+      <FloatingElements />
+      <div className="relative z-10 py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Back Button */}
+          <div className="mb-8">
+            <Button 
+              variant="outline" 
+              onClick={() => navigate('/portfolio')}
+              className="flex items-center space-x-2"
+            >
+              <ArrowRight className="w-4 h-4 rotate-180" />
+              <span>Back to Portfolio</span>
+            </Button>
+          </div>
+
+          {/* Project Header */}
+          <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Badge variant="secondary">{project.category}</Badge>
+              <Badge className="bg-gradient-to-r from-teal-500 to-purple-500 text-white">
+                {project.year}
+              </Badge>
+              {project.featured && (
+                <Badge className="bg-yellow-500 text-black">Featured</Badge>
+              )}
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              <span className="gradient-text">{project.title}</span>
+            </h1>
+            
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed">
+              {project.description}
+            </p>
+          </div>
+
+          {/* Hero Image */}
+          <div className="mb-16">
+            <div className="relative overflow-hidden rounded-2xl">
+              <img 
+                src={project.image} 
+                alt={project.title}
+                className="w-full h-96 md:h-[500px] object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+            </div>
+          </div>
+
+          {/* Project Gallery */}
+          {project.gallery && project.gallery.length > 1 && (
+            <div className="mb-16">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8 text-center">
+                Project Gallery
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {project.gallery.map((image, index) => (
+                  <div key={index} className="relative group overflow-hidden rounded-lg">
+                    <img 
+                      src={image} 
+                      alt={`${project.title} - Image ${index + 1}`}
+                      className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4">
+                        <p className="text-white text-sm font-medium">Image {index + 1}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Project Details */}
+          <div className="grid md:grid-cols-2 gap-12 mb-16">
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
+                Project Details
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700">
+                  <span className="text-slate-600 dark:text-slate-400 font-medium">Year:</span>
+                  <span className="font-semibold text-slate-900 dark:text-white">{project.year}</span>
+                </div>
+                <div className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700">
+                  <span className="text-slate-600 dark:text-slate-400 font-medium">Category:</span>
+                  <span className="font-semibold text-slate-900 dark:text-white">{project.category}</span>
+                </div>
+                <div className="flex justify-between items-center py-3 border-b border-slate-200 dark:border-slate-700">
+                  <span className="text-slate-600 dark:text-slate-400 font-medium">Status:</span>
+                  <span className="font-semibold text-green-600">Completed</span>
+                </div>
+                <div className="flex justify-between items-center py-3">
+                  <span className="text-slate-600 dark:text-slate-400 font-medium">Type:</span>
+                  <span className="font-semibold text-slate-900 dark:text-white capitalize">{project.type}</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">
+                Technologies & Skills
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {project.tags.map((tag, index) => (
+                  <Badge key={index} variant="outline" className="text-sm py-2 px-4">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+              
+              <div className="mt-8">
+                <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+                  Project Highlights
+                </h4>
+                <ul className="space-y-2 text-slate-600 dark:text-slate-400">
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-teal-500" />
+                    <span>Professional design and branding</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-teal-500" />
+                    <span>High-quality visual assets</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-teal-500" />
+                    <span>Timely project delivery</span>
+                  </li>
+                  <li className="flex items-center space-x-2">
+                    <CheckCircle className="w-4 h-4 text-teal-500" />
+                    <span>Client satisfaction guaranteed</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 backdrop-blur-sm">
+              <CardContent className="p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                  Interested in Similar Work?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+                  Let's discuss how we can help bring your vision to life with our expertise in {project.category.toLowerCase()}.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/contact">
+                    <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Start Your Project
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/portfolio">
+                    <Button size="lg" variant="outline">
+                      View More Projects
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 const HomePage = () => {
   const services = [
     {
