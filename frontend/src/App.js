@@ -450,7 +450,8 @@ const StatsCounter = ({ end, label, suffix = '+' }) => {
   );
 };
 
-// Project Detail Page Component
+// Home Page Component
+const HomePage = () => {
 const ProjectDetailPage = () => {
   const { projectId } = useParams();
   const location = useLocation();
