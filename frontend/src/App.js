@@ -553,18 +553,8 @@ const HomePage = () => {
             </div>
 
             {/* Stats Section */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mt-16 pt-16 border-t border-slate-200 dark:border-slate-700">
-              <StatsCounter end={4} label="Projects Completed" />
-              <StatsCounter end={10} label="Happy Clients" />
-              <StatsCounter end={5} label="Years Experience" />
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
-                  24/7
-                </div>
-                <div className="text-slate-600 dark:text-slate-400 text-sm">
-                  Support Available
-                </div>
-              </div>
+            <div className="mt-16 pt-16 border-t border-slate-200 dark:border-slate-700">
+              <SharedStatsCounter />
             </div>
           </div>
         </div>
