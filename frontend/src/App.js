@@ -417,6 +417,33 @@ const Navigation = () => {
   );
 };
 
+// Shared Stats Counter Component
+const SharedStatsCounter = ({ className = "" }) => {
+  return (
+    <div className={`bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50 backdrop-blur-sm ${className}`}>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div>
+          <StatsCounter end={13} label="Projects Completed" />
+        </div>
+        <div>
+          <StatsCounter end={15} label="Happy Clients" />
+        </div>
+        <div>
+          <StatsCounter end={6} label="Team Members" />
+        </div>
+        <div className="text-center">
+          <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
+            24/7
+          </div>
+          <div className="text-slate-600 dark:text-slate-400 text-sm">
+            Support Available
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 // Stats Counter Component
 const StatsCounter = ({ end, label, suffix = '+' }) => {
   const [count, setCount] = useState(0);
