@@ -1943,6 +1943,78 @@ const AuthPage = () => {
 // Dashboard Component (placeholder)
 const Dashboard = () => {
   const { user, logout } = useAuth();
+  const [activeTab, setActiveTab] = useState('overview');
+  const [stats, setStats] = useState({
+    projects_completed: 13,
+    happy_clients: 15,
+    team_members: 6,
+    support_available: "24/7"
+  });
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const { toast } = useToast();
+
+  // Fetch current stats
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/counter-stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  // Update stats
+  const handleUpdateStats = async () => {
+    setSaving(true);
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${BACKEND_URL}/api/counter-stats`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(stats)
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Success",
+          description: "Counter statistics updated successfully!",
+        });
+      } else {
+        const error = await response.json();
+        throw new Error(error.detail || 'Failed to update stats');
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message || 'Failed to update statistics',
+        variant: "destructive",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleStatsChange = (field, value) => {
+    setStats(prev => ({
+      ...prev,
+      [field]: field === 'support_available' ? value : parseInt(value) || 0
+    }));
+  };
+
+  const isAdmin = user?.role === 'super_admin' || user?.role === 'admin';
 
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
@@ -1954,12 +2026,192 @@ const Dashboard = () => {
               Welcome, <span className="gradient-text">{user?.full_name || 'User'}</span>
             </h1>
             <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
-              Your dashboard is coming soon!
+              {isAdmin ? 'Admin Dashboard - Manage your studio' : 'Client Dashboard - Track your projects'}
             </p>
-            <Button onClick={logout} variant="outline">
-              <LogOut className="w-4 h-4 mr-2" />
-              Logout
-            </Button>
+          </div>
+
+          {/* Navigation Tabs */}
+          <div className="mb-8">
+            <div className="flex flex-wrap justify-center gap-4">
+              <Button
+                variant={activeTab === 'overview' ? 'default' : 'outline'}
+                onClick={() => setActiveTab('overview')}
+                className={activeTab === 'overview' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+              >
+                Overview
+              </Button>
+              {isAdmin && (
+                <Button
+                  variant={activeTab === 'cms' ? 'default' : 'outline'}
+                  onClick={() => setActiveTab('cms')}
+                  className={activeTab === 'cms' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  CMS
+                </Button>
+              )}
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="max-w-4xl mx-auto">
+            {activeTab === 'overview' && (
+              <div className="grid md:grid-cols-2 gap-8">
+                <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="gradient-text">Recent Activity</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-slate-600 dark:text-slate-400 mb-4">
+                      Your dashboard is being developed with amazing features coming soon!
+                    </p>
+                    <div className="space-y-3">
+                      <div className="flex items-center space-x-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                        <CheckCircle className="w-5 h-5 text-green-500" />
+                        <span className="text-sm text-slate-700 dark:text-slate-300">Account setup completed</span>
+                      </div>
+                      <div className="flex items-center space-x-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                        <Clock className="w-5 h-5 text-yellow-500" />
+                        <span className="text-sm text-slate-700 dark:text-slate-300">Project management tools coming soon</span>
+                      </div>
+                      <div className="flex items-center space-x-3 p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                        <MessageSquare className="w-5 h-5 text-blue-500" />
+                        <span className="text-sm text-slate-700 dark:text-slate-300">Messaging system in development</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                  <CardHeader>
+                    <CardTitle className="gradient-text">Quick Actions</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Link to="/contact">
+                      <Button className="w-full bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white justify-start">
+                        <Mail className="w-4 h-4 mr-2" />
+                        Contact Support
+                      </Button>
+                    </Link>
+                    <Link to="/portfolio">
+                      <Button variant="outline" className="w-full justify-start">
+                        <Eye className="w-4 h-4 mr-2" />
+                        View Portfolio
+                      </Button>
+                    </Link>
+                    <Button onClick={logout} variant="outline" className="w-full justify-start text-red-600 hover:text-red-700">
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Logout
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
+            {activeTab === 'cms' && isAdmin && (
+              <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="gradient-text">Content Management System</CardTitle>
+                  <CardDescription>
+                    Update website counter statistics and content
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+                      Website Counter Statistics
+                    </h3>
+                    
+                    {loading ? (
+                      <div className="space-y-4">
+                        <div className="animate-pulse">
+                          <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+                          <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        </div>
+                        <div className="animate-pulse">
+                          <div className="h-4 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+                          <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded"></div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="projects">Projects Completed</Label>
+                          <Input
+                            id="projects"
+                            type="number"
+                            value={stats.projects_completed}
+                            onChange={(e) => handleStatsChange('projects_completed', e.target.value)}
+                            className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="clients">Happy Clients</Label>
+                          <Input
+                            id="clients"
+                            type="number"
+                            value={stats.happy_clients}
+                            onChange={(e) => handleStatsChange('happy_clients', e.target.value)}
+                            className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="team">Team Members</Label>
+                          <Input
+                            id="team"
+                            type="number"
+                            value={stats.team_members}
+                            onChange={(e) => handleStatsChange('team_members', e.target.value)}
+                            className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="support">Support Available</Label>
+                          <Input
+                            id="support"
+                            value={stats.support_available}
+                            onChange={(e) => handleStatsChange('support_available', e.target.value)}
+                            placeholder="e.g., 24/7, Mon-Fri"
+                            className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                          />
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="flex justify-end mt-6">
+                      <Button
+                        onClick={handleUpdateStats}
+                        disabled={saving || loading}
+                        className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white"
+                      >
+                        {saving ? (
+                          <>
+                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                            Saving...
+                          </>
+                        ) : (
+                          <>
+                            <CheckCircle className="w-4 h-4 mr-2" />
+                            Update Statistics
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Preview Section */}
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+                      Live Preview
+                    </h3>
+                    <SharedStatsCounter />
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </div>
         </div>
       </div>
