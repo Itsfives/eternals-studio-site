@@ -1382,28 +1382,28 @@ const StorePage = () => {
 const AboutPage = () => {
   const teamMembers = [
     {
-      name: "In Gloom Media",
+      name: "Fives",
+      role: "Owner",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/avi-A0xwJrW1WjtajWrk.jpg",
+      description: "Founder and owner of Eternals Studio, driving the vision and creative direction."
+    },
+    {
+      name: "Psyphonic",
       role: "COO",
-      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/gipivnpn_400x400-mxBZn8j445hBNVxv.jpg",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/8-jisol9_400x400-AGB6kvvqPJCxpqEe.jpg",
       description: "Chief Operations Officer overseeing all studio operations and strategic planning."
     },
     {
       name: "Kiran",
-      role: "Owner",
+      role: "Designer",
       avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/cw2cevgn_400x400-YZ9VkX2rnbt4wERz.jpg",
-      description: "Founder and owner of Eternals Studio, driving the vision and creative direction."
-    },
-    {
-      name: "Fives",
-      role: "Designer",
-      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/avi-A0xwJrW1WjtajWrk.jpg",
-      description: "Lead graphic designer specializing in branding and visual identity creation."
-    },
-    {
-      name: "Psyphonic",
-      role: "Designer",
-      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/8-jisol9_400x400-AGB6kvvqPJCxpqEe.jpg",
       description: "Creative designer focused on innovative visual solutions and brand experiences."
+    },
+    {
+      name: "In Gloom Media",
+      role: "Designer",
+      avatar: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=297,h=264,fit=crop/YNqO7k0WyEUyB3w6/gipivnpn_400x400-mxBZn8j445hBNVxv.jpg",
+      description: "Lead graphic designer specializing in branding and visual identity creation."
     },
     {
       name: "Griff",
