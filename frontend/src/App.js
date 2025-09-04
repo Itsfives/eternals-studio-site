@@ -138,20 +138,20 @@ const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
 const FloatingElements = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [logos, setLogos] = useState([
-    { id: 1, x: 150, y: 250, size: 'w-8 h-8', opacity: 0.7, delay: 0, color: 'seafoam' },
-    { id: 2, x: 400, y: 200, size: 'w-8 h-8', opacity: 0.6, delay: 0.5, color: 'violet' },
-    { id: 3, x: 650, y: 350, size: 'w-9 h-9', opacity: 0.8, delay: 1, color: 'seafoam' },
-    { id: 4, x: 900, y: 180, size: 'w-7 h-7', opacity: 0.5, delay: 1.5, color: 'violet' },
-    { id: 5, x: 1100, y: 280, size: 'w-8 h-8', opacity: 0.9, delay: 2, color: 'seafoam' },
-    { id: 6, x: 300, y: 450, size: 'w-8 h-8', opacity: 0.7, delay: 2.5, color: 'violet' },
-    { id: 7, x: 800, y: 400, size: 'w-8 h-8', opacity: 0.6, delay: 3, color: 'seafoam' },
-    { id: 8, x: 550, y: 500, size: 'w-9 h-9', opacity: 0.8, delay: 3.5, color: 'violet' },
-    { id: 9, x: 200, y: 120, size: 'w-7 h-7', opacity: 0.5, delay: 4, color: 'seafoam' },
-    { id: 10, x: 750, y: 150, size: 'w-8 h-8', opacity: 0.6, delay: 4.5, color: 'violet' },
-    { id: 11, x: 1050, y: 450, size: 'w-7 h-7', opacity: 0.7, delay: 5, color: 'seafoam' },
-    { id: 12, x: 450, y: 350, size: 'w-8 h-8', opacity: 0.8, delay: 5.5, color: 'violet' },
-    { id: 13, x: 350, y: 180, size: 'w-7 h-7', opacity: 0.6, delay: 6, color: 'seafoam' },
-    { id: 14, x: 1200, y: 380, size: 'w-8 h-8', opacity: 0.7, delay: 6.5, color: 'violet' }
+    { id: 1, x: 150, y: 250, size: 'w-10 h-10', opacity: 0.7, delay: 0, color: 'seafoam' },
+    { id: 2, x: 400, y: 200, size: 'w-11 h-11', opacity: 0.6, delay: 0.5, color: 'violet' },
+    { id: 3, x: 650, y: 350, size: 'w-12 h-12', opacity: 0.8, delay: 1, color: 'seafoam' },
+    { id: 4, x: 900, y: 180, size: 'w-9 h-9', opacity: 0.5, delay: 1.5, color: 'violet' },
+    { id: 5, x: 1100, y: 280, size: 'w-11 h-11', opacity: 0.9, delay: 2, color: 'seafoam' },
+    { id: 6, x: 300, y: 450, size: 'w-10 h-10', opacity: 0.7, delay: 2.5, color: 'violet' },
+    { id: 7, x: 800, y: 400, size: 'w-12 h-12', opacity: 0.6, delay: 3, color: 'seafoam' },
+    { id: 8, x: 550, y: 500, size: 'w-11 h-11', opacity: 0.8, delay: 3.5, color: 'violet' },
+    { id: 9, x: 200, y: 120, size: 'w-10 h-10', opacity: 0.5, delay: 4, color: 'seafoam' },
+    { id: 10, x: 750, y: 150, size: 'w-10 h-10', opacity: 0.6, delay: 4.5, color: 'violet' },
+    { id: 11, x: 1050, y: 450, size: 'w-9 h-9', opacity: 0.7, delay: 5, color: 'seafoam' },
+    { id: 12, x: 450, y: 350, size: 'w-11 h-11', opacity: 0.8, delay: 5.5, color: 'violet' },
+    { id: 13, x: 350, y: 180, size: 'w-10 h-10', opacity: 0.6, delay: 6, color: 'seafoam' },
+    { id: 14, x: 1200, y: 380, size: 'w-10 h-10', opacity: 0.7, delay: 6.5, color: 'violet' }
   ]);
 
   const [connections, setConnections] = useState([]);
