@@ -1337,7 +1337,7 @@ function App() {
               <Route path="/store" element={<PublicLayout><StorePage /></PublicLayout>} />
               <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
               <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
-              <Route path="/login" element={<LoginPage />} />
+              <Route path="/auth" element={<AuthPage />} />
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             </Routes>
             <Toaster />
