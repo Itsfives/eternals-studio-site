@@ -332,7 +332,7 @@ const Navigation = () => {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <InteractiveLogo size="w-10 h-10" />
+            <InteractiveLogo size="w-12 h-12" />
             <h1 className="text-xl font-bold gradient-text">
               Eternals Studio
             </h1>
