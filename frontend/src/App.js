@@ -233,19 +233,15 @@ const FloatingElements = () => {
   }, [mousePosition]);
 
   const getLogoColor = (color, opacity) => {
-    if (color === 'seafoam') {
-      return {
-        filter: `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(160deg)`,
-        borderColor: '#2dd4bf', // Proper seafoam green
-        boxShadow: `0 0 25px rgba(45, 212, 191, ${opacity * 0.9}), 0 0 50px rgba(45, 212, 191, ${opacity * 0.4})`
-      };
-    } else {
-      return {
-        filter: `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(260deg)`,
-        borderColor: '#8B5CF6', // Proper blue violet
-        boxShadow: `0 0 25px rgba(139, 92, 246, ${opacity * 0.9}), 0 0 50px rgba(139, 92, 246, ${opacity * 0.4})`
-      };
-    }
+    const baseColor = isDark ? '#ffffff' : '#000000';
+    const glowColor = color === 'seafoam' ? '#2dd4bf' : '#8B5CF6';
+    
+    return {
+      filter: `brightness(1.2) contrast(1.1)`,
+      borderColor: glowColor,
+      boxShadow: `0 0 20px rgba(${isDark ? '255, 255, 255' : '0, 0, 0'}, ${opacity * 0.3}), 0 0 40px ${glowColor}40`,
+      backgroundColor: `${baseColor}${Math.round(opacity * 255).toString(16).padStart(2, '0')}`
+    };
   };
 
   const getConnectionColor = (color) => {
