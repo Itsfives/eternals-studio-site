@@ -296,7 +296,7 @@ const FloatingElements = () => {
             style={{
               animationDelay: `${logo.delay}s`,
               animationDuration: '4s',
-              filter: logo.color === 'seafoam' ? 'sepia(1) hue-rotate(140deg) saturate(2)' : 'sepia(1) hue-rotate(250deg) saturate(2)'
+              filter: isDark ? 'brightness(10) invert(1)' : 'brightness(0) invert(0)'
             }}
           />
         </div>
