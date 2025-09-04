@@ -134,18 +134,24 @@ const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
   );
 };
 
-// Mouse-Following Logo Elements Component with Web Effect
+// Mouse-Following Logo Elements Component with Web Effect (OPTIMIZED)
 const FloatingElements = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [logos, setLogos] = useState([
-    { id: 1, x: 150, y: 250, size: 'w-12 h-12', opacity: 0.6, delay: 0, color: 'teal' },
-    { id: 2, x: 400, y: 200, size: 'w-10 h-10', opacity: 0.5, delay: 0.5, color: 'purple' },
-    { id: 3, x: 650, y: 350, size: 'w-14 h-14', opacity: 0.7, delay: 1, color: 'teal' },
-    { id: 4, x: 900, y: 180, size: 'w-8 h-8', opacity: 0.4, delay: 1.5, color: 'purple' },
-    { id: 5, x: 1100, y: 280, size: 'w-16 h-16', opacity: 0.8, delay: 2, color: 'teal' },
-    { id: 6, x: 300, y: 450, size: 'w-10 h-10', opacity: 0.6, delay: 2.5, color: 'purple' },
-    { id: 7, x: 800, y: 400, size: 'w-12 h-12', opacity: 0.5, delay: 3, color: 'teal' },
-    { id: 8, x: 550, y: 500, size: 'w-14 h-14', opacity: 0.7, delay: 3.5, color: 'purple' }
+    { id: 1, x: 150, y: 250, size: 'w-16 h-16', opacity: 0.7, delay: 0, color: 'seafoam' },
+    { id: 2, x: 400, y: 200, size: 'w-12 h-12', opacity: 0.6, delay: 0.5, color: 'violet' },
+    { id: 3, x: 650, y: 350, size: 'w-20 h-20', opacity: 0.8, delay: 1, color: 'seafoam' },
+    { id: 4, x: 900, y: 180, size: 'w-10 h-10', opacity: 0.5, delay: 1.5, color: 'violet' },
+    { id: 5, x: 1100, y: 280, size: 'w-18 h-18', opacity: 0.9, delay: 2, color: 'seafoam' },
+    { id: 6, x: 300, y: 450, size: 'w-14 h-14', opacity: 0.7, delay: 2.5, color: 'violet' },
+    { id: 7, x: 800, y: 400, size: 'w-16 h-16', opacity: 0.6, delay: 3, color: 'seafoam' },
+    { id: 8, x: 550, y: 500, size: 'w-18 h-18', opacity: 0.8, delay: 3.5, color: 'violet' },
+    { id: 9, x: 200, y: 120, size: 'w-12 h-12', opacity: 0.5, delay: 4, color: 'seafoam' },
+    { id: 10, x: 750, y: 150, size: 'w-14 h-14', opacity: 0.6, delay: 4.5, color: 'violet' },
+    { id: 11, x: 1050, y: 450, size: 'w-10 h-10', opacity: 0.7, delay: 5, color: 'seafoam' },
+    { id: 12, x: 450, y: 350, size: 'w-16 h-16', opacity: 0.8, delay: 5.5, color: 'violet' },
+    { id: 13, x: 350, y: 180, size: 'w-12 h-12', opacity: 0.6, delay: 6, color: 'seafoam' },
+    { id: 14, x: 1200, y: 380, size: 'w-14 h-14', opacity: 0.7, delay: 6.5, color: 'violet' }
   ]);
 
   const [connections, setConnections] = useState([]);
@@ -167,31 +173,31 @@ const FloatingElements = () => {
             Math.pow(mousePosition.x - logo.x, 2) + Math.pow(mousePosition.y - logo.y, 2)
           );
           
-          if (distance < 200) {
+          if (distance < 160) {
             const angle = Math.atan2(mousePosition.y - logo.y, mousePosition.x - logo.x);
-            const repelForce = Math.max(0, 200 - distance) * 0.4;
+            const repelForce = Math.max(0, 160 - distance) * 0.5;
             
             return {
               ...logo,
-              x: Math.max(50, Math.min(window.innerWidth - 50, logo.x - Math.cos(angle) * repelForce)),
-              y: Math.max(50, Math.min(window.innerHeight - 50, logo.y - Math.sin(angle) * repelForce)),
-              opacity: Math.min(1, logo.opacity + 0.3)
+              x: Math.max(80, Math.min(window.innerWidth - 80, logo.x - Math.cos(angle) * repelForce)),
+              y: Math.max(80, Math.min(window.innerHeight - 80, logo.y - Math.sin(angle) * repelForce)),
+              opacity: Math.min(1, logo.opacity + 0.2)
             };
           } else {
             // Gentle drift
-            const driftX = (Math.random() - 0.5) * 0.8;
-            const driftY = (Math.random() - 0.5) * 0.8;
+            const driftX = (Math.random() - 0.5) * 0.4;
+            const driftY = (Math.random() - 0.5) * 0.4;
             
             return {
               ...logo,
-              x: Math.max(80, Math.min(window.innerWidth - 80, logo.x + driftX)),
-              y: Math.max(80, Math.min(window.innerHeight - 80, logo.y + driftY)),
-              opacity: Math.max(0.3, logo.opacity - 0.01)
+              x: Math.max(100, Math.min(window.innerWidth - 100, logo.x + driftX)),
+              y: Math.max(100, Math.min(window.innerHeight - 100, logo.y + driftY)),
+              opacity: Math.max(0.4, logo.opacity - 0.005)
             };
           }
         });
 
-        // Calculate connections between nearby logos
+        // Calculate connections between nearby logos (optimized)
         const newConnections = [];
         for (let i = 0; i < updatedLogos.length; i++) {
           for (let j = i + 1; j < updatedLogos.length; j++) {
@@ -201,8 +207,8 @@ const FloatingElements = () => {
               Math.pow(logo1.x - logo2.x, 2) + Math.pow(logo1.y - logo2.y, 2)
             );
             
-            if (distance < 180) {
-              const opacity = Math.max(0, (180 - distance) / 180) * 0.6;
+            if (distance < 150) {
+              const opacity = Math.max(0, (150 - distance) / 150) * 0.8;
               newConnections.push({
                 id: `${logo1.id}-${logo2.id}`,
                 x1: logo1.x,
@@ -221,36 +227,42 @@ const FloatingElements = () => {
       });
     };
 
-    const interval = setInterval(updateLogosAndConnections, 60);
+    const interval = setInterval(updateLogosAndConnections, 100); // Optimized from 60ms
     return () => clearInterval(interval);
   }, [mousePosition]);
 
   const getLogoColor = (color, opacity) => {
-    if (color === 'teal') {
+    if (color === 'seafoam') {
       return {
-        filter: `brightness(1.2) contrast(1.1) saturate(1.4) hue-rotate(180deg)`,
-        borderColor: '#14b8a6',
-        boxShadow: `0 0 20px rgba(20, 184, 166, ${opacity * 0.8})`
+        filter: `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(160deg)`,
+        borderColor: '#2dd4bf', // Proper seafoam green
+        boxShadow: `0 0 25px rgba(45, 212, 191, ${opacity * 0.9}), 0 0 50px rgba(45, 212, 191, ${opacity * 0.4})`
       };
     } else {
       return {
-        filter: `brightness(1.2) contrast(1.1) saturate(1.4) hue-rotate(270deg)`,
-        borderColor: '#a855f7',
-        boxShadow: `0 0 20px rgba(168, 85, 247, ${opacity * 0.8})`
+        filter: `brightness(1.3) contrast(1.2) saturate(1.5) hue-rotate(260deg)`,
+        borderColor: '#8B5CF6', // Proper blue violet
+        boxShadow: `0 0 25px rgba(139, 92, 246, ${opacity * 0.9}), 0 0 50px rgba(139, 92, 246, ${opacity * 0.4})`
       };
     }
   };
 
   const getConnectionColor = (color) => {
-    if (color === 'teal') return '#14b8a6';
-    if (color === 'purple') return '#a855f7';
-    return '#6b46c1'; // mixed color
+    if (color === 'seafoam') return '#2dd4bf'; // Proper seafoam green
+    if (color === 'violet') return '#8B5CF6'; // Proper blue violet
+    return 'url(#gradient)'; // Gradient for mixed connections
   };
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
       {/* Connection Lines */}
       <svg className="absolute inset-0 w-full h-full">
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#2dd4bf" />
+            <stop offset="100%" stopColor="#8B5CF6" />
+          </linearGradient>
+        </defs>
         {connections.map(connection => (
           <line
             key={connection.id}
@@ -259,9 +271,10 @@ const FloatingElements = () => {
             x2={connection.x2}
             y2={connection.y2}
             stroke={getConnectionColor(connection.color)}
-            strokeWidth="2"
+            strokeWidth="3"
             strokeOpacity={connection.opacity}
             className="animate-pulse"
+            style={{ animationDuration: '2s' }}
           />
         ))}
       </svg>
@@ -270,7 +283,7 @@ const FloatingElements = () => {
       {logos.map(logo => (
         <div
           key={logo.id}
-          className={`absolute transition-all duration-100 ease-out ${logo.size} rounded-full border-2`}
+          className={`absolute transition-all duration-150 ease-out ${logo.size} rounded-full border-3 logo-glow`}
           style={{
             left: `${logo.x}px`,
             top: `${logo.y}px`,
@@ -282,10 +295,11 @@ const FloatingElements = () => {
           <img 
             src="https://customer-assets.emergentagent.com/job_33bbef14-ff4b-4136-9e36-664559466616/artifacts/4dkvnitj_Eternals%20Studio.png"
             alt="Eternals Studio"
-            className="w-full h-full object-contain rounded-full p-1 animate-pulse hover:animate-bounce"
+            className="w-full h-full object-contain rounded-full p-2 animate-pulse hover:animate-bounce"
             style={{
               animationDelay: `${logo.delay}s`,
-              animationDuration: '3s'
+              animationDuration: '4s',
+              filter: logo.color === 'seafoam' ? 'sepia(1) hue-rotate(140deg) saturate(2)' : 'sepia(1) hue-rotate(250deg) saturate(2)'
             }}
           />
         </div>
