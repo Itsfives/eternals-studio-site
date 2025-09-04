@@ -123,12 +123,17 @@ const useAuth = () => {
 
 // Interactive Logo Component
 const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
+  const { isDark } = useTheme();
+  
   return (
     <div className={`${size} ${className} interactive-logo cursor-pointer`}>
       <img 
         src="https://customer-assets.emergentagent.com/job_33bbef14-ff4b-4136-9e36-664559466616/artifacts/4dkvnitj_Eternals%20Studio.png"
         alt="Eternals Studio"
         className="w-full h-full object-contain hover:scale-110 transition-transform duration-300"
+        style={{
+          filter: isDark ? 'brightness(10) invert(1)' : 'brightness(0) invert(0)'
+        }}
       />
     </div>
   );
