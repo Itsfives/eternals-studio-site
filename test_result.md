@@ -101,3 +101,64 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+## user_problem_statement: "Continue doing what you were doing last? Also the interactive logos are way to big. I meant set a decent average size slightly bigger then what was on there but you added two huge logos."
+
+## backend:
+  - task: "Backend API endpoints for authentication and user management"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "Backend endpoints appear to be working based on previous implementation"
+
+## frontend:
+  - task: "Portfolio View Project button functionality"
+    implemented: true
+    working: true
+    file: "App.js - PortfolioPage component"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: true
+          agent: "main"
+          comment: "ProjectDetailModal is already integrated in PortfolioPage, View Project button should work"
+
+  - task: "Interactive logos size optimization"
+    implemented: false
+    working: false
+    file: "App.js - FloatingElements component"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "main"
+          comment: "User reports logos are too big - need to reduce sizes from w-16/w-20 to smaller sizes like w-8/w-10/w-12"
+        - working: false
+          agent: "user"
+          comment: "Interactive logos are way too big, need to make them decent average size slightly bigger than original but not huge"
+
+## metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: false
+
+## test_plan:
+  current_focus:
+    - "Interactive logos size optimization"
+    - "Portfolio View Project button functionality"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+## agent_communication:
+    - agent: "main"
+      message: "Starting work on fixing interactive logo sizes as reported by user. Portfolio View Project functionality appears to be already implemented. Will fix logo sizes first then test both features."
