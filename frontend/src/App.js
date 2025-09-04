@@ -1361,7 +1361,7 @@ const PublicLayout = ({ children }) => {
 // Route Guards
 const PrivateRoute = ({ children }) => {
   const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/login" />;
+  return isAuthenticated ? children : <Navigate to="/auth" />;
 };
 
 export default App;
