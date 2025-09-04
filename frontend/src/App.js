@@ -291,7 +291,7 @@ const Navigation = () => {
                 </Button>
               </Link>
             ) : (
-              <Link to="/login">
+              <Link to="/auth">
                 <Button className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
                   Get Started
                 </Button>
