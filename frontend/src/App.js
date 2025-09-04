@@ -136,6 +136,7 @@ const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
 
 // Mouse-Following Logo Elements Component with Web Effect (OPTIMIZED)
 const FloatingElements = () => {
+  const { isDark } = useTheme();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [logos, setLogos] = useState([
     { id: 1, x: 150, y: 250, size: 'w-14 h-14', opacity: 0.7, delay: 0, color: 'seafoam' },
