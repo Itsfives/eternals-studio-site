@@ -13,6 +13,15 @@ from datetime import datetime, timedelta, timezone
 from enum import Enum
 import shutil
 
+# Counter Statistics Model
+class CounterStats(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    projects_completed: int = Field(default=13)
+    happy_clients: int = Field(default=15)
+    team_members: int = Field(default=6)
+    support_available: str = Field(default="24/7")
+    last_updated: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_by: Optional[str] = None
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
