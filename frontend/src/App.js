@@ -1338,6 +1338,7 @@ function App() {
               <Route path="/about" element={<PublicLayout><AboutPage /></PublicLayout>} />
               <Route path="/contact" element={<PublicLayout><ContactPage /></PublicLayout>} />
               <Route path="/auth" element={<AuthPage />} />
+              <Route path="/login" element={<Navigate to="/auth" replace />} />
               <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             </Routes>
             <Toaster />
