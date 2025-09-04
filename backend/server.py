@@ -387,6 +387,58 @@ async def upload_file(
     
     return {"file_id": file_id, "filename": filename}
 
+# Counter Statistics routes
+@api_router.get("/counter-stats", response_model=CounterStats)
+async def get_counter_stats():
+    """Get current counter statistics"""
+    try:
+        stats = await db.counter_stats.find_one()
+        if not stats:
+            # Create default stats if none exist
+            default_stats = CounterStats()
+            stats_dict = default_stats.dict()
+            await db.counter_stats.insert_one(stats_dict)
+            return default_stats
+        
+        # Remove MongoDB's _id field
+        if "_id" in stats:
+            del stats["_id"]
+        
+        return CounterStats(**stats)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching counter stats: {str(e)}")
+
+@api_router.put("/counter-stats", response_model=CounterStats)
+async def update_counter_stats(
+    stats: CounterStats,
+    current_user: User = Depends(get_current_user)
+):
+    """Update counter statistics (Admin only)"""
+    try:
+        # Check if user is admin
+        if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Update timestamps and user
+        stats.last_updated = datetime.now(timezone.utc)
+        stats.updated_by = current_user.email
+        
+        # Prepare data for MongoDB
+        stats_dict = stats.dict()
+        
+        # Update or insert counter stats
+        result = await db.counter_stats.replace_one(
+            {},  # Match any document (there should only be one)
+            stats_dict,
+            upsert=True
+        )
+        
+        return stats
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating counter stats: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
