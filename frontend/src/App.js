@@ -134,19 +134,21 @@ const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
   );
 };
 
-// Floating Elements Component
+// Mouse-Following Logo Elements Component with Web Effect
 const FloatingElements = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [logos, setLogos] = useState([
-    { id: 1, x: 100, y: 200, size: 'w-6 h-6', opacity: 0.3, delay: 0 },
-    { id: 2, x: 300, y: 150, size: 'w-4 h-4', opacity: 0.2, delay: 0.5 },
-    { id: 3, x: 500, y: 300, size: 'w-5 h-5', opacity: 0.4, delay: 1 },
-    { id: 4, x: 800, y: 180, size: 'w-3 h-3', opacity: 0.25, delay: 1.5 },
-    { id: 5, x: 1200, y: 250, size: 'w-7 h-7', opacity: 0.35, delay: 2 },
-    { id: 6, x: 200, y: 400, size: 'w-4 h-4', opacity: 0.3, delay: 2.5 },
-    { id: 7, x: 900, y: 350, size: 'w-5 h-5', opacity: 0.2, delay: 3 },
-    { id: 8, x: 600, y: 450, size: 'w-6 h-6', opacity: 0.4, delay: 3.5 }
+    { id: 1, x: 150, y: 250, size: 'w-12 h-12', opacity: 0.6, delay: 0, color: 'teal' },
+    { id: 2, x: 400, y: 200, size: 'w-10 h-10', opacity: 0.5, delay: 0.5, color: 'purple' },
+    { id: 3, x: 650, y: 350, size: 'w-14 h-14', opacity: 0.7, delay: 1, color: 'teal' },
+    { id: 4, x: 900, y: 180, size: 'w-8 h-8', opacity: 0.4, delay: 1.5, color: 'purple' },
+    { id: 5, x: 1100, y: 280, size: 'w-16 h-16', opacity: 0.8, delay: 2, color: 'teal' },
+    { id: 6, x: 300, y: 450, size: 'w-10 h-10', opacity: 0.6, delay: 2.5, color: 'purple' },
+    { id: 7, x: 800, y: 400, size: 'w-12 h-12', opacity: 0.5, delay: 3, color: 'teal' },
+    { id: 8, x: 550, y: 500, size: 'w-14 h-14', opacity: 0.7, delay: 3.5, color: 'purple' }
   ]);
+
+  const [connections, setConnections] = useState([]);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -158,63 +160,132 @@ const FloatingElements = () => {
   }, []);
 
   useEffect(() => {
-    const updateLogos = () => {
-      setLogos(prevLogos => 
-        prevLogos.map(logo => {
+    const updateLogosAndConnections = () => {
+      setLogos(prevLogos => {
+        const updatedLogos = prevLogos.map(logo => {
           const distance = Math.sqrt(
             Math.pow(mousePosition.x - logo.x, 2) + Math.pow(mousePosition.y - logo.y, 2)
           );
           
-          if (distance < 150) {
+          if (distance < 200) {
             const angle = Math.atan2(mousePosition.y - logo.y, mousePosition.x - logo.x);
-            const repelForce = Math.max(0, 150 - distance) * 0.3;
+            const repelForce = Math.max(0, 200 - distance) * 0.4;
             
             return {
               ...logo,
-              x: logo.x - Math.cos(angle) * repelForce,
-              y: logo.y - Math.sin(angle) * repelForce,
-              opacity: Math.min(0.8, logo.opacity + 0.2)
+              x: Math.max(50, Math.min(window.innerWidth - 50, logo.x - Math.cos(angle) * repelForce)),
+              y: Math.max(50, Math.min(window.innerHeight - 50, logo.y - Math.sin(angle) * repelForce)),
+              opacity: Math.min(1, logo.opacity + 0.3)
             };
           } else {
-            // Gentle drift back towards original position or random movement
-            const driftX = (Math.random() - 0.5) * 0.5;
-            const driftY = (Math.random() - 0.5) * 0.5;
+            // Gentle drift
+            const driftX = (Math.random() - 0.5) * 0.8;
+            const driftY = (Math.random() - 0.5) * 0.8;
             
             return {
               ...logo,
-              x: Math.max(50, Math.min(window.innerWidth - 50, logo.x + driftX)),
-              y: Math.max(50, Math.min(window.innerHeight - 50, logo.y + driftY)),
-              opacity: Math.max(0.15, logo.opacity - 0.01)
+              x: Math.max(80, Math.min(window.innerWidth - 80, logo.x + driftX)),
+              y: Math.max(80, Math.min(window.innerHeight - 80, logo.y + driftY)),
+              opacity: Math.max(0.3, logo.opacity - 0.01)
             };
           }
-        })
-      );
+        });
+
+        // Calculate connections between nearby logos
+        const newConnections = [];
+        for (let i = 0; i < updatedLogos.length; i++) {
+          for (let j = i + 1; j < updatedLogos.length; j++) {
+            const logo1 = updatedLogos[i];
+            const logo2 = updatedLogos[j];
+            const distance = Math.sqrt(
+              Math.pow(logo1.x - logo2.x, 2) + Math.pow(logo1.y - logo2.y, 2)
+            );
+            
+            if (distance < 180) {
+              const opacity = Math.max(0, (180 - distance) / 180) * 0.6;
+              newConnections.push({
+                id: `${logo1.id}-${logo2.id}`,
+                x1: logo1.x,
+                y1: logo1.y,
+                x2: logo2.x,
+                y2: logo2.y,
+                opacity: opacity,
+                color: logo1.color === logo2.color ? logo1.color : 'mixed'
+              });
+            }
+          }
+        }
+        
+        setConnections(newConnections);
+        return updatedLogos;
+      });
     };
 
-    const interval = setInterval(updateLogos, 50);
+    const interval = setInterval(updateLogosAndConnections, 60);
     return () => clearInterval(interval);
   }, [mousePosition]);
 
+  const getLogoColor = (color, opacity) => {
+    if (color === 'teal') {
+      return {
+        filter: `brightness(1.2) contrast(1.1) saturate(1.4) hue-rotate(180deg)`,
+        borderColor: '#14b8a6',
+        boxShadow: `0 0 20px rgba(20, 184, 166, ${opacity * 0.8})`
+      };
+    } else {
+      return {
+        filter: `brightness(1.2) contrast(1.1) saturate(1.4) hue-rotate(270deg)`,
+        borderColor: '#a855f7',
+        boxShadow: `0 0 20px rgba(168, 85, 247, ${opacity * 0.8})`
+      };
+    }
+  };
+
+  const getConnectionColor = (color) => {
+    if (color === 'teal') return '#14b8a6';
+    if (color === 'purple') return '#a855f7';
+    return '#6b46c1'; // mixed color
+  };
+
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+      {/* Connection Lines */}
+      <svg className="absolute inset-0 w-full h-full">
+        {connections.map(connection => (
+          <line
+            key={connection.id}
+            x1={connection.x1}
+            y1={connection.y1}
+            x2={connection.x2}
+            y2={connection.y2}
+            stroke={getConnectionColor(connection.color)}
+            strokeWidth="2"
+            strokeOpacity={connection.opacity}
+            className="animate-pulse"
+          />
+        ))}
+      </svg>
+      
+      {/* Logo Elements */}
       {logos.map(logo => (
         <div
           key={logo.id}
-          className={`absolute transition-all duration-75 ease-out ${logo.size}`}
+          className={`absolute transition-all duration-100 ease-out ${logo.size} rounded-full border-2`}
           style={{
             left: `${logo.x}px`,
             top: `${logo.y}px`,
             opacity: logo.opacity,
-            transform: 'translate(-50%, -50%)'
+            transform: 'translate(-50%, -50%)',
+            ...getLogoColor(logo.color, logo.opacity)
           }}
         >
           <img 
             src="https://customer-assets.emergentagent.com/job_33bbef14-ff4b-4136-9e36-664559466616/artifacts/4dkvnitj_Eternals%20Studio.png"
             alt="Eternals Studio"
-            className="w-full h-full object-contain animate-pulse hover:animate-bounce"
+            className="w-full h-full object-contain rounded-full p-1 animate-pulse hover:animate-bounce"
             style={{
-              filter: 'brightness(1.2) contrast(1.1)',
-              animationDelay: `${logo.delay}s`
+              animationDelay: `${logo.delay}s`,
+              animationDuration: '3s'
             }}
           />
         </div>
