@@ -1363,6 +1363,13 @@ const PortfolioPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Project Detail Modal */}
+      <ProjectDetailModal 
+        project={selectedProject} 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
+      />
     </div>
   );
 };
