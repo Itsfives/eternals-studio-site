@@ -1585,26 +1585,15 @@ const AboutPage = () => {
 
           {/* Stats Section */}
           <div className="mb-20">
-            <div className="bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">13+</div>
-                  <div className="text-slate-600 dark:text-slate-400">Projects Completed</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">15+</div>
-                  <div className="text-slate-600 dark:text-slate-400">Happy Clients</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">6</div>
-                  <div className="text-slate-600 dark:text-slate-400">Team Members</div>
-                </div>
-                <div>
-                  <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">100%</div>
-                  <div className="text-slate-600 dark:text-slate-400">Client Satisfaction</div>
-                </div>
-              </div>
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                Our <span className="gradient-text">Impact</span>
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400">
+                The numbers behind our success story
+              </p>
             </div>
+            <SharedStatsCounter />
           </div>
 
           {/* CTA Section */}
