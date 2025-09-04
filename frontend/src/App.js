@@ -1367,6 +1367,19 @@ const PortfolioPage = () => {
               </Card>
             ))}
           </div>
+
+          {/* Stats Section */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                Our <span className="gradient-text">Achievements</span>
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400">
+                Numbers that reflect our commitment to excellence
+              </p>
+            </div>
+            <SharedStatsCounter />
+          </div>
         </div>
       </div>
     </div>
