@@ -180,8 +180,7 @@
 
 ## test_plan:
   current_focus:
-    - "Interactive logos size optimization"
-    - "Portfolio View Project button functionality"
+    - "Comprehensive Frontend Testing Coverage"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
