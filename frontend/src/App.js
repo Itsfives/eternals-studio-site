@@ -1748,6 +1748,19 @@ const ContactPage = () => {
               </Card>
             </div>
           </div>
+
+          {/* Stats Section */}
+          <div className="mb-16">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                Why Choose <span className="gradient-text">Eternals Studio?</span>
+              </h2>
+              <p className="text-slate-600 dark:text-slate-400">
+                Our track record speaks for itself
+              </p>
+            </div>
+            <SharedStatsCounter />
+          </div>
         </div>
       </div>
     </div>
