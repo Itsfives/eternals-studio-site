@@ -1,34 +1,306 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: #334155;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0f2f1 50%, #f3e8ff 100%);
+  min-height: 100vh;
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+.App {
+  min-height: 100vh;
 }
 
-.App-link {
-    color: #61dafb;
+/* Interactive Logo Animations */
+.interactive-logo {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.interactive-logo:hover {
+  transform: scale(1.1) rotate(5deg);
+  filter: brightness(1.1);
+}
+
+/* Floating Logo Animation */
+.floating-logo {
+  animation: float 6s ease-in-out infinite;
+}
+
+.floating-logo.delay-1000 {
+  animation-delay: 1s;
+}
+
+.floating-logo.delay-2000 {
+  animation-delay: 2s;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+/* Mouse Follow Effect for Floating Logos */
+.floating-logo:hover {
+  animation-play-state: paused;
+  transform: translateY(-10px) rotate(10deg) scale(1.2);
+  opacity: 0.8 !important;
+}
+
+/* Gradient Text Effects */
+.gradient-text {
+  background: linear-gradient(135deg, #14b8a6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #14b8a6, #8b5cf6);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0f766e, #7c3aed);
+}
+
+/* Glass Morphism Effects */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Button Hover Effects */
+.btn-hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Hover Effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Smooth Transitions */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Focus States */
+.focus-ring:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.3);
+}
+
+/* Loading Animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Pulse Animation */
+.pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Text Selection */
+::selection {
+  background: rgba(20, 184, 166, 0.3);
+  color: #0f766e;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .floating-logo {
+    display: none;
+  }
+  
+  .interactive-logo:hover {
+    transform: scale(1.05) rotate(2deg);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .floating-logo,
+  .interactive-logo {
+    display: none !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .floating-logo {
+    opacity: 0.8 !important;
+  }
+  
+  .glass {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #14b8a6;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .floating-logo,
+  .interactive-logo,
+  .smooth-transition,
+  .btn-hover-lift,
+  .card-hover {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Custom Component Styles */
+.navbar-blur {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px) saturate(180%);
+  border-bottom: 1px solid rgba(20, 184, 166, 0.1);
+}
+
+.hero-section {
+  background: linear-gradient(135deg, 
+    rgba(248, 250, 252, 0.9) 0%, 
+    rgba(224, 242, 241, 0.9) 50%, 
+    rgba(243, 232, 255, 0.9) 100%);
+}
+
+.section-padding {
+  padding: 5rem 1rem;
+}
+
+@media (max-width: 640px) {
+  .section-padding {
+    padding: 3rem 1rem;
+  }
+}
+
+/* Dashboard Specific Styles */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #14b8a6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+/* Success and Error States */
+.success {
+  color: #059669;
+  background-color: #d1fae5;
+  border-color: #a7f3d0;
+}
+
+.error {
+  color: #dc2626;
+  background-color: #fee2e2;
+  border-color: #fecaca;
+}
+
+.warning {
+  color: #d97706;
+  background-color: #fef3c7;
+  border-color: #fde68a;
+}
+
+/* Utility Classes */
+.text-gradient {
+  background: linear-gradient(135deg, #14b8a6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.shadow-custom {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+              0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-custom-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.border-gradient {
+  border: 1px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              linear-gradient(135deg, #14b8a6, #8b5cf6) border-box;
 }
