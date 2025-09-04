@@ -308,7 +308,7 @@ const HomePage = () => {
       color: "purple"
     },
     {
-      icon: <Cube className="w-8 h-8" />,
+      icon: <Box className="w-8 h-8" />,
       title: "3D Modeling",
       description: "Detailed 3D models, product visualizations, and architectural renderings.",
       color: "teal"
