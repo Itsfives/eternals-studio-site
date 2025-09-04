@@ -419,21 +419,73 @@ const Navigation = () => {
 
 // Shared Stats Counter Component
 const SharedStatsCounter = ({ className = "" }) => {
+  const [stats, setStats] = useState({
+    projects_completed: 13,
+    happy_clients: 15,
+    team_members: 6,
+    support_available: "24/7"
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/counter-stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error('Error fetching counter stats:', error);
+        // Keep default values if API fails
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className={`bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50 backdrop-blur-sm ${className}`}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="animate-pulse">
+            <div className="h-8 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+          </div>
+          <div className="animate-pulse">
+            <div className="h-8 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+          </div>
+          <div className="animate-pulse">
+            <div className="h-8 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+          </div>
+          <div className="animate-pulse">
+            <div className="h-8 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50 backdrop-blur-sm ${className}`}>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         <div>
-          <StatsCounter end={13} label="Projects Completed" />
+          <StatsCounter end={stats.projects_completed} label="Projects Completed" />
         </div>
         <div>
-          <StatsCounter end={15} label="Happy Clients" />
+          <StatsCounter end={stats.happy_clients} label="Happy Clients" />
         </div>
         <div>
-          <StatsCounter end={6} label="Team Members" />
+          <StatsCounter end={stats.team_members} label="Team Members" />
         </div>
         <div className="text-center">
           <div className="text-3xl md:text-4xl font-bold gradient-text mb-2">
-            24/7
+            {stats.support_available}
           </div>
           <div className="text-slate-600 dark:text-slate-400 text-sm">
             Support Available
