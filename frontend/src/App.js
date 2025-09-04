@@ -134,18 +134,91 @@ const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
   );
 };
 
-// Floating Elements Component
-const FloatingElements = () => {
+// Mouse-Following Logo Elements Component
+const MouseFollowingLogos = () => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [logos, setLogos] = useState([
+    { id: 1, x: 100, y: 200, size: 'w-6 h-6', opacity: 0.3, delay: 0 },
+    { id: 2, x: 300, y: 150, size: 'w-4 h-4', opacity: 0.2, delay: 0.5 },
+    { id: 3, x: 500, y: 300, size: 'w-5 h-5', opacity: 0.4, delay: 1 },
+    { id: 4, x: 800, y: 180, size: 'w-3 h-3', opacity: 0.25, delay: 1.5 },
+    { id: 5, x: 1200, y: 250, size: 'w-7 h-7', opacity: 0.35, delay: 2 },
+    { id: 6, x: 200, y: 400, size: 'w-4 h-4', opacity: 0.3, delay: 2.5 },
+    { id: 7, x: 900, y: 350, size: 'w-5 h-5', opacity: 0.2, delay: 3 },
+    { id: 8, x: 600, y: 450, size: 'w-6 h-6', opacity: 0.4, delay: 3.5 }
+  ]);
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  useEffect(() => {
+    const updateLogos = () => {
+      setLogos(prevLogos => 
+        prevLogos.map(logo => {
+          const distance = Math.sqrt(
+            Math.pow(mousePosition.x - logo.x, 2) + Math.pow(mousePosition.y - logo.y, 2)
+          );
+          
+          if (distance < 150) {
+            const angle = Math.atan2(mousePosition.y - logo.y, mousePosition.x - logo.x);
+            const repelForce = Math.max(0, 150 - distance) * 0.3;
+            
+            return {
+              ...logo,
+              x: logo.x - Math.cos(angle) * repelForce,
+              y: logo.y - Math.sin(angle) * repelForce,
+              opacity: Math.min(0.8, logo.opacity + 0.2)
+            };
+          } else {
+            // Gentle drift back towards original position or random movement
+            const driftX = (Math.random() - 0.5) * 0.5;
+            const driftY = (Math.random() - 0.5) * 0.5;
+            
+            return {
+              ...logo,
+              x: Math.max(50, Math.min(window.innerWidth - 50, logo.x + driftX)),
+              y: Math.max(50, Math.min(window.innerHeight - 50, logo.y + driftY)),
+              opacity: Math.max(0.15, logo.opacity - 0.01)
+            };
+          }
+        })
+      );
+    };
+
+    const interval = setInterval(updateLogos, 50);
+    return () => clearInterval(interval);
+  }, [mousePosition]);
+
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="floating-dot teal-dot absolute top-20 left-10 w-3 h-3 bg-teal-400 rounded-full opacity-60"></div>
-      <div className="floating-dot purple-dot absolute top-40 right-20 w-4 h-4 bg-purple-500 rounded-full opacity-50"></div>
-      <div className="floating-dot teal-dot absolute bottom-32 left-1/4 w-2 h-2 bg-teal-300 rounded-full opacity-40"></div>
-      <div className="floating-dot purple-dot absolute top-60 left-1/3 w-5 h-5 bg-purple-400 rounded-full opacity-30"></div>
-      <div className="floating-dot teal-dot absolute bottom-20 right-1/4 w-3 h-3 bg-teal-500 rounded-full opacity-70"></div>
-      <div className="floating-dot purple-dot absolute top-1/3 right-10 w-2 h-2 bg-purple-300 rounded-full opacity-50"></div>
-      <div className="floating-dot teal-dot absolute bottom-1/2 left-20 w-4 h-4 bg-teal-400 rounded-full opacity-35"></div>
-      <div className="floating-dot purple-dot absolute top-80 right-1/3 w-3 h-3 bg-purple-500 rounded-full opacity-45"></div>
+      {logos.map(logo => (
+        <div
+          key={logo.id}
+          className={`absolute transition-all duration-75 ease-out ${logo.size}`}
+          style={{
+            left: `${logo.x}px`,
+            top: `${logo.y}px`,
+            opacity: logo.opacity,
+            transform: 'translate(-50%, -50%)'
+          }}
+        >
+          <img 
+            src="https://customer-assets.emergentagent.com/job_33bbef14-ff4b-4136-9e36-664559466616/artifacts/4dkvnitj_Eternals%20Studio.png"
+            alt="Eternals Studio"
+            className="w-full h-full object-contain animate-pulse hover:animate-bounce"
+            style={{
+              filter: 'brightness(1.2) contrast(1.1)',
+              animationDelay: `${logo.delay}s`
+            }}
+          />
+        </div>
+      ))}
     </div>
   );
 };
