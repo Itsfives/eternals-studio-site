@@ -747,6 +747,161 @@ const ProjectDetailPage = () => {
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=437,h=328,fit=crop/YNqO7k0WyEUyB3w6/midas-black-YX4x5J9JKPIvpQK4.png",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=437,h=328,fit=crop/YNqO7k0WyEUyB3w6/midas-white-A1a5kvDQOnCMPJzN.png"
       ]
+    },
+    // 2024 Projects
+    {
+      id: 3,
+      title: "Eternals Studio",
+      category: "Studio Branding",
+      description: "A GFX, VFX, Coding, Music Production Studio!",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg",
+      tags: ["Studio", "Branding", "Creative"],
+      year: 2024,
+      featured: true,
+      type: "branding",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg"
+      ]
+    },
+    {
+      id: 4,
+      title: "Eternals GGs",
+      category: "Esports Organization",
+      description: "A Content Creation and Esports Organization based in a wide variety of competitive games. Also our parent organization. They also provide content across multiple platforms.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg",
+      tags: ["Esports", "Content Creation", "Organization"],
+      year: 2024,
+      featured: true,
+      type: "esports",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg"
+      ]
+    },
+    {
+      id: 5,
+      title: "Deceptive Grounds",
+      category: "Gaming Community",
+      description: "A multi-game based community. They host servers on games such as Garry's Mod and Arma 3.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg",
+      tags: ["Gaming", "Community", "Servers"],
+      year: 2024,
+      featured: false,
+      type: "gaming",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg"
+      ]
+    },
+    {
+      id: 6,
+      title: "Team UK & Ireland",
+      category: "Esports Team",
+      description: "A new upcoming Organization that represents the spirit of Ireland and United Kingdom together.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png",
+      tags: ["Esports", "Team", "International"],
+      year: 2024,
+      featured: false,
+      type: "esports",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png"
+      ]
+    },
+    {
+      id: 7,
+      title: "Shinto Gaming Club",
+      category: "Gaming Club",
+      description: "A new esports gaming club that is partaking in various esports tournaments.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg",
+      tags: ["Gaming", "Club", "Tournaments"],
+      year: 2024,
+      featured: false,
+      type: "gaming",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg"
+      ]
+    },
+    {
+      id: 8,
+      title: "HP League",
+      category: "Esports League",
+      description: "A new Esports league that was partaking in XDefiant and PUBG.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png",
+      tags: ["Esports", "League", "XDefiant", "PUBG"],
+      year: 2024,
+      featured: false,
+      type: "esports",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png"
+      ]
+    },
+    {
+      id: 9,
+      title: "NeverFPS",
+      category: "Content Creator",
+      description: "A variety streamer turned game developer.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg",
+      tags: ["Streaming", "Game Development", "Content"],
+      year: 2024,
+      featured: false,
+      type: "branding",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg"
+      ]
+    },
+    {
+      id: 10,
+      title: "YouTube Thumbnails",
+      category: "Thumbnail Design",
+      description: "Thumbnails are used to engage and draw audiences to a particular video.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
+      tags: ["Design", "YouTube", "Thumbnails"],
+      year: 2024,
+      featured: false,
+      type: "design",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg"
+      ]
+    },
+    {
+      id: 11,
+      title: "3D Work Collection",
+      category: "3D Modeling",
+      description: "This is a collection of our completed 3D Work.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png",
+      tags: ["3D", "Modeling", "Animation"],
+      year: 2024,
+      featured: false,
+      type: "3d",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png"
+      ]
+    },
+    {
+      id: 12,
+      title: "7 Cubed Films",
+      category: "Film Production",
+      description: "A SFM animation artist that specializes in a Star Wars: The Clone Wars setting and has over 5+ Million Views",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png",
+      tags: ["Animation", "Star Wars", "SFM", "5M+ Views"],
+      year: 2024,
+      featured: true,
+      type: "animation",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png"
+      ]
+    },
+    {
+      id: 13,
+      title: "Esports Posters",
+      category: "Poster Design",
+      description: "Posters were made as an advertisement tool to help people engage in the esports communities and drive engagement.",
+      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg",
+      tags: ["Posters", "Esports", "Marketing"],
+      year: 2024,
+      featured: false,
+      type: "design",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg"
+      ]
     }
   ];
 
