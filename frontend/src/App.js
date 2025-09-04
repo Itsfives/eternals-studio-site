@@ -134,8 +134,8 @@ const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
   );
 };
 
-// Mouse-Following Logo Elements Component
-const MouseFollowingLogos = () => {
+// Floating Elements Component
+const FloatingElements = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [logos, setLogos] = useState([
     { id: 1, x: 100, y: 200, size: 'w-6 h-6', opacity: 0.3, delay: 0 },
