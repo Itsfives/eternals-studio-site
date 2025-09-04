@@ -1269,6 +1269,30 @@ const PortfolioPage = () => {
                 >
                   Esports
                 </Button>
+                <Button 
+                  variant={filter === '3d' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('3d')}
+                  className={filter === '3d' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  3D Work
+                </Button>
+                <Button 
+                  variant={filter === 'animation' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('animation')}
+                  className={filter === 'animation' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Animation
+                </Button>
+                <Button 
+                  variant={filter === 'design' ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setFilter('design')}
+                  className={filter === 'design' ? 'bg-gradient-to-r from-teal-500 to-purple-500 text-white' : ''}
+                >
+                  Design
+                </Button>
               </div>
             </div>
           </div>
