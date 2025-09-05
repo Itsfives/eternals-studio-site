@@ -118,7 +118,7 @@
           comment: "Backend endpoints appear to be working based on previous implementation"
         - working: true
           agent: "testing"
-          comment: "COMPREHENSIVE TESTING COMPLETED: All 30 backend API tests passed successfully. Tested authentication (register/login/me), project management, invoice system with project locking/unlocking, messaging system, content management, file upload, and role-based authorization controls. Backend is fully functional and accessible from frontend via https://eternals-design.preview.emergentagent.com/api"
+          comment: "COMPREHENSIVE TESTING COMPLETED: All 30 backend API tests passed successfully. Tested authentication (register/login/me), project management, invoice system with project locking/unlocking, messaging system, content management, file upload, and role-based authorization controls. Backend is fully functional and accessible from frontend via https://portfolio-cms-3.preview.emergentagent.com/api"
 
   - task: "Counter Statistics API endpoints"
     implemented: true
