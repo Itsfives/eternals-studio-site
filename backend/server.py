@@ -490,6 +490,90 @@ async def update_counter_stats(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating counter stats: {str(e)}")
 
+# Testimonial Management Endpoints
+@api_router.get("/testimonials", response_model=List[Testimonial])
+async def get_testimonials():
+    """Get all approved testimonials"""
+    try:
+        testimonials = await db.testimonials.find({"approved": True}).to_list(length=None)
+        
+        # Remove MongoDB's _id field from each testimonial
+        for testimonial in testimonials:
+            if "_id" in testimonial:
+                del testimonial["_id"]
+        
+        return [Testimonial(**testimonial) for testimonial in testimonials]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching testimonials: {str(e)}")
+
+@api_router.post("/testimonials", response_model=Testimonial)
+async def create_testimonial(testimonial: TestimonialCreate):
+    """Create a new testimonial (requires admin approval)"""
+    try:
+        testimonial_dict = testimonial.dict()
+        testimonial_dict["id"] = str(uuid.uuid4())
+        testimonial_dict["created_at"] = datetime.now(timezone.utc)
+        testimonial_dict["approved"] = False  # Requires admin approval
+        
+        result = await db.testimonials.insert_one(testimonial_dict)
+        
+        return Testimonial(**testimonial_dict)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating testimonial: {str(e)}")
+
+@api_router.put("/testimonials/{testimonial_id}/approve", response_model=Testimonial)
+async def approve_testimonial(
+    testimonial_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Approve a testimonial (Admin only)"""
+    try:
+        # Check if user is admin
+        if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        # Find and approve testimonial
+        result = await db.testimonials.update_one(
+            {"id": testimonial_id},
+            {"$set": {"approved": True}}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Testimonial not found")
+        
+        # Get updated testimonial
+        testimonial = await db.testimonials.find_one({"id": testimonial_id})
+        if "_id" in testimonial:
+            del testimonial["_id"]
+            
+        return Testimonial(**testimonial)
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error approving testimonial: {str(e)}")
+
+@api_router.delete("/testimonials/{testimonial_id}")
+async def delete_testimonial(
+    testimonial_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete a testimonial (Admin only)"""
+    try:
+        # Check if user is admin
+        if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
+            raise HTTPException(status_code=403, detail="Admin access required")
+        
+        result = await db.testimonials.delete_one({"id": testimonial_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Testimonial not found")
+        
+        return {"message": "Testimonial deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting testimonial: {str(e)}")
+
 # Include the router in the main app
 app.include_router(api_router)
 
