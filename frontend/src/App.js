@@ -139,71 +139,170 @@ const InteractiveLogo = ({ size = 'w-8 h-8', className = '' }) => {
   );
 };
 
-// Mouse-Following Logo Elements Component with Web Effect (OPTIMIZED)
+// Mouse-Following Logo Elements Component with Enhanced Interactivity
 const FloatingElements = () => {
   const { isDark } = useTheme();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [draggedLogo, setDraggedLogo] = useState(null);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  
   const [logos, setLogos] = useState([
-    { id: 1, x: 150, y: 250, size: 'w-10 h-10', opacity: 0.7, delay: 0, color: 'seafoam' },
-    { id: 2, x: 400, y: 200, size: 'w-11 h-11', opacity: 0.6, delay: 0.5, color: 'violet' },
-    { id: 3, x: 650, y: 350, size: 'w-12 h-12', opacity: 0.8, delay: 1, color: 'seafoam' },
-    { id: 4, x: 900, y: 180, size: 'w-10 h-10', opacity: 0.5, delay: 1.5, color: 'violet' },
-    { id: 5, x: 1100, y: 280, size: 'w-11 h-11', opacity: 0.9, delay: 2, color: 'seafoam' },
-    { id: 6, x: 300, y: 450, size: 'w-10 h-10', opacity: 0.7, delay: 2.5, color: 'violet' },
-    { id: 7, x: 800, y: 400, size: 'w-12 h-12', opacity: 0.6, delay: 3, color: 'seafoam' },
-    { id: 8, x: 550, y: 500, size: 'w-11 h-11', opacity: 0.8, delay: 3.5, color: 'violet' },
-    { id: 9, x: 200, y: 120, size: 'w-10 h-10', opacity: 0.5, delay: 4, color: 'seafoam' },
-    { id: 10, x: 750, y: 150, size: 'w-11 h-11', opacity: 0.6, delay: 4.5, color: 'violet' },
-    { id: 11, x: 1050, y: 450, size: 'w-10 h-10', opacity: 0.7, delay: 5, color: 'seafoam' },
-    { id: 12, x: 450, y: 350, size: 'w-12 h-12', opacity: 0.8, delay: 5.5, color: 'violet' },
-    { id: 13, x: 350, y: 180, size: 'w-10 h-10', opacity: 0.6, delay: 6, color: 'seafoam' },
-    { id: 14, x: 1200, y: 380, size: 'w-11 h-11', opacity: 0.7, delay: 6.5, color: 'violet' }
+    { id: 1, x: 150, y: 250, size: 'w-10 h-10', opacity: 0.7, delay: 0, color: 'seafoam', vx: 0.2, vy: 0.3 },
+    { id: 2, x: 400, y: 200, size: 'w-11 h-11', opacity: 0.6, delay: 0.5, color: 'violet', vx: -0.1, vy: 0.4 },
+    { id: 3, x: 650, y: 350, size: 'w-12 h-12', opacity: 0.8, delay: 1, color: 'seafoam', vx: 0.3, vy: -0.2 },
+    { id: 4, x: 900, y: 180, size: 'w-10 h-10', opacity: 0.5, delay: 1.5, color: 'violet', vx: -0.2, vy: 0.1 },
+    { id: 5, x: 1100, y: 280, size: 'w-11 h-11', opacity: 0.9, delay: 2, color: 'seafoam', vx: 0.1, vy: 0.5 },
+    { id: 6, x: 300, y: 450, size: 'w-10 h-10', opacity: 0.7, delay: 2.5, color: 'violet', vx: 0.4, vy: -0.1 },
+    { id: 7, x: 800, y: 400, size: 'w-12 h-12', opacity: 0.6, delay: 3, color: 'seafoam', vx: -0.3, vy: 0.2 },
+    { id: 8, x: 550, y: 500, size: 'w-11 h-11', opacity: 0.8, delay: 3.5, color: 'violet', vx: 0.2, vy: -0.4 },
+    { id: 9, x: 200, y: 120, size: 'w-10 h-10', opacity: 0.5, delay: 4, color: 'seafoam', vx: -0.1, vy: 0.3 },
+    { id: 10, x: 750, y: 150, size: 'w-11 h-11', opacity: 0.6, delay: 4.5, color: 'violet', vx: 0.5, vy: 0.1 },
+    { id: 11, x: 1050, y: 450, size: 'w-10 h-10', opacity: 0.7, delay: 5, color: 'seafoam', vx: -0.2, vy: -0.3 },
+    { id: 12, x: 450, y: 350, size: 'w-12 h-12', opacity: 0.8, delay: 5.5, color: 'violet', vx: 0.1, vy: 0.4 },
+    { id: 13, x: 350, y: 180, size: 'w-10 h-10', opacity: 0.6, delay: 6, color: 'seafoam', vx: 0.3, vy: -0.1 },
+    { id: 14, x: 1200, y: 380, size: 'w-11 h-11', opacity: 0.7, delay: 6.5, color: 'violet', vx: -0.4, vy: 0.2 }
   ]);
 
   const [connections, setConnections] = useState([]);
 
+  // Mouse event handlers
   useEffect(() => {
     const handleMouseMove = (e) => {
       setMousePosition({ x: e.clientX, y: e.clientY });
+      
+      // Handle dragging
+      if (isMouseDown && draggedLogo) {
+        setLogos(prevLogos => 
+          prevLogos.map(logo => 
+            logo.id === draggedLogo 
+              ? { 
+                  ...logo, 
+                  x: e.clientX - dragOffset.x, 
+                  y: e.clientY - dragOffset.y,
+                  vx: 0, // Stop natural movement while dragging
+                  vy: 0
+                }
+              : logo
+          )
+        );
+      }
+    };
+
+    const handleMouseDown = (e) => {
+      setIsMouseDown(true);
+      
+      // Check if mouse is near any logo
+      const clickX = e.clientX;
+      const clickY = e.clientY;
+      
+      for (const logo of logos) {
+        const distance = Math.sqrt(Math.pow(clickX - logo.x, 2) + Math.pow(clickY - logo.y, 2));
+        if (distance < 30) { // Within 30px of logo center
+          setDraggedLogo(logo.id);
+          setDragOffset({
+            x: clickX - logo.x,
+            y: clickY - logo.y
+          });
+          break;
+        }
+      }
+    };
+
+    const handleMouseUp = () => {
+      if (draggedLogo) {
+        // Resume natural movement for the dragged logo
+        setLogos(prevLogos => 
+          prevLogos.map(logo => 
+            logo.id === draggedLogo 
+              ? { 
+                  ...logo, 
+                  vx: (Math.random() - 0.5) * 0.6, // Random velocity
+                  vy: (Math.random() - 0.5) * 0.6
+                }
+              : logo
+          )
+        );
+      }
+      setIsMouseDown(false);
+      setDraggedLogo(null);
+      setDragOffset({ x: 0, y: 0 });
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+    
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isMouseDown, draggedLogo, dragOffset, logos]);
 
+  // Smooth animation loop
   useEffect(() => {
     const updateLogosAndConnections = () => {
       setLogos(prevLogos => {
         const updatedLogos = prevLogos.map(logo => {
-          const distance = Math.sqrt(
+          // Skip animation for dragged logo
+          if (draggedLogo === logo.id) return logo;
+
+          let newX = logo.x;
+          let newY = logo.y;
+          let newVx = logo.vx;
+          let newVy = logo.vy;
+          let newOpacity = logo.opacity;
+
+          // Mouse interaction (repel effect)
+          const mouseDistance = Math.sqrt(
             Math.pow(mousePosition.x - logo.x, 2) + Math.pow(mousePosition.y - logo.y, 2)
           );
           
-          if (distance < 160) {
+          if (mouseDistance < 120) {
             const angle = Math.atan2(mousePosition.y - logo.y, mousePosition.x - logo.x);
-            const repelForce = Math.max(0, 160 - distance) * 0.5;
+            const repelForce = Math.max(0, 120 - mouseDistance) * 0.3;
             
-            return {
-              ...logo,
-              x: Math.max(80, Math.min(window.innerWidth - 80, logo.x - Math.cos(angle) * repelForce)),
-              y: Math.max(80, Math.min(window.innerHeight - 80, logo.y - Math.sin(angle) * repelForce)),
-              opacity: Math.min(1, logo.opacity + 0.2)
-            };
+            newVx += -Math.cos(angle) * repelForce * 0.01;
+            newVy += -Math.sin(angle) * repelForce * 0.01;
+            newOpacity = Math.min(1, logo.opacity + 0.3);
           } else {
-            // Gentle drift
-            const driftX = (Math.random() - 0.5) * 0.4;
-            const driftY = (Math.random() - 0.5) * 0.4;
-            
-            return {
-              ...logo,
-              x: Math.max(100, Math.min(window.innerWidth - 100, logo.x + driftX)),
-              y: Math.max(100, Math.min(window.innerHeight - 100, logo.y + driftY)),
-              opacity: Math.max(0.4, logo.opacity - 0.005)
-            };
+            newOpacity = Math.max(0.4, logo.opacity - 0.002);
           }
+
+          // Constant smooth movement
+          newX += newVx;
+          newY += newVy;
+
+          // Boundary bouncing with smooth transitions
+          if (newX <= 50 || newX >= window.innerWidth - 50) {
+            newVx = -newVx * 0.8; // Damping for realistic bounce
+            newX = Math.max(50, Math.min(window.innerWidth - 50, newX));
+          }
+          if (newY <= 50 || newY >= window.innerHeight - 50) {
+            newVy = -newVy * 0.8;
+            newY = Math.max(50, Math.min(window.innerHeight - 50, newY));
+          }
+
+          // Velocity damping for natural movement
+          newVx *= 0.999;
+          newVy *= 0.999;
+
+          // Add random tiny movements for organic feel
+          newVx += (Math.random() - 0.5) * 0.001;
+          newVy += (Math.random() - 0.5) * 0.001;
+
+          return {
+            ...logo,
+            x: newX,
+            y: newY,
+            vx: newVx,
+            vy: newVy,
+            opacity: newOpacity
+          };
         });
 
-        // Calculate connections between nearby logos (optimized)
+        // Calculate connections between nearby logos
         const newConnections = [];
         for (let i = 0; i < updatedLogos.length; i++) {
           for (let j = i + 1; j < updatedLogos.length; j++) {
@@ -213,8 +312,8 @@ const FloatingElements = () => {
               Math.pow(logo1.x - logo2.x, 2) + Math.pow(logo1.y - logo2.y, 2)
             );
             
-            if (distance < 150) {
-              const opacity = Math.max(0, (150 - distance) / 150) * 0.8;
+            if (distance < 180) {
+              const opacity = Math.max(0, (180 - distance) / 180) * 0.5; // Reduced connection opacity
               newConnections.push({
                 id: `${logo1.id}-${logo2.id}`,
                 x1: logo1.x,
@@ -233,26 +332,26 @@ const FloatingElements = () => {
       });
     };
 
-    const interval = setInterval(updateLogosAndConnections, 100); // Optimized from 60ms
+    const interval = setInterval(updateLogosAndConnections, 50); // Smooth 20fps animation
     return () => clearInterval(interval);
-  }, [mousePosition]);
+  }, [mousePosition, draggedLogo]);
 
   const getLogoColor = (color, opacity) => {
     const baseColor = isDark ? '#ffffff' : '#000000';
     const glowColor = color === 'seafoam' ? '#2dd4bf' : '#8B5CF6';
     
     return {
-      filter: `brightness(1.0) contrast(1.0)`, // Reduced brightness/contrast
+      filter: `brightness(1.0) contrast(1.0)`,
       borderColor: glowColor,
-      boxShadow: `0 0 15px rgba(${isDark ? '255, 255, 255' : '0, 0, 0'}, ${opacity * 0.15}), 0 0 30px ${glowColor}20`, // Reduced opacity and glow
-      backgroundColor: `${baseColor}${Math.round(opacity * 180).toString(16).padStart(2, '0')}` // Reduced opacity from 255 to 180
+      boxShadow: `0 0 15px rgba(${isDark ? '255, 255, 255' : '0, 0, 0'}, ${opacity * 0.15}), 0 0 30px ${glowColor}20`,
+      backgroundColor: `${baseColor}${Math.round(opacity * 180).toString(16).padStart(2, '0')}`
     };
   };
 
   const getConnectionColor = (color) => {
-    if (color === 'seafoam') return '#2dd4bf'; // Proper seafoam green
-    if (color === 'violet') return '#8B5CF6'; // Proper blue violet
-    return 'url(#gradient)'; // Gradient for mixed connections
+    if (color === 'seafoam') return '#2dd4bf';
+    if (color === 'violet') return '#8B5CF6';
+    return 'url(#gradient)';
   };
 
   return (
@@ -273,10 +372,10 @@ const FloatingElements = () => {
             x2={connection.x2}
             y2={connection.y2}
             stroke={getConnectionColor(connection.color)}
-            strokeWidth="3"
+            strokeWidth="2"
             strokeOpacity={connection.opacity}
             className="animate-pulse"
-            style={{ animationDuration: '2s' }}
+            style={{ animationDuration: '3s' }}
           />
         ))}
       </svg>
@@ -285,24 +384,26 @@ const FloatingElements = () => {
       {logos.map(logo => (
         <div
           key={logo.id}
-          className={`absolute transition-all duration-150 ease-out ${logo.size} rounded-full border-3 logo-glow`}
+          className={`absolute transition-all duration-75 ease-out ${logo.size} rounded-full border-2 logo-glow pointer-events-auto cursor-pointer hover:scale-110`}
           style={{
             left: `${logo.x}px`,
             top: `${logo.y}px`,
             opacity: logo.opacity,
             transform: 'translate(-50%, -50%)',
-            ...getLogoColor(logo.color, logo.opacity)
+            ...getLogoColor(logo.color, logo.opacity),
+            zIndex: draggedLogo === logo.id ? 50 : 10
           }}
         >
           <img 
             src="https://customer-assets.emergentagent.com/job_33bbef14-ff4b-4136-9e36-664559466616/artifacts/4dkvnitj_Eternals%20Studio.png"
             alt="Eternals Studio"
-            className="w-full h-full object-contain rounded-full p-2 animate-pulse hover:animate-bounce"
+            className="w-full h-full object-contain rounded-full p-2 animate-pulse hover:animate-bounce select-none"
             style={{
               animationDelay: `${logo.delay}s`,
               animationDuration: '4s',
               filter: isDark ? 'brightness(10) invert(1)' : 'brightness(0) invert(0)'
             }}
+            draggable={false}
           />
         </div>
       ))}
