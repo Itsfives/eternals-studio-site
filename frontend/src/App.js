@@ -2161,25 +2161,17 @@ const Dashboard = () => {
                     ) : (
                       <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <Label htmlFor="projects">Projects Completed</Label>
+                          <Label htmlFor="projects">Projects Completed (Auto-synced)</Label>
                           <Input
                             id="projects"
                             type="number"
                             value={stats.projects_completed}
-                            onChange={(e) => handleStatsChange('projects_completed', e.target.value)}
-                            className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                            disabled
+                            className="bg-gray-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                           />
-                        </div>
-                        
-                        <div className="space-y-2">
-                          <Label htmlFor="clients">Happy Clients</Label>
-                          <Input
-                            id="clients"
-                            type="number"
-                            value={stats.happy_clients}
-                            onChange={(e) => handleStatsChange('happy_clients', e.target.value)}
-                            className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
-                          />
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Auto-updates when new projects are added
+                          </p>
                         </div>
                         
                         <div className="space-y-2">
@@ -2193,7 +2185,7 @@ const Dashboard = () => {
                           />
                         </div>
                         
-                        <div className="space-y-2">
+                        <div className="space-y-2 md:col-span-2">
                           <Label htmlFor="support">Support Available</Label>
                           <Input
                             id="support"
