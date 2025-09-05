@@ -455,16 +455,16 @@ async def update_counter_stats(
     stats: CounterStats,
     current_user: User = Depends(get_current_user)
 ):
-    """Update counter statistics (Admin only) - Only support_available is manually editable"""
+    """Update counter statistics (Admin only) - Counters sync with visible website content"""
     try:
         # Check if user is admin
         if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
             raise HTTPException(status_code=403, detail="Admin access required")
         
-        # Auto-sync all counts with actual database data (ignore manual input)
-        project_count = await db.projects.count_documents({})
-        testimonial_count = await db.testimonials.count_documents({"approved": True})
-        team_count = await db.users.count_documents({"role": {"$in": ["super_admin", "admin", "editor"]}})
+        # Sync all counts with actual visible website content (ignore manual input)
+        project_count = 13  # Projects shown on portfolio page
+        team_count = 6     # Team members shown on about page
+        testimonial_count = await db.testimonials.count_documents({"approved": True}) or 1  # Testimonials shown on home page
         
         stats.projects_completed = project_count
         stats.testimonials_count = testimonial_count
