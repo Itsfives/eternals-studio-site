@@ -692,11 +692,6 @@ const HomePage = () => {
           <div className="max-w-4xl mx-auto">
             <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm p-8">
               <CardContent className="space-y-6">
-                <div className="flex items-center justify-center space-x-2 mb-4">
-                  <Quote className="w-6 h-6 text-teal-500" />
-                  <Quote className="w-6 h-6 text-teal-500" />
-                </div>
-                
                 <div className="text-center">
                   <div className="flex justify-center items-center space-x-1 mb-4">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -738,7 +733,7 @@ const HomePage = () => {
                 </div>
 
                 <blockquote className="text-slate-600 dark:text-slate-400 italic leading-relaxed border-l-4 border-teal-500 pl-6 my-6">
-                  "I had such a wonderful time working with Fives when it came to making my graphics, at no point did I feel rushed or hurried into giving design ideas and he even gave some of his own input allowing for a high quality design in the long run! I am super happy with how my logo's came out as well as the price for what I received them at! If your looking for fantastic graphics and having seen the entire teams portfolio I can happily tell you all that these individuals here who create Graphics are arguably the best at what they do here!"
+                  I had such a wonderful time working with Fives when it came to making my graphics, at no point did I feel rushed or hurried into giving design ideas and he even gave some of his own input allowing for a high quality design in the long run! I am super happy with how my logo's came out as well as the price for what I received them at! If your looking for fantastic graphics and having seen the entire teams portfolio I can happily tell you all that these individuals here who create Graphics are arguably the best at what they do here!
                 </blockquote>
 
                 <div className="flex items-center justify-center space-x-4 pt-6 border-t border-slate-200 dark:border-slate-700">
