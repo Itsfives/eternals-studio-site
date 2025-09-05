@@ -902,7 +902,11 @@ const ProjectDetailPage = () => {
       featured: true,
       type: "branding",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg",
+        "https://images.unsplash.com/photo-1548094990-c16ca90f1f0d?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwxfHxicmFuZGluZyUyMGRlc2lnbnxlbnwwfHx8Ymx1ZXwxNzU3MDM0Nzc4fDA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1494173853739-c21f58b16055?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwyfHxicmFuZGluZyUyMGRlc2lnbnxlbnwwfHx8Ymx1ZXwxNzU3MDM0Nzc4fDA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1567262439850-1d4dc1fefdd0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2MzR8MHwxfHNlYXJjaHwzfHxicmFuZGluZyUyMGRlc2lnbnxlbnwwfHx8Ymx1ZXwxNzU3MDM0Nzc4fDA&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/7789851/pexels-photo-7789851.jpeg"
       ]
     },
     {
