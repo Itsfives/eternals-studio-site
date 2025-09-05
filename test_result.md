@@ -131,6 +131,9 @@
         - working: true
           agent: "testing"
           comment: "COMPREHENSIVE COUNTER STATISTICS TESTING COMPLETED: All counter statistics API tests passed successfully (34/34 total tests). ✅ GET /api/counter-stats returns correct default values (projects_completed: 13, happy_clients: 15, team_members: 6, support_available: 24/7) and creates defaults if none exist. ✅ PUT /api/counter-stats properly requires admin authentication (403 for client users). ✅ Admin users can successfully update counter statistics with proper validation. ✅ Data persistence verified in MongoDB - all updated values correctly stored and retrieved. ✅ Timestamps (last_updated) and user tracking (updated_by) working correctly. Counter statistics API is fully functional."
+        - working: true
+          agent: "testing"
+          comment: "UPDATED COUNTER STATISTICS API TESTING COMPLETED: Successfully tested the updated counter statistics endpoints with new 3-field structure. ✅ GET /api/counter-stats returns correct 3 fields only (projects_completed, team_members, support_available) - happy_clients field successfully removed. ✅ projects_completed auto-syncs from actual database count (currently 5 projects). ✅ PUT /api/counter-stats properly enforces admin authentication (403 for client users). ✅ Admin users can update team_members and support_available fields manually. ✅ projects_completed field ignores manual input and auto-syncs to database count. ✅ Data persistence verified in MongoDB - manual updates saved correctly while auto-sync continues working. ✅ Auto-sync functionality working correctly in both GET and PUT endpoints. All requirements from review request satisfied - counter statistics API fully functional with updated structure."
 
 ## frontend:
   - task: "Portfolio View Project button functionality"
