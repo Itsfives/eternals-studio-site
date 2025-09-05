@@ -1023,7 +1023,10 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "design",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
+        "https://images.unsplash.com/photo-1549210338-a03623c2bde3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwzfHx5b3V0dWJlJTIwdGh1bWJuYWlsc3xlbnwwfHx8fDE3NTcwMzQ5MTR8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1549516192-1232e46d3cd1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHx5b3V0dWJlJTIwdGh1bWJuYWlsc3xlbnwwfHx8fDE3NTcwMzQ5MTR8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/5077064/pexels-photo-5077064.jpeg"
       ]
     },
     {
