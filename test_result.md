@@ -189,8 +189,7 @@
 
 ## test_plan:
   current_focus:
-    - "Backend API endpoints for authentication and user management"
-    - "Counter Statistics API endpoints"
+    - "Portfolio Project Gallery Display Testing"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
