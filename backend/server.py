@@ -450,15 +450,20 @@ async def update_counter_stats(
     stats: CounterStats,
     current_user: User = Depends(get_current_user)
 ):
-    """Update counter statistics (Admin only)"""
+    """Update counter statistics (Admin only) - Only support_available is manually editable"""
     try:
         # Check if user is admin
         if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
             raise HTTPException(status_code=403, detail="Admin access required")
         
-        # Auto-sync projects_completed with actual database count (ignore manual input)
+        # Auto-sync all counts with actual database data (ignore manual input)
         project_count = await db.projects.count_documents({})
+        testimonial_count = await db.testimonials.count_documents({"approved": True})
+        team_count = await db.users.count_documents({"role": {"$in": ["super_admin", "admin", "editor"]}})
+        
         stats.projects_completed = project_count
+        stats.testimonials_count = testimonial_count
+        stats.team_members = team_count
         
         # Update timestamps and user
         stats.last_updated = datetime.now(timezone.utc)
