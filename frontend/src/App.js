@@ -682,7 +682,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-              What Our Clients Say
+              Testimonials
             </h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
               Don't just take our word for it - hear from clients who've experienced our exceptional service
