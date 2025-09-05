@@ -1057,7 +1057,10 @@ const ProjectDetailPage = () => {
       featured: true,
       type: "animation",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png",
+        "https://images.unsplash.com/photo-1547194936-28214bd75193?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1622737133809-d95047b9e673?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/18069362/pexels-photo-18069362.png"
       ]
     },
     {
