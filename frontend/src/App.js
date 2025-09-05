@@ -2221,7 +2221,7 @@ const Dashboard = () => {
                             className="bg-gray-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                           />
                           <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Auto-updates when new projects are added
+                            Synced with portfolio page (13 projects displayed)
                           </p>
                         </div>
                         
@@ -2235,7 +2235,7 @@ const Dashboard = () => {
                             className="bg-gray-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                           />
                           <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Auto-updates when testimonials are approved
+                            Synced with testimonials shown on home page
                           </p>
                         </div>
                         
@@ -2249,7 +2249,7 @@ const Dashboard = () => {
                             className="bg-gray-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                           />
                           <p className="text-xs text-slate-500 dark:text-slate-400">
-                            Auto-updates based on admin/editor users
+                            Synced with team members shown on about page (6 members)
                           </p>
                         </div>
                         
@@ -2283,10 +2283,62 @@ const Dashboard = () => {
                         ) : (
                           <>
                             <CheckCircle className="w-4 h-4 mr-2" />
-                            Update Statistics
+                            Update Support Hours
                           </>
                         )}
                       </Button>
+                    </div>
+                  </div>
+
+                  {/* Testimonial Management Section */}
+                  <div className="border-t pt-6">
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+                      Testimonial Management
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400 mb-4">
+                      Manage testimonials displayed on the homepage. New testimonials require approval.
+                    </p>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                      <Card className="border border-slate-200 dark:border-slate-700">
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-base">Current Status</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600 dark:text-slate-400">Active Testimonials:</span>
+                            <span className="font-semibold text-slate-900 dark:text-white">{stats.testimonials_count}</span>
+                          </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm text-slate-600 dark:text-slate-400">Pending Approval:</span>
+                            <span className="font-semibold text-amber-600">0</span>
+                          </div>
+                        </CardContent>
+                      </Card>
+
+                      <Card className="border border-slate-200 dark:border-slate-700">
+                        <CardHeader className="pb-3">
+                          <CardTitle className="text-base">Quick Actions</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="w-full justify-start text-sm"
+                          >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add New Testimonial
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline" 
+                            className="w-full justify-start text-sm"
+                          >
+                            <Eye className="w-4 h-4 mr-2" />
+                            Review Pending
+                          </Button>
+                        </CardContent>
+                      </Card>
                     </div>
                   </div>
 
