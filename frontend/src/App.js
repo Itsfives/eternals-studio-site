@@ -2080,6 +2080,7 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({
     projects_completed: 13,
+    testimonials_count: 1,
     team_members: 6,
     support_available: "24/7"
   });
