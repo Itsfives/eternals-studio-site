@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-## user_problem_statement: "Test the backend functionality to ensure all existing API endpoints are working correctly after updating the project galleries. Focus on: 1. Authentication endpoints (login, register, me) 2. Counter statistics endpoints (GET and PUT /api/counter-stats) 3. General application health and connectivity 4. Database connectivity (MongoDB)"
+## user_problem_statement: "URGENT BUG INVESTIGATION: User reports that project images are not showing properly when clicking 'View Project'. Need comprehensive testing of the portfolio project gallery functionality for all 13 projects. Focus on: 1. Test 'View Project' for each of the 13 projects 2. Verify 'Project Gallery' section appears 3. Check how many images are displayed in gallery 4. Verify images are loading properly 5. Pay special attention to projects 3-13 which should have 4-5 images each"
 
 ## backend:
   - task: "Backend API endpoints for authentication and user management"
