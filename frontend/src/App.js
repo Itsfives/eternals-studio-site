@@ -955,7 +955,10 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "esports",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png",
+        "https://images.unsplash.com/photo-1562783912-21ad31ee2a83?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwxfHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1655825172059-3f96f4994810?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwzfHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1579756423478-02bc82a97679?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHw0fHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85"
       ]
     },
     {
