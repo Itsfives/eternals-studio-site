@@ -763,6 +763,26 @@ const HomePage = () => {
               We appreciate the trust our clients place in us and strive to exceed expectations every time.
             </p>
           </div>
+
+          {/* Call to Action Section */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 backdrop-blur-sm">
+              <CardContent className="p-8">
+                <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                  Ready to start your project?
+                </h3>
+                <p className="text-slate-600 dark:text-slate-400 mb-6 max-w-2xl mx-auto">
+                  Inspired by our work? Let's create something amazing together. Contact us to discuss your project and bring your vision to life.
+                </p>
+                <Link to="/contact">
+                  <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                    Start Your Project
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
     </div>
