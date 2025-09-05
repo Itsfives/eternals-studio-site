@@ -389,15 +389,21 @@ async def upload_file(
 # Counter Statistics routes
 @api_router.get("/counter-stats", response_model=CounterStats)
 async def get_counter_stats():
-    """Get current counter statistics"""
+    """Get current counter statistics with auto-updated project count"""
     try:
+        # Count actual projects in database
+        project_count = await db.projects.count_documents({})
+        
         stats = await db.counter_stats.find_one()
         if not stats:
             # Create default stats if none exist
-            default_stats = CounterStats()
+            default_stats = CounterStats(projects_completed=project_count)
             stats_dict = default_stats.dict()
             await db.counter_stats.insert_one(stats_dict)
             return default_stats
+        
+        # Update project count automatically
+        stats["projects_completed"] = project_count
         
         # Remove MongoDB's _id field
         if "_id" in stats:
