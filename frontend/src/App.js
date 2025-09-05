@@ -938,7 +938,10 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "gaming",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg",
+        "https://images.unsplash.com/photo-1618517048485-f125b94309a8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/10988021/pexels-photo-10988021.jpeg",
+        "https://images.unsplash.com/photo-1561474536-a176526bb8f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwyfHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85"
       ]
     },
     {
