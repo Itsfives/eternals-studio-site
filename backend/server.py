@@ -21,6 +21,29 @@ class CounterStats(BaseModel):
     support_available: str = Field(default="24/7")
     last_updated: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updated_by: Optional[str] = None
+
+# Testimonial Model
+class Testimonial(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    client_name: str
+    client_role: str = ""
+    client_avatar: str = ""
+    rating: int = Field(default=5)
+    title: str
+    content: str
+    highlights: List[str] = Field(default_factory=list)
+    is_featured: bool = Field(default=False)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    approved: bool = Field(default=False)
+
+class TestimonialCreate(BaseModel):
+    client_name: str
+    client_role: str = ""
+    client_avatar: str = ""
+    rating: int = Field(default=5)
+    title: str
+    content: str
+    highlights: List[str] = Field(default_factory=list)
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
