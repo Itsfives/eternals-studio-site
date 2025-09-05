@@ -667,10 +667,12 @@ const HomePage = () => {
               Ready to start your project?{' '}
               <span className="gradient-text">Let's talk!</span>
             </h3>
-            <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white px-8 py-3 text-lg">
-              Get In Touch
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+            <Link to="/contact">
+              <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white px-8 py-3 text-lg">
+                Get In Touch
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
