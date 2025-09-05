@@ -920,7 +920,11 @@ const ProjectDetailPage = () => {
       featured: true,
       type: "esports",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg",
+        "https://images.unsplash.com/photo-1580234811497-9df7fd2f357e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1612801798930-288967b6d1ef?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1593280359364-5242f1958068?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwzfHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/8728559/pexels-photo-8728559.jpeg"
       ]
     },
     {
