@@ -1972,7 +1972,6 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({
     projects_completed: 13,
-    happy_clients: 15,
     team_members: 6,
     support_available: "24/7"
   });
