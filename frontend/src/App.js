@@ -1040,7 +1040,10 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "3d",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png",
+        "https://images.unsplash.com/photo-1622737133809-d95047b9e673?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.unsplash.com/photo-1637416067365-2b5e7e8fe8fa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHw0fHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/18069362/pexels-photo-18069362.png"
       ]
     },
     {
