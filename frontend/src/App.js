@@ -2284,18 +2284,35 @@ const Dashboard = () => {
                         </div>
                         
                         <div className="space-y-2">
-                          <Label htmlFor="team">Team Members</Label>
+                          <Label htmlFor="testimonials">Testimonials (Auto-synced)</Label>
+                          <Input
+                            id="testimonials"
+                            type="number"
+                            value={stats.testimonials_count}
+                            disabled
+                            className="bg-gray-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 cursor-not-allowed"
+                          />
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Auto-updates when testimonials are approved
+                          </p>
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <Label htmlFor="team">Team Members (Auto-synced)</Label>
                           <Input
                             id="team"
                             type="number"
                             value={stats.team_members}
-                            onChange={(e) => handleStatsChange('team_members', e.target.value)}
-                            className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                            disabled
+                            className="bg-gray-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 cursor-not-allowed"
                           />
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Auto-updates based on admin/editor users
+                          </p>
                         </div>
                         
-                        <div className="space-y-2 md:col-span-2">
-                          <Label htmlFor="support">Support Available</Label>
+                        <div className="space-y-2">
+                          <Label htmlFor="support">Support Available (Manual)</Label>
                           <Input
                             id="support"
                             value={stats.support_available}
@@ -2303,6 +2320,9 @@ const Dashboard = () => {
                             placeholder="e.g., 24/7, Mon-Fri"
                             className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
                           />
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            Only manually editable field
+                          </p>
                         </div>
                       </div>
                     )}
