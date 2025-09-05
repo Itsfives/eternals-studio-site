@@ -2189,7 +2189,7 @@ const Dashboard = () => {
                 <CardHeader>
                   <CardTitle className="gradient-text">Content Management System</CardTitle>
                   <CardDescription>
-                    Update website counter statistics and content
+                    Update website counter statistics and manage testimonials
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
