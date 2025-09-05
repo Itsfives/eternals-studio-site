@@ -426,6 +426,7 @@ const Navigation = () => {
 const SharedStatsCounter = ({ className = "" }) => {
   const [stats, setStats] = useState({
     projects_completed: 13,
+    testimonials_count: 1,
     team_members: 6,
     support_available: "24/7"
   });
@@ -448,12 +449,20 @@ const SharedStatsCounter = ({ className = "" }) => {
     };
 
     fetchStats();
+    
+    // Refresh stats every 30 seconds for live updates
+    const interval = setInterval(fetchStats, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   if (loading) {
     return (
       <div className={`bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50 backdrop-blur-sm ${className}`}>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div className="animate-pulse">
+            <div className="h-8 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
+            <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
+          </div>
           <div className="animate-pulse">
             <div className="h-8 bg-slate-300 dark:bg-slate-600 rounded mb-2"></div>
             <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded"></div>
@@ -473,9 +482,12 @@ const SharedStatsCounter = ({ className = "" }) => {
 
   return (
     <div className={`bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 rounded-2xl p-8 border border-teal-200/50 dark:border-teal-700/50 backdrop-blur-sm ${className}`}>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
         <div>
           <StatsCounter end={stats.projects_completed} label="Projects Completed" />
+        </div>
+        <div>
+          <StatsCounter end={stats.testimonials_count} label="Testimonials" />
         </div>
         <div>
           <StatsCounter end={stats.team_members} label="Team Members" />
