@@ -17,6 +17,7 @@ import shutil
 class CounterStats(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     projects_completed: int = Field(default=13)
+    testimonials_count: int = Field(default=1)
     team_members: int = Field(default=6)
     support_available: str = Field(default="24/7")
     last_updated: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
