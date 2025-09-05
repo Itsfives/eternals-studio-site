@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-## user_problem_statement: "Test the new counter statistics API endpoints that were just added: GET /api/counter-stats and PUT /api/counter-stats with admin authentication"
+## user_problem_statement: "Test the backend functionality to ensure all existing API endpoints are working correctly after updating the project galleries. Focus on: 1. Authentication endpoints (login, register, me) 2. Counter statistics endpoints (GET and PUT /api/counter-stats) 3. General application health and connectivity 4. Database connectivity (MongoDB)"
 
 ## backend:
   - task: "Backend API endpoints for authentication and user management"
