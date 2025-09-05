@@ -242,10 +242,10 @@ const FloatingElements = () => {
     const glowColor = color === 'seafoam' ? '#2dd4bf' : '#8B5CF6';
     
     return {
-      filter: `brightness(1.2) contrast(1.1)`,
+      filter: `brightness(1.0) contrast(1.0)`, // Reduced brightness/contrast
       borderColor: glowColor,
-      boxShadow: `0 0 20px rgba(${isDark ? '255, 255, 255' : '0, 0, 0'}, ${opacity * 0.3}), 0 0 40px ${glowColor}40`,
-      backgroundColor: `${baseColor}${Math.round(opacity * 255).toString(16).padStart(2, '0')}`
+      boxShadow: `0 0 15px rgba(${isDark ? '255, 255, 255' : '0, 0, 0'}, ${opacity * 0.15}), 0 0 30px ${glowColor}20`, // Reduced opacity and glow
+      backgroundColor: `${baseColor}${Math.round(opacity * 180).toString(16).padStart(2, '0')}` // Reduced opacity from 255 to 180
     };
   };
 
