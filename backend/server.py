@@ -447,6 +447,10 @@ async def update_counter_stats(
         if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
             raise HTTPException(status_code=403, detail="Admin access required")
         
+        # Auto-sync projects_completed with actual database count (ignore manual input)
+        project_count = await db.projects.count_documents({})
+        stats.projects_completed = project_count
+        
         # Update timestamps and user
         stats.last_updated = datetime.now(timezone.utc)
         stats.updated_by = current_user.email
