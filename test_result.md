@@ -195,6 +195,7 @@
 
 ## test_plan:
   current_focus:
+    - "Backend API endpoints for authentication and user management"
     - "Counter Statistics API endpoints"
   stuck_tasks: []
   test_all: false
