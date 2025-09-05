@@ -989,7 +989,10 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "esports",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png",
+        "https://images.unsplash.com/photo-1722528490197-fcad1006e762?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHw0fHxjcmVhdGl2ZSUyMGRlc2lnbnxlbnwwfHx8fDE3NTcwMzQ5MjZ8MA&ixlib=rb-4.1.0&q=85",
+        "https://images.pexels.com/photos/13610156/pexels-photo-13610156.jpeg",
+        "https://images.unsplash.com/photo-1547194936-28214bd75193?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85"
       ]
     },
     {
