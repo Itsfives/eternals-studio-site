@@ -1290,7 +1290,15 @@ const PortfolioPage = () => {
       tags: ["Gaming", "Community", "Servers"],
       year: 2024,
       featured: false,
-      type: "gaming"
+      type: "gaming",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=384,fit=crop/YNqO7k0WyEUyB3w6/dg_avi-m5Kw9r0g6WUEeL1E.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=384,fit=crop/YNqO7k0WyEUyB3w6/dg-white-png-mv0D6O9Gz1F5yZqL.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=384,fit=crop/YNqO7k0WyEUyB3w6/dg-purple-png-AzGew5EBegtqaOzb.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=384,fit=crop/YNqO7k0WyEUyB3w6/dg-black-png-AGB6k8q0jkUp4vGK.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=400,h=384,fit=crop/YNqO7k0WyEUyB3w6/dg-discord-logo-A0xwJ54NrzHLgBz0.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop,trim=0;0;58.8235294117647;0/YNqO7k0WyEUyB3w6/dg-header-m7Vw46MwBpsoXbaV.jpg"
+      ]
     },
     {
       id: 6,
