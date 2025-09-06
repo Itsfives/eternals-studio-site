@@ -917,11 +917,14 @@ const ProjectDetailPage = () => {
       featured: true,
       type: "esports",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-mp8vZO4gvOc1Vazm.jpg",
-        "https://images.unsplash.com/photo-1580234811497-9df7fd2f357e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwxfHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1612801798930-288967b6d1ef?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwyfHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1593280359364-5242f1958068?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHwzfHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/8728559/pexels-photo-8728559.jpeg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/dab21dff-54d2-443f-8116-92041be0886b_rw_1200-Yyv3b2NyzNsR7pVv.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=612,h=480,fit=crop/YNqO7k0WyEUyB3w6/4fe16eef-716b-442a-8353-491f61740cab_rw_3840-AGB681DL4EF6nlzL.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=480,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-min-Yyv3jaO7kDU3Z2W3.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/63b6a0f1-87db-4bcf-b0f0-370da63c6d1a_rw_1920-d95KJOjBLViZjvaL.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/061ec31e-4c4b-4876-891d-5cae1f814723_rw_1920-YD06V7LvWzsnbK89.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/2f6c33e9-d982-445b-8c7d-a7faf985f328_rw_1920-dJo6MpDypjHb2GvJ.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/9aee2acb-f837-4ad2-8f31-1dd541008543_rw_1920-Aq2v38P5VzunLWxv.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/c2e76595-68f3-49c6-8fb2-eb5abe34a0ad_rw_1920-mnlvD0ok51fPbegz.jpg"
       ]
     },
     {
