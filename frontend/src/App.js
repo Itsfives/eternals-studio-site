@@ -1353,7 +1353,14 @@ const PortfolioPage = () => {
       tags: ["Gaming", "Club", "Tournaments"],
       year: 2024,
       featured: false,
-      type: "gaming"
+      type: "gaming",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-avi-02-dWxyk2D7NPCn19M9.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-avi-01-AMqbkk8v0liEz95N.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-logo-white-YKb6kklD2XFPDZ9r.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-logo-red-m2WpwwEN3bSoNO9v.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-header-Yyv3bbD0GrfBQvQB.jpg"
+      ]
     },
     {
       id: 8,
@@ -1364,7 +1371,15 @@ const PortfolioPage = () => {
       tags: ["Esports", "League", "XDefiant", "PUBG"],
       year: 2024,
       featured: false,
-      type: "esports"
+      type: "esports",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=384,fit=crop/YNqO7k0WyEUyB3w6/hp_league_avi-YrDlvXpP6gHPZ9KB.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/2ac76de3-0fbb-412b-9d36-f49b13d40ea8_rw_1920-mp8vEQKQEBHX9aqO.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/finalboss-AVLpk2KgOBcpO4MY.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/big_rich-mePvZ7VwKDiEV3kO.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/anni-A3QwXekl7GfXXN6x.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/hp_banner-m6LwnjpkXru506NM.jpg"
+      ]
     },
     {
       id: 9,
@@ -1375,7 +1390,15 @@ const PortfolioPage = () => {
       tags: ["Streaming", "Game Development", "Content"],
       year: 2024,
       featured: false,
-      type: "branding"
+      type: "branding",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=520,fit=crop/YNqO7k0WyEUyB3w6/03-mePvzoo300Tpexbz.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=520,fit=crop/YNqO7k0WyEUyB3w6/02-YlevwooDQxhBGBwO.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=520,fit=crop/YNqO7k0WyEUyB3w6/01-YD06RLL5yMtzjRw2.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=624,fit=crop/YNqO7k0WyEUyB3w6/nevers-offline-screen-A3QwRbkQyOTReby9.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=328,fit=crop/YNqO7k0WyEUyB3w6/nevers-twitter-header-A85wR805q8t9jayR.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=624,fit=crop/YNqO7k0WyEUyB3w6/nevers-yt-banner-mjEvJoVWpzu5MPJE.jpg"
+      ]
     },
     {
       id: 10,
