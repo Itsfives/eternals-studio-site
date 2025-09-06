@@ -1268,7 +1268,11 @@ const PortfolioPage = () => {
       tags: ["Studio", "Branding", "Creative"],
       year: 2024,
       featured: true,
-      type: "branding"
+      type: "branding",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=384,fit=crop/YNqO7k0WyEUyB3w6/x8_vb24x_400x400-Yany8zezOEf96GR1.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg"
+      ]
     },
     {
       id: 4,
@@ -1279,7 +1283,13 @@ const PortfolioPage = () => {
       tags: ["Esports", "Content Creation", "Organization"],
       year: 2024,
       featured: true,
-      type: "esports"
+      type: "esports",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/dab21dff-54d2-443f-8116-92041be0886b_rw_1200-Yyv3b2NyzNsR7pVv.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=612,h=480,fit=crop/YNqO7k0WyEUyB3w6/4fe16eef-716b-442a-8353-491f61740cab_rw_3840-AGB681DL4EF6nlzL.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=480,fit=crop/YNqO7k0WyEUyB3w6/e795ed40-7f78-4cc9-b0eb-11931e05891f_rw_1920-min-Yyv3jaO7kDU3Z2W3.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/63b6a0f1-87db-4bcf-b0f0-370da63c6d1a_rw_1920-d95KJOjBLViZjvaL.jpg"
+      ]
     },
     {
       id: 5,
