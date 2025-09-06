@@ -976,8 +976,11 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "gaming",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-avi-02-dWxyk2D7NPCn19M9.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-avi-01-AMqbkk8v0liEz95N.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-logo-white-YKb6kklD2XFPDZ9r.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-logo-red-m2WpwwEN3bSoNO9v.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=600,fit=crop/YNqO7k0WyEUyB3w6/sgc-header-Yyv3bbD0GrfBQvQB.jpg"
       ]
     },
     {
@@ -991,8 +994,12 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "esports",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=384,fit=crop/YNqO7k0WyEUyB3w6/hp_league_avi-YrDlvXpP6gHPZ9KB.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/2ac76de3-0fbb-412b-9d36-f49b13d40ea8_rw_1920-mp8vEQKQEBHX9aqO.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/finalboss-AVLpk2KgOBcpO4MY.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/big_rich-mePvZ7VwKDiEV3kO.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=709,h=384,fit=crop/YNqO7k0WyEUyB3w6/anni-A3QwXekl7GfXXN6x.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/hp_banner-m6LwnjpkXru506NM.jpg"
       ]
     },
     {
@@ -1006,25 +1013,12 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "branding",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg"
-      ]
-    },
-    {
-      id: 10,
-      title: "YouTube Thumbnails",
-      category: "Thumbnail Design",
-      description: "Thumbnails are used to engage and draw audiences to a particular video.",
-      image: "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
-      tags: ["Design", "YouTube", "Thumbnails"],
-      year: 2024,
-      featured: false,
-      type: "design",
-      gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/493e7d28-3b40-4c19-917b-fea305f43983_rw_1920-1-A85wW3N7RRUoKXlx.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/b3722e09-39c2-4c4d-83c8-6d0140e40f2b_rw_1920-AMqbePGGeNhaLKMz.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/sledge-myers-ep-1-m7V5qQJjQ2hZL4Zx.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=520,fit=crop/YNqO7k0WyEUyB3w6/03-mePvzoo300Tpexbz.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=520,fit=crop/YNqO7k0WyEUyB3w6/02-YlevwooDQxhBGBwO.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=520,fit=crop/YNqO7k0WyEUyB3w6/01-YD06RLL5yMtzjRw2.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=624,fit=crop/YNqO7k0WyEUyB3w6/nevers-offline-screen-A3QwRbkQyOTReby9.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=328,fit=crop/YNqO7k0WyEUyB3w6/nevers-twitter-header-A85wR805q8t9jayR.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=624,fit=crop/YNqO7k0WyEUyB3w6/nevers-yt-banner-mjEvJoVWpzu5MPJE.jpg"
       ]
     },
     {
@@ -1053,8 +1047,12 @@ const ProjectDetailPage = () => {
       featured: true,
       type: "animation",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=1251,fit=crop/YNqO7k0WyEUyB3w6/a422a974-a8b6-46fb-9d83-d63de3e8a72e_rw_600-AQEyO1ogRXsBJXpb.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/6c9e4cbc-8a87-4bff-83a5-abb135cea357_rw_1200-m2Wp7jX3QOS2yvo6.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/5cf7e64f-75ec-4cdc-836b-db144d03a1ab_rw_1200-YNqy1EgGypHqDKew.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/e86f2571-46ee-4deb-a274-3f5861b4fb5e_rw_1200-Yg2WnbKReziq71Or.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/4dcd38df-7ad3-4c9b-b991-d9f3e17c4142_rw_1200-AGB689gwREFBnLOk.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/screenshot_2024-12-01_141754-d95KJlnLr8uVRJ04.png"
       ]
     },
     {
