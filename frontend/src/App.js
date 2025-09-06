@@ -902,7 +902,8 @@ const ProjectDetailPage = () => {
       featured: true,
       type: "branding",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=384,fit=crop/YNqO7k0WyEUyB3w6/x8_vb24x_400x400-Yany8zezOEf96GR1.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1795-YNqykO6O7yIrvvGr.jpg"
       ]
     },
     {
