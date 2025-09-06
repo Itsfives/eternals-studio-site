@@ -1426,7 +1426,11 @@ const PortfolioPage = () => {
       tags: ["3D", "Modeling", "Animation"],
       year: 2024,
       featured: false,
-      type: "3d"
+      type: "3d",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png"
+      ]
     },
     {
       id: 12,
@@ -1437,7 +1441,15 @@ const PortfolioPage = () => {
       tags: ["Animation", "Star Wars", "SFM", "5M+ Views"],
       year: 2024,
       featured: true,
-      type: "animation"
+      type: "animation",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=1251,fit=crop/YNqO7k0WyEUyB3w6/a422a974-a8b6-46fb-9d83-d63de3e8a72e_rw_600-AQEyO1ogRXsBJXpb.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/6c9e4cbc-8a87-4bff-83a5-abb135cea357_rw_1200-m2Wp7jX3QOS2yvo6.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/5cf7e64f-75ec-4cdc-836b-db144d03a1ab_rw_1200-YNqy1EgGypHqDKew.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/e86f2571-46ee-4deb-a274-3f5861b4fb5e_rw_1200-Yg2WnbKReziq71Or.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/4dcd38df-7ad3-4c9b-b991-d9f3e17c4142_rw_1200-AGB689gwREFBnLOk.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=1251,fit=crop/YNqO7k0WyEUyB3w6/screenshot_2024-12-01_141754-d95KJlnLr8uVRJ04.png"
+      ]
     },
     {
       id: 13,
