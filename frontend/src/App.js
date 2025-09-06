@@ -1363,7 +1363,13 @@ const PortfolioPage = () => {
       tags: ["Design", "YouTube", "Thumbnails"],
       year: 2024,
       featured: false,
-      type: "design"
+      type: "design",
+      gallery: [
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/493e7d28-3b40-4c19-917b-fea305f43983_rw_1920-1-A85wW3N7RRUoKXlx.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/b3722e09-39c2-4c4d-83c8-6d0140e40f2b_rw_1920-AMqbePGGeNhaLKMz.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/sledge-myers-ep-1-m7V5qQJjQ2hZL4Zx.jpg"
+      ]
     },
     {
       id: 11,
