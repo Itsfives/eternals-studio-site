@@ -938,10 +938,7 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "gaming",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg",
-        "https://images.unsplash.com/photo-1618517048485-f125b94309a8?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Nzd8MHwxfHNlYXJjaHw0fHxnYW1pbmclMjBlc3BvcnRzfGVufDB8fHxibHVlfDE3NTcwMzQ3NzN8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/10988021/pexels-photo-10988021.jpeg",
-        "https://images.unsplash.com/photo-1561474536-a176526bb8f0?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwyfHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1853-AMqbkp9joNSR2Bl2.jpg"
       ]
     },
     {
@@ -955,10 +952,7 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "esports",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png",
-        "https://images.unsplash.com/photo-1562783912-21ad31ee2a83?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwxfHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1655825172059-3f96f4994810?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHwzfHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1579756423478-02bc82a97679?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzh8MHwxfHNlYXJjaHw0fHxsb2dvJTIwbW9ja3VwfGVufDB8fHxibHVlfDE3NTcwMzQ3ODV8MA&ixlib=rb-4.1.0&q=85"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/uki-YKb6q3vNMoiGV4V8.png"
       ]
     },
     {
@@ -972,10 +966,7 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "gaming",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg",
-        "https://images.unsplash.com/photo-1611241893603-3c359704e0ee?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMGRlc2lnbnxlbnwwfHx8fDE3NTcwMzQ5MjZ8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1621111848501-8d3634f82336?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwyfHxjcmVhdGl2ZSUyMGRlc2lnbnxlbnwwfHx8fDE3NTcwMzQ5MjZ8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/355952/pexels-photo-355952.jpeg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/img_1907-AGB6kk44XzULb0rL.jpg"
       ]
     },
     {
@@ -989,10 +980,7 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "esports",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png",
-        "https://images.unsplash.com/photo-1722528490197-fcad1006e762?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHw0fHxjcmVhdGl2ZSUyMGRlc2lnbnxlbnwwfHx8fDE3NTcwMzQ5MjZ8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/13610156/pexels-photo-13610156.jpeg",
-        "https://images.unsplash.com/photo-1547194936-28214bd75193?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/ddssd-YlevxJlDrxTEV0bG.png"
       ]
     },
     {
@@ -1006,10 +994,7 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "branding",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg",
-        "https://images.unsplash.com/photo-1549516192-1232e46d3cd1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHx5b3V0dWJlJTIwdGh1bWJuYWlsc3xlbnwwfHx8fDE3NTcwMzQ5MTR8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/5077064/pexels-photo-5077064.jpeg",
-        "https://images.pexels.com/photos/32141311/pexels-photo-32141311.jpeg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/nevers-kick-banner-AGB6RE277PfQ45LM.jpg"
       ]
     },
     {
@@ -1023,10 +1008,10 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "design",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop,trim=0;129.31185944363105;0;16.866764275256223/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
-        "https://images.unsplash.com/photo-1549210338-a03623c2bde3?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwzfHx5b3V0dWJlJTIwdGh1bWJuYWlsc3xlbnwwfHx8fDE3NTcwMzQ5MTR8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1549516192-1232e46d3cd1?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2Mzl8MHwxfHNlYXJjaHwyfHx5b3V0dWJlJTIwdGh1bWJuYWlsc3xlbnwwfHx8fDE3NTcwMzQ5MTR8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/5077064/pexels-photo-5077064.jpeg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/493e7d28-3b40-4c19-917b-fea305f43983_rw_1920-1-A85wW3N7RRUoKXlx.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/c3f4f288-9f7c-4ec9-89db-e3088a16a602_rw_1920-YrDle0221nILr5K9.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/b3722e09-39c2-4c4d-83c8-6d0140e40f2b_rw_1920-AMqbePGGeNhaLKMz.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=687,h=384,fit=crop/YNqO7k0WyEUyB3w6/sledge-myers-ep-1-m7V5qQJjQ2hZL4Zx.jpg"
       ]
     },
     {
@@ -1040,10 +1025,7 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "3d",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png",
-        "https://images.unsplash.com/photo-1622737133809-d95047b9e673?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1637416067365-2b5e7e8fe8fa?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHw0fHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/18069362/pexels-photo-18069362.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png"
       ]
     },
     {
@@ -1057,10 +1039,7 @@ const ProjectDetailPage = () => {
       featured: true,
       type: "animation",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png",
-        "https://images.unsplash.com/photo-1547194936-28214bd75193?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwxfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1622737133809-d95047b9e673?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2Njl8MHwxfHNlYXJjaHwyfHwzZCUyMGFuaW1hdGlvbnxlbnwwfHx8fDE3NTcwMzQ5MjB8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.pexels.com/photos/18069362/pexels-photo-18069362.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=600,fit=crop/YNqO7k0WyEUyB3w6/77f1-AoPvMlwkLbFo9JGJ.png"
       ]
     },
     {
@@ -1074,10 +1053,7 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "design",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg",
-        "https://images.unsplash.com/photo-1611241893603-3c359704e0ee?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHxjcmVhdGl2ZSUyMGRlc2lnbnxlbnwwfHx8fDE3NTcwMzQ5MjZ8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1722528490197-fcad1006e762?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHw0fHxjcmVhdGl2ZSUyMGRlc2lnbnxlbnwwfHx8fDE3NTcwMzQ5MjZ8MA&ixlib=rb-4.1.0&q=85",
-        "https://images.unsplash.com/photo-1621111848501-8d3634f82336?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwyfHxjcmVhdGl2ZSUyMGRlc2lnbnxlbnwwfHx8fDE3NTcwMzQ5MjZ8MA&ixlib=rb-4.1.0&q=85"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg"
       ]
     }
   ];
