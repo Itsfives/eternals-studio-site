@@ -1058,7 +1058,9 @@ const ProjectDetailPage = () => {
       featured: false,
       type: "design",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=776,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=864,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=864,fit=crop/YNqO7k0WyEUyB3w6/44700b08-43d2-4a7b-81a4-28996a49385c_rw_1200-AzGe5nz7X2CGQXg1.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=864,fit=crop/YNqO7k0WyEUyB3w6/7909ff82-f1c6-4708-9aba-3fe833cd99d6_rw_1200-mePv4NavO6T2pv2Q.jpg"
       ]
     }
   ];
