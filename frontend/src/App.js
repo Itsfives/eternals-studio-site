@@ -868,7 +868,15 @@ const ProjectDetailPage = () => {
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_twitch-header-1-A1aBPEG5ODiVNDOp.jpg",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_twitter-header-1-YBge70aOoBt4K04D.jpg",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=384,fit=crop/YNqO7k0WyEUyB3w6/whysper_weekly-schedule-1-YBge70aWZqSawbN7.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=504,fit=crop/YNqO7k0WyEUyB3w6/whysper_offline-screen-1-m2Wa87VGPkSQ6N0a.png"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=504,fit=crop/YNqO7k0WyEUyB3w6/whysper_offline-screen-1-m2Wa87VGPkSQ6N0a.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/yt-mp8qJ97qnwFrzoz0.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/tiktok-AR0M3bVL3qSNx09Z.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/sub-YNqP2rN2MyUkDlpn.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/specs-YbNqJ9yLXjHbor98.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/me-AVL1abNj63Tl1JK0.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/instagram-A0x1jVrZqnCyNJbp.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/donate-dJo5b4NzKGfk8O79.png",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=915,h=184,fit=crop/YNqO7k0WyEUyB3w6/chat-rules-AR0M3bVvoWT7xnWB.png"
       ]
     },
     {
