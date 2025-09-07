@@ -1313,17 +1313,251 @@ const ProjectDetailPage = () => {
 
 // Services Page Component
 const ServicesPage = () => {
+  const services = [
+    {
+      icon: Palette,
+      title: "Graphic Design",
+      description: "Professional logo design, branding packages, and visual identity creation that makes your brand stand out.",
+      features: ["Logo Design", "Brand Identity", "Print Design", "Marketing Materials"],
+      price: "Starting at $299",
+      popular: false
+    },
+    {
+      icon: Video,
+      title: "Motion Graphics & VFX",
+      description: "Dynamic animations, visual effects, and motion graphics that bring your ideas to life with stunning visuals.",
+      features: ["2D/3D Animation", "Visual Effects", "Motion Graphics", "Video Editing"],
+      price: "Starting at $499",
+      popular: true
+    },
+    {
+      icon: Code,
+      title: "Web Development",
+      description: "Custom websites and web applications built with modern technologies for optimal performance and user experience.",
+      features: ["Custom Websites", "Web Applications", "E-commerce", "Mobile Responsive"],
+      price: "Starting at $799",
+      popular: false
+    },
+    {
+      icon: Music,
+      title: "Audio Production",
+      description: "Professional music production, sound design, and audio editing services for content creators and businesses.",
+      features: ["Music Production", "Sound Design", "Audio Editing", "Podcast Production"],
+      price: "Starting at $199",
+      popular: false
+    },
+    {
+      icon: Users,
+      title: "Content Creator Branding",
+      description: "Complete branding solutions for streamers, YouTubers, and content creators including overlays and graphics.",
+      features: ["Stream Overlays", "Social Media Graphics", "Thumbnails", "Brand Packages"],
+      price: "Starting at $399",
+      popular: true
+    },
+    {
+      icon: Box,
+      title: "3D Modeling & Rendering",
+      description: "High-quality 3D models, renders, and animations for product visualization and architectural projects.",
+      features: ["3D Modeling", "Product Renders", "Architectural Visualization", "3D Animation"],
+      price: "Starting at $599",
+      popular: false
+    }
+  ];
+
+  const processSteps = [
+    {
+      step: "01",
+      title: "Discovery & Planning",
+      description: "We start by understanding your vision, goals, and requirements through detailed consultation."
+    },
+    {
+      step: "02", 
+      title: "Concept & Design",
+      description: "Our team creates initial concepts and designs based on your specifications and feedback."
+    },
+    {
+      step: "03",
+      title: "Development & Creation",
+      description: "We bring your project to life using cutting-edge tools and professional techniques."
+    },
+    {
+      step: "04",
+      title: "Review & Refinement",
+      description: "We refine the work based on your feedback to ensure it exceeds your expectations."
+    },
+    {
+      step: "05",
+      title: "Delivery & Support",
+      description: "Final delivery with all necessary files and ongoing support for your project."
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
       <FloatingElements />
       <div className="relative z-10 py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
-            Our <span className="gradient-text">Services</span>
-          </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 mb-12 max-w-3xl mx-auto">
-            Comprehensive creative solutions designed to bring your vision to life
-          </p>
+        <div className="max-w-7xl mx-auto">
+          {/* Hero Section */}
+          <div className="text-center mb-20">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              Our <span className="gradient-text">Services</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-3xl mx-auto">
+              From concept to completion, we offer comprehensive creative solutions designed to bring your vision to life and elevate your brand.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/contact">
+                <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                  Get Started Today
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </Button>
+              </Link>
+              <Link to="/portfolio">
+                <Button size="lg" variant="outline">
+                  View Our Work
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Services Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+            {services.map((service, index) => (
+              <Card key={index} className={`border-0 shadow-xl transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 ${
+                service.popular 
+                  ? 'bg-gradient-to-br from-teal-50 to-purple-50 dark:from-teal-900/20 dark:to-purple-900/20 ring-2 ring-teal-500/20' 
+                  : 'bg-white/90 dark:bg-slate-800/90'
+              } backdrop-blur-sm relative`}>
+                {service.popular && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <Badge className="bg-gradient-to-r from-teal-500 to-purple-500 text-white px-4 py-1">
+                      Most Popular
+                    </Badge>
+                  </div>
+                )}
+                <CardContent className="p-8">
+                  <div className="flex items-center mb-6">
+                    <div className="p-3 bg-gradient-to-r from-teal-100 to-purple-100 dark:from-teal-900/30 dark:to-purple-900/30 rounded-full mr-4">
+                      <service.icon className="w-8 h-8 text-teal-600 dark:text-teal-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-900 dark:text-white">{service.title}</h3>
+                      <p className="text-teal-600 dark:text-teal-400 font-semibold">{service.price}</p>
+                    </div>
+                  </div>
+                  <p className="text-slate-600 dark:text-slate-400 mb-6 leading-relaxed">
+                    {service.description}
+                  </p>
+                  <ul className="space-y-3 mb-6">
+                    {service.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center text-slate-700 dark:text-slate-300">
+                        <CheckCircle className="w-5 h-5 text-teal-500 mr-3 flex-shrink-0" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link to="/contact">
+                    <Button 
+                      className={`w-full ${
+                        service.popular
+                          ? 'bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white'
+                          : 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600'
+                      }`}
+                    >
+                      Get Quote
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Process Section */}
+          <div className="mb-20">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                Our <span className="gradient-text">Process</span>
+              </h2>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                We follow a proven methodology to ensure your project is delivered on time, within budget, and exceeds expectations.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-5 gap-8">
+              {processSteps.map((step, index) => (
+                <div key={index} className="text-center">
+                  <div className="relative mb-6">
+                    <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full mx-auto flex items-center justify-center mb-4">
+                      <span className="text-white font-bold text-lg">{step.step}</span>
+                    </div>
+                    {index < processSteps.length - 1 && (
+                      <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-teal-500/30 to-purple-500/30 transform -translate-y-0.5"></div>
+                    )}
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">{step.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{step.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Industries Section */}
+          <div className="mb-20">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                Industries We <span className="gradient-text">Serve</span>
+              </h2>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto mb-12">
+                We've worked with businesses across various industries, delivering tailored solutions that drive results.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { title: "Gaming & Esports", icon: "🎮", description: "Teams, tournaments, and gaming companies" },
+                { title: "Content Creators", icon: "📹", description: "YouTubers, streamers, and influencers" },
+                { title: "Technology", icon: "💻", description: "SaaS, apps, and tech startups" },
+                { title: "Entertainment", icon: "🎬", description: "Film studios, music labels, and artists" },
+                { title: "E-commerce", icon: "🛒", description: "Online stores and retail brands" },
+                { title: "Professional Services", icon: "💼", description: "Consulting, law firms, and agencies" },
+                { title: "Healthcare", icon: "🏥", description: "Medical practices and health tech" },
+                { title: "Education", icon: "🎓", description: "Schools, courses, and training" }
+              ].map((industry, index) => (
+                <Card key={index} className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm text-center p-6 hover:shadow-xl transition-all duration-300">
+                  <div className="text-4xl mb-4">{industry.icon}</div>
+                  <h3 className="font-bold text-slate-900 dark:text-white mb-2">{industry.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 text-sm">{industry.description}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-500/10 to-purple-500/10 dark:from-teal-500/20 dark:to-purple-500/20 backdrop-blur-sm">
+              <CardContent className="p-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                  Ready to Start Your Project?
+                </h2>
+                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
+                  Let's discuss how we can help bring your vision to life. Get in touch for a free consultation and quote.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/contact">
+                    <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Start Your Project
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/portfolio">
+                    <Button size="lg" variant="outline">
+                      View Portfolio
+                    </Button>
+                  </Link>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
