@@ -694,6 +694,145 @@ async def update_counter_stats(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating counter stats: {str(e)}")
 
+# Enhanced Testimonial Management Routes
+@api_router.post("/testimonials/{testimonial_id}/approve")
+async def approve_testimonial(testimonial_id: str, current_user: User = Depends(get_current_user)):
+    """Approve a testimonial (Admin only)"""
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
+        raise HTTPException(status_code=403, detail="Not authorized to approve testimonials")
+    
+    result = await db.testimonials.update_one(
+        {"id": testimonial_id},
+        {"$set": {"approved": True, "approved_by": current_user.id, "approved_at": datetime.now(timezone.utc)}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Testimonial not found")
+    
+    return {"message": "Testimonial approved successfully"}
+
+@api_router.delete("/testimonials/{testimonial_id}")
+async def delete_testimonial(testimonial_id: str, current_user: User = Depends(get_current_user)):
+    """Delete a testimonial (Admin only)"""
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete testimonials")
+    
+    result = await db.testimonials.delete_one({"id": testimonial_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Testimonial not found")
+    
+    return {"message": "Testimonial deleted successfully"}
+
+# User Management Routes (Super Admin only)
+@api_router.get("/users", response_model=List[User])
+async def get_all_users(current_user: User = Depends(get_current_user)):
+    """Get all users (Super Admin only)"""
+    if current_user.role != UserRole.SUPER_ADMIN:
+        raise HTTPException(status_code=403, detail="Super admin access required")
+    
+    users = await db.users.find().to_list(length=None)
+    return [User(**user) for user in users]
+
+@api_router.put("/users/{user_id}/role")
+async def update_user_role(user_id: str, new_role: UserRole, current_user: User = Depends(get_current_user)):
+    """Update user role (Super Admin only)"""
+    if current_user.role != UserRole.SUPER_ADMIN:
+        raise HTTPException(status_code=403, detail="Super admin access required")
+    
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"role": new_role.value}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {"message": f"User role updated to {new_role.value}"}
+
+@api_router.put("/users/{user_id}/status")
+async def toggle_user_status(user_id: str, current_user: User = Depends(get_current_user)):
+    """Toggle user active status (Super Admin only)"""
+    if current_user.role != UserRole.SUPER_ADMIN:
+        raise HTTPException(status_code=403, detail="Super admin access required")
+    
+    user = await db.users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    new_status = not user.get("is_active", True)
+    await db.users.update_one(
+        {"id": user_id},
+        {"$set": {"is_active": new_status}}
+    )
+    
+    return {"message": f"User {'activated' if new_status else 'deactivated'} successfully"}
+
+# Enhanced Project Management Routes
+@api_router.get("/admin/projects", response_model=List[Project])
+async def get_all_admin_projects(current_user: User = Depends(get_current_user)):
+    """Get all projects for admin dashboard"""
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    projects = await db.projects.find().to_list(length=None)
+    return [Project(**project) for project in projects]
+
+@api_router.put("/projects/{project_id}/status")
+async def update_project_status(project_id: str, status: str, current_user: User = Depends(get_current_user)):
+    """Update project status"""
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    result = await db.projects.update_one(
+        {"id": project_id},
+        {"$set": {"status": status, "updated_at": datetime.now(timezone.utc)}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    return {"message": "Project status updated successfully"}
+
+# Dashboard Analytics Routes
+@api_router.get("/admin/analytics")
+async def get_dashboard_analytics(current_user: User = Depends(get_current_user)):
+    """Get dashboard analytics data"""
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    # Count various entities
+    total_users = await db.users.count_documents({})
+    active_users = await db.users.count_documents({"is_active": True})
+    total_projects = await db.projects.count_documents({})
+    completed_projects = await db.projects.count_documents({"status": "completed"})
+    pending_testimonials = await db.testimonials.count_documents({"approved": False})
+    approved_testimonials = await db.testimonials.count_documents({"approved": True})
+    
+    # Recent activity (last 30 days)
+    thirty_days_ago = datetime.now(timezone.utc) - timedelta(days=30)
+    recent_users = await db.users.count_documents({"created_at": {"$gte": thirty_days_ago}})
+    recent_projects = await db.projects.count_documents({"created_at": {"$gte": thirty_days_ago}})
+    recent_testimonials = await db.testimonials.count_documents({"created_at": {"$gte": thirty_days_ago}})
+    
+    return {
+        "users": {
+            "total": total_users,
+            "active": active_users,
+            "recent": recent_users
+        },
+        "projects": {
+            "total": total_projects,
+            "completed": completed_projects,
+            "recent": recent_projects
+        },
+        "testimonials": {
+            "total": approved_testimonials + pending_testimonials,
+            "approved": approved_testimonials,
+            "pending": pending_testimonials,
+            "recent": recent_testimonials
+        }
+    }
 # Testimonial Management Endpoints
 @api_router.get("/testimonials", response_model=List[Testimonial])
 async def get_testimonials():
