@@ -382,9 +382,9 @@ async def create_or_update_oauth_user(oauth_user_data: Dict[str, Any]) -> User:
 def determine_redirect_url(user: User) -> str:
     """Determine where to redirect user based on their role"""
     if user.role in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
-        return "https://image-showcase-36.preview.emergentagent.com/dashboard"
+        return "https://graphix-hub-4.preview.emergentagent.com/dashboard"
     else:
-        return "https://image-showcase-36.preview.emergentagent.com/client-portal"
+        return "https://graphix-hub-4.preview.emergentagent.com/client-portal"
 
 # Authentication routes
 @api_router.post("/auth/register", response_model=User)
@@ -507,7 +507,7 @@ async def oauth_callback(
     except Exception as e:
         logger.error(f"OAuth callback error for {provider}: {str(e)}", exc_info=True)
         # Redirect to frontend with error
-        error_url = f"https://image-showcase-36.preview.emergentagent.com/auth?error=oauth_failed&provider={provider}&message={str(e)}"
+        error_url = f"https://graphix-hub-4.preview.emergentagent.com/auth?error=oauth_failed&provider={provider}&message={str(e)}"
         return RedirectResponse(url=error_url)
 
 @api_router.get("/auth/providers")

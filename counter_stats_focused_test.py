@@ -10,7 +10,7 @@ from datetime import datetime
 
 def test_counter_stats_api():
     """Test the updated counter statistics API endpoints"""
-    base_url = "https://image-showcase-36.preview.emergentagent.com"
+    base_url = "https://graphix-hub-4.preview.emergentagent.com"
     api_url = f"{base_url}/api"
     
     print("🔍 FOCUSED COUNTER STATISTICS API TESTING")
