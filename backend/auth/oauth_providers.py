@@ -126,18 +126,19 @@ class GoogleOAuthProvider(OAuthProvider):
         if not state:
             state = secrets.token_urlsafe(32)
         
-        self.session = OAuth2Session(
-            client_id=self.client_id,
-            redirect_uri=self.redirect_uri,
-            scope=" ".join(self.SCOPES)
-        )
+        # Build authorization URL manually for Google
+        params = {
+            "client_id": self.client_id,
+            "redirect_uri": self.redirect_uri,
+            "response_type": "code",
+            "scope": " ".join(self.SCOPES),
+            "state": state,
+            "access_type": "offline",
+            "prompt": "select_account"
+        }
         
-        authorization_url, _ = self.session.authorization_url(
-            self.AUTHORIZATION_BASE_URL,
-            state=state,
-            access_type="offline",
-            prompt="select_account"
-        )
+        from urllib.parse import urlencode
+        authorization_url = f"{self.AUTHORIZATION_BASE_URL}?{urlencode(params)}"
         
         return authorization_url, state
     
