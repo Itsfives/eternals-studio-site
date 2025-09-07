@@ -2919,7 +2919,7 @@ const AuthPage = () => {
               <img 
                 src="https://customer-assets.emergentagent.com/job_image-showcase-36/artifacts/gks2nspj_Eternals%20Studio.png" 
                 alt="Eternals Studio Logo" 
-                className="w-full h-full object-contain"
+                className="w-full h-full object-contain transition-all duration-300 dark:brightness-0 dark:invert"
               />
             </div>
           </div>
