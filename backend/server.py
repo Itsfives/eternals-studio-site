@@ -52,6 +52,9 @@ class TestimonialCreate(BaseModel):
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
+# Import OAuth providers after environment loading
+from auth.oauth_providers import oauth_manager
+
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
