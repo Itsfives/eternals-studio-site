@@ -2073,19 +2073,305 @@ const PortfolioPage = () => {
 
 // Store Page Component
 const StorePage = () => {
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const categories = ['All', 'Game Addons', 'Design Templates', 'Graphics Packs', 'Music & Audio'];
+
+  const products = [
+    {
+      id: 1,
+      title: "Status HUD - Garry's Mod Addon",
+      category: "Game Addons",
+      price: "$4.99",
+      image: "https://via.placeholder.com/400x300/1e293b/white?text=Status+HUD+Addon", // Placeholder as requested
+      description: "An advanced OpSat-style Status HUD system designed for military roleplay servers in Garry's Mod. This comprehensive addon displays critical tactical information including current Sector, Orders, and DEFCON levels in a sleek, customizable interface positioned on the top-right of your screen.",
+      detailedDescription: `
+      **FEATURES:**
+      
+      **Core Functionality:**
+      • Real-time display of Sector, Orders, and DEFCON status
+      • Clean, military-themed OpSat interface design
+      • Automatic synchronization across all players on the server
+      • Admin-controlled status updates with permission system
+      
+      **Customization Options:**
+      • Fully moveable HUD elements with precision positioning
+      • Individual piece adjustment (Sector, Orders, DEFCON can be moved independently)
+      • Fine-tuning controls for pixel-perfect placement
+      • Custom font integration (Aurebesh AF Canon Tech & Oswald fonts included)
+      
+      **Admin Commands:**
+      • /statushudpos - Opens position adjustment menu
+      • /statushudedit - Advanced fine-tuning interface  
+      • !statushud_menu - Quick access menu for editing DEFCON, Orders, and Sector
+      • Comprehensive admin panel for status management
+      
+      **Technical Specifications:**
+      • Compatible with SAM (Server Administration Mod)
+      • Network optimized for minimal bandwidth usage
+      • Client-side cookie storage for position preferences
+      • Includes weapon_status_datapad for in-game status control
+      • Professional military-grade visual design
+      
+      **Installation:**
+      Simply extract to your Garry's Mod addons folder and restart your server. The addon automatically initializes and is ready for immediate use.
+      
+      **Perfect For:**
+      • Military roleplay servers
+      • Star Wars roleplay communities  
+      • Tactical simulation games
+      • Any server requiring coordinated status information
+      
+      This addon enhances immersion and coordination in military roleplay scenarios by providing a professional, easy-to-use status display system that keeps all players informed of current tactical conditions.`,
+      tags: ["Garry's Mod", "HUD", "Military", "Roleplay", "OpSat", "Admin Tools"],
+      features: [
+        "Real-time Status Display",
+        "Customizable Positioning", 
+        "Admin Control Panel",
+        "Multi-font Support",
+        "SAM Integration",
+        "Network Optimized"
+      ],
+      images: [] // Can be populated later with actual screenshots
+    },
+    {
+      id: 2,
+      title: "Premium Logo Pack",
+      category: "Design Templates",
+      price: "$19.99",
+      image: "https://via.placeholder.com/400x300/059669/white?text=Logo+Pack",
+      description: "Professional logo templates for gaming organizations, esports teams, and content creators.",
+      detailedDescription: "A comprehensive collection of high-quality logo templates perfect for gaming organizations, esports teams, and content creators. Each template is fully customizable and comes in multiple formats.",
+      tags: ["Logos", "Templates", "Gaming", "Esports"],
+      features: [
+        "50+ Logo Templates",
+        "Vector Formats (SVG, AI)",
+        "Multiple Color Variants",  
+        "Commercial License",
+        "PSD Source Files",
+        "24/7 Support"
+      ],
+      images: []
+    },
+    {
+      id: 3,
+      title: "Twitch Overlay Bundle",
+      category: "Graphics Packs", 
+      price: "$24.99",
+      image: "https://via.placeholder.com/400x300/7c3aed/white?text=Twitch+Overlays",
+      description: "Complete streaming overlay package with animated elements and customizable components.",
+      detailedDescription: "Transform your stream with our professional overlay bundle featuring animated alerts, customizable panels, and modern design elements perfect for any streaming setup.",
+      tags: ["Twitch", "Streaming", "Overlays", "Animation"],
+      features: [
+        "20+ Overlay Designs",
+        "Animated Alerts",
+        "Customizable Panels",
+        "OBS Compatible",
+        "4K Resolution",
+        "Easy Setup Guide"
+      ],
+      images: []
+    }
+  ];
+
+  const filteredProducts = selectedCategory === 'All' 
+    ? products 
+    : products.filter(product => product.category === selectedCategory);
+
+  const ProductModal = ({ product, onClose }) => {
+    if (!product) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="sticky top-0 bg-white dark:bg-slate-800 p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{product.title}</h2>
+            <button 
+              onClick={onClose}
+              className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          
+          <div className="p-6">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <img 
+                  src={product.image} 
+                  alt={product.title}
+                  className="w-full h-64 object-cover rounded-lg mb-4"
+                />
+                <div className="space-y-4">
+                  <div>
+                    <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Features:</h3>
+                    <ul className="space-y-2">
+                      {product.features.map((feature, index) => (
+                        <li key={index} className="flex items-center text-slate-600 dark:text-slate-400">
+                          <CheckCircle className="w-4 h-4 text-teal-500 mr-2 flex-shrink-0" />
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div>
+                    <h3 className="font-semibold text-slate-900 dark:text-white mb-2">Tags:</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {product.tags.map((tag, index) => (
+                        <Badge key={index} variant="secondary" className="bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-200">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div>
+                <div className="mb-6">
+                  <div className="text-3xl font-bold text-teal-600 dark:text-teal-400 mb-4">{product.price}</div>
+                  <p className="text-slate-600 dark:text-slate-400 mb-4">{product.description}</p>
+                </div>
+                
+                <div className="mb-6">
+                  <h3 className="font-semibold text-slate-900 dark:text-white mb-4">Description:</h3>
+                  <div className="prose prose-sm dark:prose-invert max-w-none">
+                    <div className="text-slate-600 dark:text-slate-400 whitespace-pre-line">
+                      {product.detailedDescription}
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-3">
+                  <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Add to Cart
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    <Eye className="w-4 h-4 mr-2" />
+                    Preview
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
       <FloatingElements />
       <div className="relative z-10 py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
-            Our <span className="gradient-text">Store</span>
-          </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 mb-12">
-            Premium design resources and exclusive templates
-          </p>
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
+              Our <span className="gradient-text">Store</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
+              Premium digital products, game addons, and design resources
+            </p>
+          </div>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap justify-center gap-4 mb-12">
+            {categories.map((category) => (
+              <Button
+                key={category}
+                variant={selectedCategory === category ? "default" : "outline"}
+                onClick={() => setSelectedCategory(category)}
+                className={selectedCategory === category 
+                  ? "bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white" 
+                  : ""}
+              >
+                <Filter className="w-4 h-4 mr-2" />
+                {category}
+              </Button>
+            ))}
+          </div>
+
+          {/* Products Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+            {filteredProducts.map((product) => (
+              <Card key={product.id} className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+                <div className="relative overflow-hidden rounded-t-lg">
+                  <img 
+                    src={product.image} 
+                    alt={product.title}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <Badge className="bg-teal-500 text-white">
+                      {product.category}
+                    </Badge>
+                  </div>
+                </div>
+                
+                <CardContent className="p-6">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-2">{product.title}</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mb-4 line-clamp-2">{product.description}</p>
+                  
+                  <div className="flex flex-wrap gap-1 mb-4">
+                    {product.tags.slice(0, 3).map((tag, index) => (
+                      <Badge key={index} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="text-2xl font-bold text-teal-600 dark:text-teal-400">{product.price}</div>
+                    <div className="space-x-2">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => setSelectedProduct(product)}
+                      >
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                      <Button size="sm" className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                        <ShoppingCart className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-50 to-teal-100 dark:from-teal-900/20 dark:to-teal-800/20 backdrop-blur-sm">
+              <CardContent className="p-12">
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
+                  Need Something Custom?
+                </h2>
+                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
+                  Can't find what you're looking for? We offer custom development and design services tailored to your specific needs.
+                </p>
+                <Link to="/contact">
+                  <Button size="lg" className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                    Request Custom Work
+                    <ArrowRight className="w-5 h-5 ml-2" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
+
+      {/* Product Modal */}
+      {selectedProduct && (
+        <ProductModal 
+          product={selectedProduct} 
+          onClose={() => setSelectedProduct(null)} 
+        />
+      )}
     </div>
   );
 };
