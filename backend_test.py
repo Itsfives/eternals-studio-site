@@ -1091,14 +1091,17 @@ class EternalsStudioAPITester:
         return True
 
     def run_all_tests(self):
-        """Run all test suites"""
-        print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING")
+        """Run all test suites including OAuth testing"""
+        print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH OAUTH")
         print("=" * 60)
         
         test_results = []
         
         # Run test suites in order
         test_results.append(("Authentication", self.test_user_registration_and_login()))
+        test_results.append(("OAuth Endpoints", self.test_oauth_endpoints()))
+        test_results.append(("OAuth User Model", self.test_oauth_user_model_updates()))
+        test_results.append(("Role-Based Routing", self.test_role_based_routing_logic()))
         test_results.append(("Project Management", self.test_project_management()))
         test_results.append(("Invoice & Locking", self.test_invoice_management()))
         test_results.append(("Messaging System", self.test_messaging_system()))
@@ -1120,7 +1123,7 @@ class EternalsStudioAPITester:
         print(f"\nOverall: {self.tests_passed}/{self.tests_run} tests passed")
         
         if self.tests_passed == self.tests_run:
-            print("🎉 ALL TESTS PASSED! Backend is working correctly.")
+            print("🎉 ALL TESTS PASSED! Backend with OAuth is working correctly.")
             return 0
         else:
             failed_tests = self.tests_run - self.tests_passed
