@@ -2063,6 +2063,45 @@ const PortfolioPage = () => {
             </div>
             <SharedStatsCounter />
           </div>
+
+          {/* Start Your Project Section */}
+          <div className="text-center">
+            <Card className="border-0 shadow-xl bg-gradient-to-r from-teal-50 to-purple-50 dark:from-teal-900/20 dark:to-purple-900/20 backdrop-blur-sm">
+              <CardContent className="p-12">
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-6">
+                  Ready to Start Your Project?
+                </h2>
+                <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
+                  Let's bring your vision to life. From concept to completion, we'll work with you to create something extraordinary that stands out from the crowd.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/contact">
+                    <Button size="lg" className="bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white">
+                      Start Your Project
+                      <ArrowRight className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/services">
+                    <Button size="lg" variant="outline" className="border-slate-300 dark:border-slate-600">
+                      View Our Services
+                      <Eye className="w-5 h-5 ml-2" />
+                    </Button>
+                  </Link>
+                </div>
+                <div className="mt-8 text-center">
+                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-4">
+                    Join over <span className="font-semibold text-teal-600 dark:text-teal-400">100+ satisfied clients</span> who trust us with their creative projects
+                  </p>
+                  <div className="flex justify-center items-center space-x-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                    ))}
+                    <span className="ml-2 text-slate-600 dark:text-slate-400 text-sm">5.0 from 50+ reviews</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
     </div>
