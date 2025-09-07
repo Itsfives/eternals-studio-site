@@ -2896,9 +2896,9 @@ const AuthPage = () => {
 
           <CardContent className="px-8 pb-8">
             <Tabs value={isLogin ? 'login' : 'register'} onValueChange={(value) => setIsLogin(value === 'login')}>
-              <TabsList className="grid w-full grid-cols-2 mb-6 bg-slate-700">
-                <TabsTrigger value="login" className="data-[state=active]:bg-slate-600 text-white">Sign In</TabsTrigger>
-                <TabsTrigger value="register" className="data-[state=active]:bg-slate-600 text-white">Sign Up</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 bg-slate-100 dark:bg-slate-700">
+                <TabsTrigger value="login" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 text-slate-900 dark:text-white">Sign In</TabsTrigger>
+                <TabsTrigger value="register" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-600 text-slate-900 dark:text-white">Sign Up</TabsTrigger>
               </TabsList>
 
               <TabsContent value="login" className="space-y-4">
