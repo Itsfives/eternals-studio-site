@@ -2503,14 +2503,14 @@ const ContactPage = () => {
 
           {/* Newsletter Subscription */}
           <div className="mt-16 text-center">
-            <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm max-w-2xl mx-auto">
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm max-w-2xl mx-auto">
               <CardContent className="p-8">
-                <h3 className="text-2xl font-bold text-white mb-4">Subscribe newsletter</h3>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Subscribe newsletter</h3>
                 <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                   <Input
                     type="email"
                     placeholder="Email address"
-                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500 flex-1"
+                    className="bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500 flex-1"
                   />
                   <Button className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-8">
                     Subscribe
