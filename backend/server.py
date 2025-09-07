@@ -694,36 +694,6 @@ async def update_counter_stats(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error updating counter stats: {str(e)}")
 
-# Enhanced Testimonial Management Routes
-@api_router.post("/testimonials/{testimonial_id}/approve")
-async def approve_testimonial(testimonial_id: str, current_user: User = Depends(get_current_user)):
-    """Approve a testimonial (Admin only)"""
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
-        raise HTTPException(status_code=403, detail="Not authorized to approve testimonials")
-    
-    result = await db.testimonials.update_one(
-        {"id": testimonial_id},
-        {"$set": {"approved": True, "approved_by": current_user.id, "approved_at": datetime.now(timezone.utc)}}
-    )
-    
-    if result.matched_count == 0:
-        raise HTTPException(status_code=404, detail="Testimonial not found")
-    
-    return {"message": "Testimonial approved successfully"}
-
-@api_router.delete("/testimonials/{testimonial_id}")
-async def delete_testimonial(testimonial_id: str, current_user: User = Depends(get_current_user)):
-    """Delete a testimonial (Admin only)"""
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
-        raise HTTPException(status_code=403, detail="Not authorized to delete testimonials")
-    
-    result = await db.testimonials.delete_one({"id": testimonial_id})
-    
-    if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Testimonial not found")
-    
-    return {"message": "Testimonial deleted successfully"}
-
 # User Management Routes (Super Admin only)
 @api_router.get("/users", response_model=List[User])
 async def get_all_users(current_user: User = Depends(get_current_user)):
