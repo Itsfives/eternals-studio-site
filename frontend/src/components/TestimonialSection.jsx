@@ -11,6 +11,13 @@ const TestimonialSection = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    rating: 5,
+    content: ''
+  });
 
   // Default testimonial (current one from website)
   const defaultTestimonial = {
