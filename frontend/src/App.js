@@ -62,6 +62,7 @@ const AuthContext = React.createContext();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -72,12 +73,15 @@ const AuthProvider = ({ children }) => {
 
   const fetchUserInfo = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`${API}/auth/me`);
       setUser(response.data);
     } catch (error) {
       localStorage.removeItem('token');
       setToken(null);
       delete axios.defaults.headers.common['Authorization'];
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,8 +113,24 @@ const AuthProvider = ({ children }) => {
     return response.data;
   };
 
+  // Handle OAuth token from URL or localStorage
+  const handleOAuthToken = (oauthToken) => {
+    if (oauthToken) {
+      localStorage.setItem('token', oauthToken);
+      setToken(oauthToken);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, register, isAuthenticated: !!token }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      logout, 
+      register, 
+      handleOAuthToken,
+      isAuthenticated: !!token,
+      loading 
+    }}>
       {children}
     </AuthContext.Provider>
   );
