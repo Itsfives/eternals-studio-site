@@ -3800,6 +3800,7 @@ const App = () => {
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/client-portal" element={<ClientPortal />} />
+              <Route path="/faq" element={<FAQPage />} />
             </Routes>
             <Footer />
             <Toaster />
