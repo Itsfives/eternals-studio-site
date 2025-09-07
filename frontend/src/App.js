@@ -2341,13 +2341,13 @@ const ContactPage = () => {
 
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Contact Form */}
-            <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
+            <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-xl text-white flex items-center">
+                <CardTitle className="text-xl text-slate-900 dark:text-white flex items-center">
                   <CheckCircle className="w-5 h-5 text-teal-400 mr-2" />
                   Send us a message
                 </CardTitle>
-                <CardDescription className="text-slate-400">
+                <CardDescription className="text-slate-600 dark:text-slate-400">
                   Fill out the form below and we'll get back to you within 24 hours.
                 </CardDescription>
               </CardHeader>
