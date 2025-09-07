@@ -3108,7 +3108,181 @@ const AuthPage = () => {
   );
 };
 
-// Dashboard Component (placeholder)
+// Client Portal Component
+const ClientPortal = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/auth');
+      return;
+    }
+    // If user is admin/super_admin, redirect to dashboard
+    if (user.role === 'admin' || user.role === 'super_admin' || user.role === 'editor') {
+      navigate('/dashboard');
+      return;
+    }
+  }, [user, navigate]);
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-white dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-slate-600 dark:text-slate-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
+      <div className="py-20 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Welcome back, <span className="gradient-text">{user.full_name}</span>
+            </h1>
+            <p className="text-slate-600 dark:text-slate-400">
+              Manage your projects, view invoices, and communicate with our team.
+            </p>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid md:grid-cols-4 gap-6 mb-12">
+            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Briefcase className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">5</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">Active Projects</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">12</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">Completed</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">3</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">Pending Invoices</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+              <CardContent className="p-6 text-center">
+                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <MessageSquare className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">8</h3>
+                <p className="text-slate-600 dark:text-slate-400 text-sm">New Messages</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Main Content */}
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Current Projects */}
+            <div className="lg:col-span-2">
+              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-slate-900 dark:text-white">Current Projects</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { name: "Brand Identity Package", status: "In Progress", progress: 75 },
+                      { name: "Website Development", status: "Review", progress: 90 },
+                      { name: "Marketing Materials", status: "In Progress", progress: 45 }
+                    ].map((project, index) => (
+                      <div key={index} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="font-semibold text-slate-900 dark:text-white">{project.name}</h4>
+                          <Badge variant="outline" className="text-xs">
+                            {project.status}
+                          </Badge>
+                        </div>
+                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-2">
+                          <div 
+                            className="bg-gradient-to-r from-teal-500 to-teal-600 h-2 rounded-full" 
+                            style={{ width: `${project.progress}%` }}
+                          ></div>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{project.progress}% complete</p>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              {/* Quick Actions */}
+              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-slate-900 dark:text-white">Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Project Request
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Send Message
+                  </Button>
+                  <Button variant="outline" className="w-full">
+                    <FileText className="w-4 h-4 mr-2" />
+                    View Invoices
+                  </Button>
+                </CardContent>
+              </Card>
+
+              {/* Recent Messages */}
+              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-slate-900 dark:text-white">Recent Messages</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {[
+                      { from: "Design Team", message: "Logo concepts are ready for review", time: "2h ago" },
+                      { from: "Project Manager", message: "Timeline update for website project", time: "1d ago" }
+                    ].map((msg, index) => (
+                      <div key={index} className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                        <div className="flex justify-between items-start mb-1">
+                          <p className="font-medium text-slate-900 dark:text-white text-sm">{msg.from}</p>
+                          <span className="text-xs text-slate-500 dark:text-slate-400">{msg.time}</span>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">{msg.message}</p>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Dashboard Component (Admin Dashboard)
 const Dashboard = () => {
   const { user, logout } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
