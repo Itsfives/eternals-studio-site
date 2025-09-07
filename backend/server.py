@@ -363,6 +363,8 @@ async def oauth_login(provider: str):
             "provider": provider
         }
         
+    except HTTPException:
+        raise  # Re-raise HTTP exceptions as-is
     except Exception as e:
         logger.error(f"OAuth login error for {provider}: {e}")
         raise HTTPException(status_code=500, detail=f"OAuth login failed: {str(e)}")
