@@ -338,6 +338,91 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 async def get_current_user_info(current_user: User = Depends(get_current_user)):
     return current_user
 
+# OAuth Authentication Routes
+@api_router.get("/auth/{provider}/login")
+async def oauth_login(provider: str):
+    """Initiate OAuth login for specified provider"""
+    try:
+        provider_instance = oauth_manager.get_provider(provider)
+        if not provider_instance:
+            raise HTTPException(status_code=400, detail=f"OAuth provider '{provider}' not available")
+        
+        # Generate state for CSRF protection
+        state = secrets.token_urlsafe(32)
+        
+        # Store state in session (in production, use Redis or similar)
+        # For now, we'll include it in the callback URL
+        
+        authorization_url, _ = provider_instance.get_authorization_url(state=state)
+        
+        return {
+            "authorization_url": authorization_url,
+            "state": state,
+            "provider": provider
+        }
+        
+    except Exception as e:
+        logger.error(f"OAuth login error for {provider}: {e}")
+        raise HTTPException(status_code=500, detail=f"OAuth login failed: {str(e)}")
+
+@api_router.get("/auth/{provider}/callback")
+async def oauth_callback(
+    provider: str,
+    code: str = Query(...),
+    state: str = Query(...)
+):
+    """Handle OAuth callback from provider"""
+    try:
+        provider_instance = oauth_manager.get_provider(provider)
+        if not provider_instance:
+            raise HTTPException(status_code=400, detail=f"OAuth provider '{provider}' not available")
+        
+        # Exchange code for access token
+        token_data = await provider_instance.get_access_token(code, state)
+        access_token = token_data.get("access_token")
+        
+        if not access_token:
+            raise HTTPException(status_code=400, detail="Failed to get access token")
+        
+        # Get user info from provider
+        user_info = await provider_instance.get_user_info(access_token)
+        
+        # Create or update user in database
+        user = await create_or_update_oauth_user(user_info)
+        
+        # Generate JWT token for our app
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        jwt_token = create_access_token(
+            data={"sub": user.email}, expires_delta=access_token_expires
+        )
+        
+        # Determine redirect URL based on user role
+        redirect_url = determine_redirect_url(user)
+        
+        # Add token to redirect URL as query parameter (frontend will handle it)
+        redirect_url_with_token = f"{redirect_url}?token={jwt_token}&user_id={user.id}"
+        
+        return RedirectResponse(url=redirect_url_with_token)
+        
+    except Exception as e:
+        logger.error(f"OAuth callback error for {provider}: {e}")
+        # Redirect to frontend with error
+        error_url = f"https://image-showcase-36.preview.emergentagent.com/auth?error=oauth_failed&provider={provider}"
+        return RedirectResponse(url=error_url)
+
+@api_router.get("/auth/providers")
+async def get_available_providers():
+    """Get list of available OAuth providers"""
+    return {
+        "providers": oauth_manager.get_available_providers(),
+        "enabled": {
+            "discord": oauth_manager.is_provider_available("discord"),
+            "google": oauth_manager.is_provider_available("google"),
+            "apple": oauth_manager.is_provider_available("apple"),
+            "linkedin": oauth_manager.is_provider_available("linkedin")
+        }
+    }
+
 # Project routes
 @api_router.post("/projects", response_model=Project)
 async def create_project(project_data: ProjectCreate, current_user: User = Depends(get_current_user)):
