@@ -2886,10 +2886,10 @@ const AuthPage = () => {
           </div>
 
           <CardHeader className="text-center pb-4">
-            <CardTitle className="text-2xl text-white mb-2">
+            <CardTitle className="text-2xl text-slate-900 dark:text-white mb-2">
               Welcome to Eternals Studio
             </CardTitle>
-            <CardDescription className="text-slate-400">
+            <CardDescription className="text-slate-600 dark:text-slate-400">
               Sign in to your account or create a new one
             </CardDescription>
           </CardHeader>
