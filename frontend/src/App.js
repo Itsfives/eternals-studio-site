@@ -2078,8 +2078,10 @@ const AboutPage = () => {
 // Contact Page Component
 const ContactPage = () => {
   const [formData, setFormData] = useState({
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
+    company: '',
     subject: '',
     message: ''
   });
@@ -2090,94 +2092,174 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
+    <div className="min-h-screen bg-slate-900 transition-colors duration-300 relative">
       <FloatingElements />
       <div className="relative z-10 py-20 px-4">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6">
-              Get In <span className="gradient-text">Touch</span>
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+              Contact <span className="gradient-text">Information</span>
             </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-              Ready to bring your vision to life? Let's discuss your project and create something amazing together.
+            <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+              Have questions? We're here to help. Reach out to us through any of the following methods.
             </p>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12">
-            <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+            {/* Contact Form */}
+            <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-2xl gradient-text">Send us a message</CardTitle>
-                <CardDescription className="text-slate-600 dark:text-slate-400">
+                <CardTitle className="text-xl text-white flex items-center">
+                  <CheckCircle className="w-5 h-5 text-teal-400 mr-2" />
+                  Send us a message
+                </CardTitle>
+                <CardDescription className="text-slate-400">
                   Fill out the form below and we'll get back to you within 24 hours.
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
+                      <Label htmlFor="firstName" className="text-white text-sm">First Name *</Label>
                       <Input
-                        id="name"
-                        value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 dark:focus:border-teal-400"
+                        id="firstName"
+                        placeholder="Enter your first name"
+                        value={formData.firstName}
+                        onChange={(e) => setFormData({...formData, firstName: e.target.value})}
+                        className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
                         required
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="lastName" className="text-white text-sm">Last Name *</Label>
                       <Input
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 dark:focus:border-teal-400"
+                        id="lastName"
+                        placeholder="Enter your last name"
+                        value={formData.lastName}
+                        onChange={(e) => setFormData({...formData, lastName: e.target.value})}
+                        className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
                         required
                       />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
+                    <Label htmlFor="email" className="text-white text-sm">Email *</Label>
                     <Input
-                      id="subject"
-                      value={formData.subject}
-                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                      className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 dark:focus:border-teal-400"
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({...formData, email: e.target.value})}
+                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
+                    <Label htmlFor="company" className="text-white text-sm">Company</Label>
+                    <Input
+                      id="company"
+                      placeholder="Enter your company name"
+                      value={formData.company}
+                      onChange={(e) => setFormData({...formData, company: e.target.value})}
+                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="subject" className="text-white text-sm">Subject</Label>
+                    <Input
+                      id="subject"
+                      placeholder="What's this about?"
+                      value={formData.subject}
+                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="text-white text-sm">Message *</Label>
                     <Textarea
                       id="message"
                       rows={6}
+                      placeholder="Tell us about your project or question..."
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 dark:focus:border-teal-400 resize-none"
+                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500 resize-none"
                       required
                     />
                   </div>
                   <Button 
                     type="submit" 
-                    className="w-full bg-gradient-to-r from-teal-500 to-purple-500 hover:from-teal-600 hover:to-purple-600 text-white"
+                    className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white py-3"
                   >
+                    <Send className="w-4 h-4 mr-2" />
                     Send Message
-                    <Send className="w-4 h-4 ml-2" />
                   </Button>
                 </form>
               </CardContent>
             </Card>
 
-            <div className="space-y-8">
-              <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+            {/* Contact Information */}
+            <div className="space-y-6">
+              {/* Support Card */}
+              <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
                 <CardContent className="p-6">
-                  <div className="flex items-center space-x-4">
-                    <div className="p-3 bg-gradient-to-r from-teal-100 to-teal-200 dark:from-teal-900/30 dark:to-teal-800/30 rounded-full">
-                      <Mail className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-teal-500/20 rounded-full">
+                      <Mail className="w-6 h-6 text-teal-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900 dark:text-white">Email Us</h3>
-                      <p className="text-slate-600 dark:text-slate-400">hello@eternalsstudio.com</p>
+                      <h3 className="font-semibold text-white text-lg mb-2">Support</h3>
+                      <p className="text-teal-400 text-lg mb-2">Eternalsanctuarygg@gmail.com</p>
+                      <p className="text-slate-400 text-sm">Send us an email anytime</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Phone Card */}
+              <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-teal-500/20 rounded-full">
+                      <Phone className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white text-lg mb-2">Connect</h3>
+                      <p className="text-teal-400 text-lg mb-2">(240) 523-3976</p>
+                      <p className="text-slate-400 text-sm">Call us for project inquiries</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Social Media Card */}
+              <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-teal-500/20 rounded-full">
+                      <MapPin className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white text-lg mb-2">Social Media</h3>
+                      <p className="text-teal-400 text-lg mb-2">Follow us on Instagram, Discord & Twitter</p>
+                      <p className="text-slate-400 text-sm">Stay connected with our community</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Response Time Card */}
+              <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
+                <CardContent className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="p-3 bg-teal-500/20 rounded-full">
+                      <Clock className="w-6 h-6 text-teal-400" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-white text-lg mb-2">Response Time</h3>
+                      <p className="text-teal-400 text-lg mb-2">24-48 hours</p>
+                      <p className="text-slate-400 text-sm">We'll get back to you quickly</p>
                     </div>
                   </div>
                 </CardContent>
@@ -2185,17 +2267,23 @@ const ContactPage = () => {
             </div>
           </div>
 
-          {/* Stats Section */}
-          <div className="mb-16">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">
-                Why Choose <span className="gradient-text">Eternals Studio?</span>
-              </h2>
-              <p className="text-slate-600 dark:text-slate-400">
-                Our track record speaks for itself
-              </p>
-            </div>
-            <SharedStatsCounter />
+          {/* Newsletter Subscription */}
+          <div className="mt-16 text-center">
+            <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm max-w-2xl mx-auto">
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-bold text-white mb-4">Subscribe newsletter</h3>
+                <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+                  <Input
+                    type="email"
+                    placeholder="Email address"
+                    className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500 flex-1"
+                  />
+                  <Button className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white px-8">
+                    Subscribe
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
