@@ -70,6 +70,42 @@ const TestimonialSection = () => {
     setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
 
+  const handleSubmitTestimonial = async (e) => {
+    e.preventDefault();
+    
+    try {
+      // Create the testimonial data
+      const testimonialData = {
+        ...formData,
+        approved: false, // Default to not approved for admin review
+        created_at: new Date().toISOString()
+      };
+
+      // Get the backend URL from environment
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      
+      const response = await fetch(`${backendUrl}/api/testimonials`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(testimonialData),
+      });
+
+      if (response.ok) {
+        // Reset form and close modal
+        setFormData({ name: '', company: '', rating: 5, content: '' });
+        setShowModal(false);
+        alert('Thank you! Your testimonial has been submitted and is awaiting approval.');
+      } else {
+        throw new Error('Failed to submit testimonial');
+      }
+    } catch (error) {
+      console.error('Error submitting testimonial:', error);
+      alert('Sorry, there was an error submitting your testimonial. Please try again.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto">
