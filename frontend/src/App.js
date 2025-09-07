@@ -3200,48 +3200,58 @@ const ClientPortal = () => {
             </p>
           </div>
 
-          {/* Quick Stats */}
-          <div className="grid md:grid-cols-4 gap-6 mb-12">
-            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Briefcase className="w-6 h-6 text-teal-600 dark:text-teal-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">5</h3>
-                <p className="text-slate-600 dark:text-slate-400 text-sm">Active Projects</p>
-              </CardContent>
-            </Card>
+          {/* Client Dashboard Tabs */}
+          <Tabs defaultValue="overview" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 bg-slate-100 dark:bg-slate-800 mb-8">
+              <TabsTrigger value="overview" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Overview</TabsTrigger>
+              <TabsTrigger value="projects" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">My Projects</TabsTrigger>
+              <TabsTrigger value="messages" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Messages</TabsTrigger>
+              <TabsTrigger value="invoices" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Invoices</TabsTrigger>
+            </TabsList>
 
-            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">12</h3>
-                <p className="text-slate-600 dark:text-slate-400 text-sm">Completed</p>
-              </CardContent>
-            </Card>
+            <TabsContent value="overview">
+              {/* Quick Stats */}
+              <div className="grid md:grid-cols-4 gap-6 mb-12">
+                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Briefcase className="w-6 h-6 text-teal-600 dark:text-teal-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">3</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">Active Projects</p>
+                  </CardContent>
+                </Card>
 
-            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">3</h3>
-                <p className="text-slate-600 dark:text-slate-400 text-sm">Pending Invoices</p>
-              </CardContent>
-            </Card>
+                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">8</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">Completed</p>
+                  </CardContent>
+                </Card>
 
-            <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-              <CardContent className="p-6 text-center">
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <MessageSquare className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                </div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">8</h3>
-                <p className="text-slate-600 dark:text-slate-400 text-sm">New Messages</p>
-              </CardContent>
-            </Card>
-          </div>
+                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <FileText className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">2</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">Pending Invoices</p>
+                  </CardContent>
+                </Card>
+
+                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                  <CardContent className="p-6 text-center">
+                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <MessageSquare className="w-6 h-6 text-purple-600 dark:text-purple-400" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">5</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm">New Messages</p>
+                  </CardContent>
+                </Card>
+              </div>
 
           {/* Main Content */}
           <div className="grid lg:grid-cols-3 gap-8">
