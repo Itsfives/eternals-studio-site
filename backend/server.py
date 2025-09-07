@@ -99,6 +99,9 @@ class User(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     avatar_url: Optional[str] = None
     company: Optional[str] = None
+    oauth_providers: Dict[str, Dict[str, Any]] = Field(default_factory=dict)  # Store OAuth provider data
+    last_login: Optional[datetime] = None
+    login_method: Optional[str] = None  # "password", "discord", "google", etc.
 
 class UserCreate(BaseModel):
     email: EmailStr
