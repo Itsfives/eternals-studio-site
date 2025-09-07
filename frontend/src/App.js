@@ -2366,13 +2366,13 @@ const ContactPage = () => {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-white text-sm">Last Name *</Label>
+                      <Label htmlFor="lastName" className="text-slate-900 dark:text-white text-sm">Last Name *</Label>
                       <Input
                         id="lastName"
                         placeholder="Enter your last name"
                         value={formData.lastName}
                         onChange={(e) => setFormData({...formData, lastName: e.target.value})}
-                        className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
+                        className="bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
                         required
                       />
                     </div>
