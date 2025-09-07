@@ -15,8 +15,7 @@ from enum import Enum
 import shutil
 import secrets
 
-# Import OAuth providers
-from auth.oauth_providers import oauth_manager
+# OAuth providers will be imported after env loading
 
 # Counter Statistics Model
 class CounterStats(BaseModel):
