@@ -2452,16 +2452,16 @@ const ContactPage = () => {
               </Card>
 
               {/* Phone Card */}
-              <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
+              <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     <div className="p-3 bg-teal-500/20 rounded-full">
                       <Phone className="w-6 h-6 text-teal-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white text-lg mb-2">Connect</h3>
-                      <p className="text-teal-400 text-lg mb-2">(240) 523-3976</p>
-                      <p className="text-slate-400 text-sm">Call us for project inquiries</p>
+                      <h3 className="font-semibold text-slate-900 dark:text-white text-lg mb-2">Connect</h3>
+                      <p className="text-teal-500 dark:text-teal-400 text-lg mb-2">(240) 523-3976</p>
+                      <p className="text-slate-600 dark:text-slate-400 text-sm">Call us for project inquiries</p>
                     </div>
                   </div>
                 </CardContent>
