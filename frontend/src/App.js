@@ -3575,6 +3575,7 @@ const App = () => {
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/client-portal" element={<ClientPortal />} />
             </Routes>
             <Footer />
             <Toaster />
