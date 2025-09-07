@@ -449,11 +449,27 @@ async def oauth_login(provider: str):
 @api_router.get("/auth/{provider}/callback")
 async def oauth_callback(
     provider: str,
-    code: str = Query(...),
-    state: str = Query(...)
+    code: Optional[str] = Query(None),
+    state: Optional[str] = Query(None),
+    error: Optional[str] = Query(None),
+    error_description: Optional[str] = Query(None)
 ):
-    """Handle OAuth callback from provider"""
+    """Handle OAuth callback from provider (both success and error scenarios)"""
     try:
+        # Check if OAuth provider returned an error
+        if error:
+            logger.error(f"OAuth error from {provider}: {error} - {error_description}")
+            error_message = error_description or error
+            # Redirect to frontend with OAuth error
+            error_url = f"https://graphix-hub-4.preview.emergentagent.com/auth?error={error}&provider={provider}&message={error_message}"
+            return RedirectResponse(url=error_url)
+        
+        # Check if we have required success parameters
+        if not code or not state:
+            logger.error(f"OAuth callback missing required parameters: code={bool(code)}, state={bool(state)}")
+            error_url = f"https://graphix-hub-4.preview.emergentagent.com/auth?error=missing_parameters&provider={provider}&message=Missing required OAuth parameters"
+            return RedirectResponse(url=error_url)
+        
         logger.info(f"OAuth callback received for {provider} with code: {code[:10]}...")
         
         provider_instance = oauth_manager.get_provider(provider)
