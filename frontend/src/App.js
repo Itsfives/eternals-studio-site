@@ -2436,16 +2436,16 @@ const ContactPage = () => {
             {/* Contact Information */}
             <div className="space-y-6">
               {/* Support Card */}
-              <Card className="border border-slate-700 bg-slate-800/90 backdrop-blur-sm">
+              <Card className="border-0 shadow-xl bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-4">
                     <div className="p-3 bg-teal-500/20 rounded-full">
                       <Mail className="w-6 h-6 text-teal-400" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-white text-lg mb-2">Support</h3>
-                      <p className="text-teal-400 text-lg mb-2">Eternalsanctuarygg@gmail.com</p>
-                      <p className="text-slate-400 text-sm">Send us an email anytime</p>
+                      <h3 className="font-semibold text-slate-900 dark:text-white text-lg mb-2">Support</h3>
+                      <p className="text-teal-500 dark:text-teal-400 text-lg mb-2">Eternalsanctuarygg@gmail.com</p>
+                      <p className="text-slate-600 dark:text-slate-400 text-sm">Send us an email anytime</p>
                     </div>
                   </div>
                 </CardContent>
