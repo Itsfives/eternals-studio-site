@@ -81,9 +81,12 @@ class UserRole(str, Enum):
 
 class ProjectStatus(str, Enum):
     PENDING = "pending"
+    DRAFT = "draft"
     IN_PROGRESS = "in_progress"
     REVIEW = "review"
     COMPLETED = "completed"
+    ON_HOLD = "on_hold"
+    CANCELLED = "cancelled"
     LOCKED = "locked"
 
 class InvoiceStatus(str, Enum):
@@ -127,15 +130,6 @@ class OAuthUserCreate(BaseModel):
     provider: str
     provider_id: str
     role: UserRole = UserRole.CLIENT
-
-# Enhanced Project Models
-class ProjectStatus(str, Enum):
-    DRAFT = "draft"
-    IN_PROGRESS = "in_progress"
-    REVIEW = "review"
-    COMPLETED = "completed"
-    ON_HOLD = "on_hold"
-    CANCELLED = "cancelled"
 
 class ProjectPriority(str, Enum):
     LOW = "low"
