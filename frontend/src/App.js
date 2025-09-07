@@ -2873,7 +2873,7 @@ const AuthPage = () => {
       </button>
 
       <div className="relative z-10 w-full max-w-md mx-auto px-4">
-        <Card className="border border-slate-700 bg-slate-800/95 backdrop-blur-sm shadow-2xl">
+        <Card className="border-0 shadow-2xl bg-white/95 dark:bg-slate-800/95 backdrop-blur-sm">
           {/* Logo */}
           <div className="text-center pt-8 pb-4">
             <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center relative overflow-hidden">
