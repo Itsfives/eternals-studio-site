@@ -2326,7 +2326,7 @@ const ContactPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 transition-colors duration-300 relative">
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative">
       <FloatingElements />
       <div className="relative z-10 py-20 px-4">
         <div className="max-w-7xl mx-auto">
