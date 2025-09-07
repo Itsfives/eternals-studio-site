@@ -932,7 +932,19 @@ const ProjectDetailPage = () => {
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/061ec31e-4c4b-4876-891d-5cae1f814723_rw_1920-YD06V7LvWzsnbK89.jpg",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/2f6c33e9-d982-445b-8c7d-a7faf985f328_rw_1920-dJo6MpDypjHb2GvJ.jpg",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/9aee2acb-f837-4ad2-8f31-1dd541008543_rw_1920-Aq2v38P5VzunLWxv.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/c2e76595-68f3-49c6-8fb2-eb5abe34a0ad_rw_1920-mnlvD0ok51fPbegz.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/c2e76595-68f3-49c6-8fb2-eb5abe34a0ad_rw_1920-mnlvD0ok51fPbegz.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/a09ef8e0-3b89-47f5-b506-01a2ebf6bec9_rw_1920-Aq2vQVMbRECMrR43.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/4b07b4bc-b0f2-44d0-9b1a-4847ade8ad0a_rw_1920-YZ9V2OxJJKiMANkw.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/8bb16b6c-0fc4-4fcb-b72d-4e6f1b6c8e62_rw_1920-YrDlWr6wqET7Z0LJ.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/55c9aaab-47dc-4a1b-8e3c-a1b6dc48fe17_rw_1920-AMqb5jXqRgfybKVy.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/8bb4b896-8739-448e-b2e1-7c6f44ca1b3f_rw_1920-dWxyGJoMkWfPZLrE.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/9fc8b7f4-b8da-4e14-a4b6-2d3edfe5a8a5_rw_1920-ARGVrM7m3WCN8rM4.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/7f15b04c-1b2f-47c1-8ea7-a8c6d1dc8f9e_rw_1920-AlevaEMyRKCgNJV4.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/4329ab9f-d5cd-4d84-8ea9-2da55cf47b8c_rw_1920-ARGVrM7mN4UPGJzM.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/d84f2c51-8d1b-46b8-8c71-4a2b6f8e5c93_rw_1920-mePvb2KQnXfNNlE3.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/6eac33f8-b4e9-4f85-b26f-7e2e5b4c8d91_rw_1920-dWxyGJoMkxHnJLgE.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/3c4e8f92-8b1d-4982-b5e7-a2c8f4e9d6b1_rw_1920-YrDlWr6w0RSd6LpJ.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/b7c9e2f4-3d5a-4c8e-b9f2-6e1c7a4d8b95_rw_1920-AMqb5jXqBMTNK5qy.jpg"
       ]
     },
     {
@@ -1383,7 +1395,19 @@ const PortfolioPage = () => {
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/061ec31e-4c4b-4876-891d-5cae1f814723_rw_1920-YD06V7LvWzsnbK89.jpg",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/2f6c33e9-d982-445b-8c7d-a7faf985f328_rw_1920-dJo6MpDypjHb2GvJ.jpg",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/9aee2acb-f837-4ad2-8f31-1dd541008543_rw_1920-Aq2v38P5VzunLWxv.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/c2e76595-68f3-49c6-8fb2-eb5abe34a0ad_rw_1920-mnlvD0ok51fPbegz.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=480,fit=crop/YNqO7k0WyEUyB3w6/c2e76595-68f3-49c6-8fb2-eb5abe34a0ad_rw_1920-mnlvD0ok51fPbegz.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/a09ef8e0-3b89-47f5-b506-01a2ebf6bec9_rw_1920-Aq2vQVMbRECMrR43.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/4b07b4bc-b0f2-44d0-9b1a-4847ade8ad0a_rw_1920-YZ9V2OxJJKiMANkw.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/8bb16b6c-0fc4-4fcb-b72d-4e6f1b6c8e62_rw_1920-YrDlWr6wqET7Z0LJ.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/55c9aaab-47dc-4a1b-8e3c-a1b6dc48fe17_rw_1920-AMqb5jXqRgfybKVy.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/8bb4b896-8739-448e-b2e1-7c6f44ca1b3f_rw_1920-dWxyGJoMkWfPZLrE.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/9fc8b7f4-b8da-4e14-a4b6-2d3edfe5a8a5_rw_1920-ARGVrM7m3WCN8rM4.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/7f15b04c-1b2f-47c1-8ea7-a8c6d1dc8f9e_rw_1920-AlevaEMyRKCgNJV4.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/4329ab9f-d5cd-4d84-8ea9-2da55cf47b8c_rw_1920-ARGVrM7mN4UPGJzM.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/d84f2c51-8d1b-46b8-8c71-4a2b6f8e5c93_rw_1920-mePvb2KQnXfNNlE3.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/6eac33f8-b4e9-4f85-b26f-7e2e5b4c8d91_rw_1920-dWxyGJoMkxHnJLgE.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/3c4e8f92-8b1d-4982-b5e7-a2c8f4e9d6b1_rw_1920-YrDlWr6w0RSd6LpJ.jpg",
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=503,h=600,fit=crop/YNqO7k0WyEUyB3w6/b7c9e2f4-3d5a-4c8e-b9f2-6e1c7a4d8b95_rw_1920-AMqb5jXqBMTNK5qy.jpg"
       ]
     },
     {
