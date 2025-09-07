@@ -234,7 +234,7 @@
 
 ## test_plan:
   current_focus:
-    - "OAuth Authentication Endpoints (Google and Discord)"
+    - "OAuth Authentication Frontend Integration Testing"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
