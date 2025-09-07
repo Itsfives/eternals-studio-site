@@ -3079,7 +3079,7 @@ const AuthPage = () => {
                 <img 
                   src="https://customer-assets.emergentagent.com/job_image-showcase-36/artifacts/skx6zwiw_apple.png" 
                   alt="Apple" 
-                  className="w-5 h-5 mr-2"
+                  className="w-5 h-5 mr-2 transition-all duration-300 dark:brightness-0 dark:invert"
                 />
                 Apple
               </Button>
