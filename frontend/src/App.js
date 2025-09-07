@@ -2895,13 +2895,45 @@ const AuthPage = () => {
     const token = urlParams.get('token');
     const error = urlParams.get('error');
     const provider = urlParams.get('provider');
+    const message = urlParams.get('message');
 
     if (error) {
+      // Handle OAuth errors with detailed messages
+      let errorMessage = `${provider || 'OAuth'} login failed`;
+      
+      if (message) {
+        errorMessage += `: ${decodeURIComponent(message)}`;
+      } else if (error) {
+        // Map common OAuth errors to user-friendly messages
+        switch (error) {
+          case 'redirect_uri_mismatch':
+            errorMessage += ': The redirect URI is not registered. Please contact support.';
+            break;
+          case 'invalid_request':
+            errorMessage += ': Invalid request parameters.';
+            break;
+          case 'access_denied':
+            errorMessage += ': You denied access to the application.';
+            break;
+          case 'oauth_failed':
+            errorMessage += ': Authentication failed. Please try again.';
+            break;
+          case 'missing_parameters':
+            errorMessage += ': Missing required parameters.';
+            break;
+          default:
+            errorMessage += `: ${decodeURIComponent(error)}`;
+        }
+      }
+      
       toast({
-        title: "Login Error",
-        description: `${provider || 'OAuth'} login failed: ${decodeURIComponent(error)}`,
+        title: "Authentication Error",
+        description: errorMessage,
         variant: "destructive",
       });
+      
+      console.error('OAuth Error:', { error, provider, message });
+      
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (token) {
