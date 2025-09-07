@@ -2882,7 +2882,7 @@ const AuthPage = () => {
     full_name: '',
     company: ''
   });
-  const { login, register } = useAuth();
+  const { login, register, handleOAuthToken } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -2896,24 +2896,24 @@ const AuthPage = () => {
     if (error) {
       toast({
         title: "Login Error",
-        description: `${provider} login failed: ${error}`,
+        description: `${provider || 'OAuth'} login failed: ${decodeURIComponent(error)}`,
         variant: "destructive",
       });
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (token) {
-      // Store token and redirect
-      localStorage.setItem('token', token);
+      // Use the AuthContext method to handle OAuth token
+      handleOAuthToken(token);
       toast({
         title: "Success",
-        description: `Successfully logged in with ${provider}!`,
+        description: `Successfully logged in with ${provider || 'OAuth'}!`,
       });
-      // Clean up URL and redirect
+      // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
-      // The useAuth hook should handle token validation and redirect
+      // Navigate based on user role (handled by AuthContext)
       setTimeout(() => window.location.reload(), 1000);
     }
-  }, [toast]);
+  }, [toast, handleOAuthToken]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
