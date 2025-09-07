@@ -2891,11 +2891,28 @@ const AuthPage = () => {
     }
   };
 
-  const handleSocialLogin = (provider) => {
-    toast({
-      title: "Coming Soon",
-      description: `${provider} login will be available soon!`,
-    });
+  const handleSocialLogin = async (provider) => {
+    try {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
+      
+      // Get OAuth authorization URL from backend
+      const response = await fetch(`${backendUrl}/api/auth/${provider.toLowerCase()}/login`);
+      const data = await response.json();
+      
+      if (response.ok && data.authorization_url) {
+        // Redirect to OAuth provider
+        window.location.href = data.authorization_url;
+      } else {
+        throw new Error(data.detail || `${provider} login failed`);
+      }
+    } catch (error) {
+      console.error(`${provider} login error:`, error);
+      toast({
+        title: "Login Error",
+        description: error.message || `${provider} login is currently unavailable`,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
