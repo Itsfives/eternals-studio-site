@@ -119,6 +119,9 @@ const AuthProvider = ({ children }) => {
     if (oauthToken) {
       localStorage.setItem('token', oauthToken);
       setToken(oauthToken);
+      // Trigger user info fetch and authentication flow
+      axios.defaults.headers.common['Authorization'] = `Bearer ${oauthToken}`;
+      fetchUserInfo();
     }
   };
 
