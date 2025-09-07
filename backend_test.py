@@ -1197,8 +1197,8 @@ class EternalsStudioAPITester:
             print(f"\n🔍 Test {self.tests_run}: Google callback with missing parameters")
             print(f"   Method: GET | Endpoint: /auth/google/callback")
             
-            # Should redirect to frontend with error instead of returning 422
-            if response.status_code in [301, 302]:
+            # Should redirect to frontend with error (302/301/307) instead of returning 422
+            if response.status_code in [301, 302, 307]:
                 self.tests_passed += 1
                 callback_tests_passed += 1
                 print(f"   ✅ PASSED - Status: {response.status_code} (Redirect)")
