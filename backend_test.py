@@ -1440,8 +1440,8 @@ class EternalsStudioAPITester:
         return True
 
     def run_all_tests(self):
-        """Run all test suites including OAuth testing"""
-        print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH OAUTH")
+        """Run all test suites including OAuth callback error handling testing"""
+        print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH OAUTH CALLBACK FIXES")
         print("=" * 60)
         
         test_results = []
@@ -1449,6 +1449,7 @@ class EternalsStudioAPITester:
         # Run test suites in order
         test_results.append(("Authentication", self.test_user_registration_and_login()))
         test_results.append(("OAuth Endpoints", self.test_oauth_endpoints()))
+        test_results.append(("OAuth Callback Error Handling", self.test_oauth_callback_error_handling()))
         test_results.append(("OAuth User Model", self.test_oauth_user_model_updates()))
         test_results.append(("Role-Based Routing", self.test_role_based_routing_logic()))
         test_results.append(("Project Management", self.test_project_management()))
