@@ -377,41 +377,54 @@ async def oauth_callback(
 ):
     """Handle OAuth callback from provider"""
     try:
+        logger.info(f"OAuth callback received for {provider} with code: {code[:10]}...")
+        
         provider_instance = oauth_manager.get_provider(provider)
         if not provider_instance:
+            logger.error(f"OAuth provider '{provider}' not available")
             raise HTTPException(status_code=400, detail=f"OAuth provider '{provider}' not available")
         
         # Exchange code for access token
+        logger.info(f"Exchanging code for access token with {provider}")
         token_data = await provider_instance.get_access_token(code, state)
+        logger.info(f"Token data received: {list(token_data.keys()) if token_data else 'None'}")
+        
         access_token = token_data.get("access_token")
         
         if not access_token:
+            logger.error(f"No access token received from {provider}")
             raise HTTPException(status_code=400, detail="Failed to get access token")
         
         # Get user info from provider
+        logger.info(f"Getting user info from {provider}")
         user_info = await provider_instance.get_user_info(access_token)
+        logger.info(f"User info received: email={user_info.get('email')}, name={user_info.get('name')}")
         
-        # Create or update user in database
+        # Create or update user in database  
+        logger.info(f"Creating/updating user in database")
         user = await create_or_update_oauth_user(user_info)
+        logger.info(f"User created/updated: {user.email}, role: {user.role}")
         
         # Generate JWT token for our app
         access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         jwt_token = create_access_token(
             data={"sub": user.email}, expires_delta=access_token_expires
         )
+        logger.info(f"JWT token generated for user: {user.email}")
         
         # Determine redirect URL based on user role
         redirect_url = determine_redirect_url(user)
+        logger.info(f"Redirecting to: {redirect_url}")
         
         # Add token to redirect URL as query parameter (frontend will handle it)
-        redirect_url_with_token = f"{redirect_url}?token={jwt_token}&user_id={user.id}"
+        redirect_url_with_token = f"{redirect_url}?token={jwt_token}&user_id={user.id}&provider={provider}"
         
         return RedirectResponse(url=redirect_url_with_token)
         
     except Exception as e:
-        logger.error(f"OAuth callback error for {provider}: {e}")
+        logger.error(f"OAuth callback error for {provider}: {str(e)}", exc_info=True)
         # Redirect to frontend with error
-        error_url = f"https://image-showcase-36.preview.emergentagent.com/auth?error=oauth_failed&provider={provider}"
+        error_url = f"https://image-showcase-36.preview.emergentagent.com/auth?error=oauth_failed&provider={provider}&message={str(e)}"
         return RedirectResponse(url=error_url)
 
 @api_router.get("/auth/providers")
