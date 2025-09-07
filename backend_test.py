@@ -889,6 +889,7 @@ class EternalsStudioAPITester:
         test_results.append(("Content Management", self.test_content_management()))
         test_results.append(("File Upload", self.test_file_upload()))
         test_results.append(("Counter Statistics", self.test_counter_statistics()))
+        test_results.append(("Testimonials API", self.test_testimonials_api()))
         test_results.append(("Authorization Controls", self.test_authorization_controls()))
         
         # Print final results
