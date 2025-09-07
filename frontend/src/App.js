@@ -2860,7 +2860,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900 transition-colors duration-300 relative flex items-center justify-center">
+    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300 relative flex items-center justify-center">
       <FloatingElements />
       
       {/* Back to Home Button */}
