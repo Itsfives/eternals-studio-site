@@ -3034,7 +3034,7 @@ const AuthPage = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="w-full bg-slate-700 border-slate-600 text-white hover:bg-slate-600 py-3"
+                className="w-full bg-slate-100 dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600 py-3"
                 onClick={() => handleSocialLogin('Apple')}
               >
                 <img 
