@@ -2866,7 +2866,7 @@ const AuthPage = () => {
       {/* Back to Home Button */}
       <button 
         onClick={() => navigate('/')}
-        className="absolute top-8 left-8 z-20 flex items-center text-slate-400 hover:text-white transition-colors duration-200"
+        className="absolute top-8 left-8 z-20 flex items-center text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors duration-200"
       >
         <ArrowRight className="w-5 h-5 mr-2 rotate-180" />
         Back to Home
