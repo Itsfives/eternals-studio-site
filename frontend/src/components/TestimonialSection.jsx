@@ -238,6 +238,7 @@ const TestimonialSection = () => {
         <Button 
           variant="outline" 
           size="sm"
+          onClick={() => setShowModal(true)}
           className="border-teal-500 text-teal-600 hover:bg-teal-50 dark:hover:bg-teal-900/20"
         >
           <Plus className="w-4 h-4 mr-2" />
