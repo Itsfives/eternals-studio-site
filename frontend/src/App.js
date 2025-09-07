@@ -2592,13 +2592,12 @@ const AuthPage = () => {
         <Card className="border border-slate-700 bg-slate-800/95 backdrop-blur-sm shadow-2xl">
           {/* Logo */}
           <div className="text-center pt-8 pb-4">
-            <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center relative overflow-hidden">
-              <div className="animate-pulse">
-                <svg width="32" height="32" viewBox="0 0 24 24" className="text-white">
-                  <path fill="currentColor" d="M12 2L13.09 8.26L20 9L13.09 9.74L12 16L10.91 9.74L4 9L10.91 8.26L12 2Z" />
-                  <path fill="currentColor" d="M12 8L12.36 10.64L15 11L12.36 11.36L12 14L11.64 11.36L9 11L11.64 10.64L12 8Z" opacity="0.7" />
-                </svg>
-              </div>
+            <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center relative overflow-hidden">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_image-showcase-36/artifacts/gks2nspj_Eternals%20Studio.png" 
+                alt="Eternals Studio Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
 
