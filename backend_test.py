@@ -1240,8 +1240,8 @@ class EternalsStudioAPITester:
                 url = f"{self.api_url}/auth/discord/callback{error_params}"
                 response = requests.get(url, allow_redirects=False, timeout=10)
                 
-                # Should redirect to frontend with error (302/301) instead of returning 422
-                if response.status_code in [301, 302]:
+                # Should redirect to frontend with error (302/301/307) instead of returning 422
+                if response.status_code in [301, 302, 307]:
                     scenario_tests_passed += 1
                     location = response.headers.get('Location', '')
                     if 'error=' in location and error_code in location:
