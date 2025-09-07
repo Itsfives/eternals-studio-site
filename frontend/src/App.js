@@ -1619,9 +1619,7 @@ const PortfolioPage = () => {
       featured: false,
       type: "3d",
       gallery: [
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=864,fit=crop/YNqO7k0WyEUyB3w6/c4a83127-4a3e-4f60-9ba8-8dba90f43791_rw_1200-AQEyOM9p1yF9GWwO.jpg",
-        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=864,fit=crop/YNqO7k0WyEUyB3w6/44700b08-43d2-4a7b-81a4-28996a49385c_rw_1200-AzGe5nz7X2CGQXg1.jpg"
+        "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=606,h=440,fit=crop,trim=267.3267326732673;0;324.3564356435644;0/YNqO7k0WyEUyB3w6/gif-AR0yxZWlxjHjRnnn.png"
       ]
     },
     {
