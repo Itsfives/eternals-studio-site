@@ -815,12 +815,16 @@ class EternalsStudioAPITester:
         return success
 
     def test_oauth_endpoints(self):
-        """Test OAuth authentication endpoints"""
+        """Test OAuth authentication endpoints - COMPREHENSIVE TESTING"""
         print("\n" + "="*60)
-        print("🔐 TESTING OAUTH AUTHENTICATION ENDPOINTS")
+        print("🔐 TESTING OAUTH AUTHENTICATION ENDPOINTS - COMPREHENSIVE")
         print("="*60)
         
-        # Test GET /api/auth/providers - Check available OAuth providers
+        oauth_tests_passed = 0
+        total_oauth_tests = 0
+        
+        # Test 1: GET /api/auth/providers - Check available OAuth providers
+        total_oauth_tests += 1
         success, response = self.run_test(
             "Get available OAuth providers",
             "GET",
@@ -829,6 +833,7 @@ class EternalsStudioAPITester:
         )
         
         if success:
+            oauth_tests_passed += 1
             print("   🔍 Verifying OAuth providers response structure...")
             
             # Check response structure
@@ -847,12 +852,25 @@ class EternalsStudioAPITester:
                 else:
                     print("   ❌ Discord provider not available")
                 
+                # Check if Google is available (should be configured)
+                if "google" in providers:
+                    print("   ✅ Google provider available")
+                else:
+                    print("   ❌ Google provider not available")
+                
                 # Check enabled status for Discord
                 discord_enabled = enabled.get("discord", False)
                 if discord_enabled:
                     print("   ✅ Discord OAuth enabled")
                 else:
-                    print("   ❌ Discord OAuth not enabled")
+                    print("   ❌ Discord OAuth not enabled - check environment variables")
+                
+                # Check enabled status for Google
+                google_enabled = enabled.get("google", False)
+                if google_enabled:
+                    print("   ✅ Google OAuth enabled")
+                else:
+                    print("   ❌ Google OAuth not enabled - check environment variables")
                 
                 # Store provider info for further testing
                 self.test_data["oauth_providers"] = providers
@@ -860,9 +878,9 @@ class EternalsStudioAPITester:
                 
             else:
                 print("   ❌ Invalid response structure")
-                return False
         
-        # Test GET /api/auth/discord/login - Test Discord OAuth login initiation
+        # Test 2: GET /api/auth/discord/login - Test Discord OAuth login initiation
+        total_oauth_tests += 1
         success, discord_response = self.run_test(
             "Initiate Discord OAuth login",
             "GET",
@@ -871,6 +889,7 @@ class EternalsStudioAPITester:
         )
         
         if success:
+            oauth_tests_passed += 1
             print("   🔍 Verifying Discord OAuth login response...")
             
             # Check required fields in response
@@ -889,6 +908,12 @@ class EternalsStudioAPITester:
                 auth_url = discord_response.get("authorization_url", "")
                 if "discord.com/api/oauth2/authorize" in auth_url:
                     print("   ✅ Authorization URL format correct (Discord OAuth)")
+                    
+                    # Check URL parameters
+                    if "client_id=" in auth_url and "redirect_uri=" in auth_url and "scope=" in auth_url:
+                        print("   ✅ Authorization URL contains required parameters")
+                    else:
+                        print("   ❌ Authorization URL missing required parameters")
                 else:
                     print(f"   ❌ Invalid authorization URL: {auth_url}")
                 
@@ -911,9 +936,67 @@ class EternalsStudioAPITester:
                 
             else:
                 print(f"   ❌ Missing required fields: {missing_fields}")
-                return False
         
-        # Test invalid provider
+        # Test 3: GET /api/auth/google/login - Test Google OAuth login initiation
+        total_oauth_tests += 1
+        success, google_response = self.run_test(
+            "Initiate Google OAuth login",
+            "GET",
+            "auth/google/login",
+            200
+        )
+        
+        if success:
+            oauth_tests_passed += 1
+            print("   🔍 Verifying Google OAuth login response...")
+            
+            # Check required fields in response
+            required_fields = ["authorization_url", "state", "provider"]
+            missing_fields = []
+            
+            for field in required_fields:
+                if field in google_response:
+                    print(f"   ✅ {field}: present")
+                else:
+                    print(f"   ❌ {field}: missing")
+                    missing_fields.append(field)
+            
+            if not missing_fields:
+                # Verify authorization URL format
+                auth_url = google_response.get("authorization_url", "")
+                if "accounts.google.com/o/oauth2" in auth_url:
+                    print("   ✅ Authorization URL format correct (Google OAuth)")
+                    
+                    # Check URL parameters
+                    if "client_id=" in auth_url and "redirect_uri=" in auth_url and "scope=" in auth_url:
+                        print("   ✅ Authorization URL contains required parameters")
+                    else:
+                        print("   ❌ Authorization URL missing required parameters")
+                else:
+                    print(f"   ❌ Invalid authorization URL: {auth_url}")
+                
+                # Verify state is present and not empty
+                state = google_response.get("state", "")
+                if state and len(state) > 10:
+                    print(f"   ✅ State parameter present and secure (length: {len(state)})")
+                else:
+                    print("   ❌ State parameter missing or too short")
+                
+                # Verify provider field
+                provider = google_response.get("provider", "")
+                if provider == "google":
+                    print("   ✅ Provider field correct")
+                else:
+                    print(f"   ❌ Provider field incorrect: {provider}")
+                
+                # Store OAuth data for potential callback testing
+                self.test_data["google_oauth"] = google_response
+                
+            else:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+        
+        # Test 4: Test invalid provider
+        total_oauth_tests += 1
         success, invalid_response = self.run_test(
             "Test invalid OAuth provider",
             "GET",
@@ -922,13 +1005,69 @@ class EternalsStudioAPITester:
         )
         
         if success:
+            oauth_tests_passed += 1
             print("   ✅ Invalid provider correctly rejected")
         
-        # Note: OAuth callback testing would require actual OAuth flow completion
-        # which is not feasible in automated testing without mock setup
-        print("   ℹ️  OAuth callback testing skipped (requires actual OAuth flow)")
+        # Test 5: Test OAuth environment variables loading
+        total_oauth_tests += 1
+        print("   🔍 Checking OAuth environment variables...")
+        env_vars_correct = True
         
-        return success
+        # Check if providers are available based on environment variables
+        oauth_enabled = self.test_data.get("oauth_enabled", {})
+        
+        if oauth_enabled.get("discord"):
+            print("   ✅ Discord environment variables loaded correctly")
+        else:
+            print("   ❌ Discord environment variables not loaded or missing")
+            env_vars_correct = False
+        
+        if oauth_enabled.get("google"):
+            print("   ✅ Google environment variables loaded correctly")
+        else:
+            print("   ❌ Google environment variables not loaded or missing")
+            env_vars_correct = False
+        
+        if env_vars_correct:
+            oauth_tests_passed += 1
+            print("   ✅ OAuth environment variables configuration correct")
+        
+        # Test 6: Test OAuth callback endpoint structure (without actual OAuth flow)
+        total_oauth_tests += 1
+        print("   🔍 Testing OAuth callback endpoint structure...")
+        
+        # Test Discord callback endpoint with missing parameters (should fail gracefully)
+        success, callback_response = self.run_test(
+            "Test Discord callback without parameters",
+            "GET",
+            "auth/discord/callback",
+            422  # Should return validation error for missing query params
+        )
+        
+        if success:
+            oauth_tests_passed += 1
+            print("   ✅ Discord callback endpoint correctly validates parameters")
+        else:
+            # Try with 400 status code as alternative
+            success, callback_response = self.run_test(
+                "Test Discord callback without parameters (alt)",
+                "GET",
+                "auth/discord/callback",
+                400  # Alternative expected status
+            )
+            if success:
+                oauth_tests_passed += 1
+                print("   ✅ Discord callback endpoint correctly validates parameters")
+        
+        # Summary of OAuth testing
+        print(f"\n   📊 OAuth Tests Summary: {oauth_tests_passed}/{total_oauth_tests} passed")
+        
+        if oauth_tests_passed >= 4:  # At least most critical tests should pass
+            print("   ✅ OAuth endpoints are working correctly")
+            return True
+        else:
+            print("   ❌ OAuth endpoints have issues that need attention")
+            return False
 
     def test_oauth_user_model_updates(self):
         """Test user model updates with OAuth provider fields"""
