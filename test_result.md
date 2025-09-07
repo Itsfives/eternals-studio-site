@@ -234,7 +234,7 @@
 
 ## test_plan:
   current_focus:
-    - "Portfolio Project Gallery Display Testing"
+    - "OAuth Authentication Endpoints (Google and Discord)"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
