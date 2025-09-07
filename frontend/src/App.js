@@ -2865,6 +2865,35 @@ const AuthPage = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  // Handle OAuth callback tokens
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    const error = urlParams.get('error');
+    const provider = urlParams.get('provider');
+
+    if (error) {
+      toast({
+        title: "Login Error",
+        description: `${provider} login failed: ${error}`,
+        variant: "destructive",
+      });
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (token) {
+      // Store token and redirect
+      localStorage.setItem('token', token);
+      toast({
+        title: "Success",
+        description: `Successfully logged in with ${provider}!`,
+      });
+      // Clean up URL and redirect
+      window.history.replaceState({}, document.title, window.location.pathname);
+      // The useAuth hook should handle token validation and redirect
+      setTimeout(() => window.location.reload(), 1000);
+    }
+  }, [toast]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
