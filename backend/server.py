@@ -1,6 +1,7 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, File, UploadFile
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, status, File, UploadFile, Query
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
 from dotenv import load_dotenv
 from motor.motor_asyncio import AsyncIOMotorClient
 import os
@@ -12,6 +13,10 @@ import uuid, bcrypt, jwt
 from datetime import datetime, timedelta, timezone
 from enum import Enum
 import shutil
+import secrets
+
+# Import OAuth providers
+from auth.oauth_providers import oauth_manager
 
 # Counter Statistics Model
 class CounterStats(BaseModel):
