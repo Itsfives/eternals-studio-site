@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from './ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { ChevronLeft, ChevronRight, Plus, Star, X } from 'lucide-react';
 import { Button } from './ui/button';
-import { Star, CheckCircle, ChevronLeft, ChevronRight, Plus } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Textarea } from './ui/textarea';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { CheckCircle } from 'lucide-react';
 
 const TestimonialSection = () => {
   const [testimonials, setTestimonials] = useState([]);
