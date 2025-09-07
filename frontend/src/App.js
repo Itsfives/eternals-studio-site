@@ -2411,14 +2411,14 @@ const ContactPage = () => {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="message" className="text-white text-sm">Message *</Label>
+                    <Label htmlFor="message" className="text-slate-900 dark:text-white text-sm">Message *</Label>
                     <Textarea
                       id="message"
                       rows={6}
                       placeholder="Tell us about your project or question..."
                       value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500 resize-none"
+                      className="bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500 resize-none"
                       required
                     />
                   </div>
