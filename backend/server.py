@@ -114,6 +114,18 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class OAuthCallback(BaseModel):
+    code: str
+    state: str
+
+class OAuthUserCreate(BaseModel):
+    email: EmailStr
+    full_name: str
+    avatar_url: Optional[str] = None
+    provider: str
+    provider_id: str
+    role: UserRole = UserRole.CLIENT
+
 class Project(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     title: str
