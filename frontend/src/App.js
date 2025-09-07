@@ -1211,17 +1211,19 @@ const ProjectDetailPage = () => {
             </p>
           </div>
 
-          {/* Hero Image */}
-          <div className="mb-16">
-            <div className="relative overflow-hidden rounded-2xl">
-              <img 
-                src={project.image} 
-                alt={project.title}
-                className="w-full h-96 md:h-[500px] object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+          {/* Hero Image - Only show if no gallery exists */}
+          {(!project.gallery || project.gallery.length === 0) && (
+            <div className="mb-16">
+              <div className="relative overflow-hidden rounded-2xl">
+                <img 
+                  src={project.image} 
+                  alt={project.title}
+                  className="w-full h-96 md:h-[500px] object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Project Gallery */}
           {project.gallery && project.gallery.length > 0 && (
