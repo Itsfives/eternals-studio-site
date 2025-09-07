@@ -245,6 +245,99 @@ const TestimonialSection = () => {
           Add Your Testimonial
         </Button>
       </div>
+
+      {/* Testimonial Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white dark:bg-slate-800 p-6 border-b border-slate-200 dark:border-slate-700 flex justify-between items-center">
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Add Your Testimonial</h2>
+              <button 
+                onClick={() => setShowModal(false)}
+                className="text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSubmitTestimonial} className="p-6 space-y-4">
+              <div>
+                <Label htmlFor="name" className="text-slate-900 dark:text-white">Name *</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Your full name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({...formData, name: e.target.value})}
+                  className="bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="company" className="text-slate-900 dark:text-white">Company</Label>
+                <Input
+                  id="company"
+                  type="text"
+                  placeholder="Your company name (optional)"
+                  value={formData.company}
+                  onChange={(e) => setFormData({...formData, company: e.target.value})}
+                  className="bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white"
+                />
+              </div>
+
+              <div>
+                <Label className="text-slate-900 dark:text-white">Rating *</Label>
+                <div className="flex items-center space-x-1 mt-2">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setFormData({...formData, rating: star})}
+                      className={`p-1 ${star <= formData.rating ? 'text-yellow-400' : 'text-slate-300 dark:text-slate-600'}`}
+                    >
+                      <Star className="w-6 h-6 fill-current" />
+                    </button>
+                  ))}
+                  <span className="ml-2 text-slate-600 dark:text-slate-400 text-sm">
+                    {formData.rating} star{formData.rating !== 1 ? 's' : ''}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="content" className="text-slate-900 dark:text-white">Your Experience *</Label>
+                <Textarea
+                  id="content"
+                  rows={4}
+                  placeholder="Tell us about your experience working with Eternals Studio..."
+                  value={formData.content}
+                  onChange={(e) => setFormData({...formData, content: e.target.value})}
+                  className="bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white resize-none"
+                  required
+                />
+              </div>
+
+              <div className="flex space-x-3 pt-4">
+                <Button 
+                  type="submit" 
+                  className="flex-1 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white"
+                >
+                  Submit Testimonial
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setShowModal(false)}
+                  className="border-slate-300 dark:border-slate-600"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
