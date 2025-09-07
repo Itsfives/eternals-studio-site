@@ -1069,6 +1069,216 @@ class EternalsStudioAPITester:
             print("   ❌ OAuth endpoints have issues that need attention")
             return False
 
+    def test_oauth_callback_error_handling(self):
+        """Test OAuth callback endpoints with error scenarios - CRITICAL VERIFICATION"""
+        print("\n" + "="*60)
+        print("🚨 TESTING OAUTH CALLBACK ERROR HANDLING - CRITICAL VERIFICATION")
+        print("="*60)
+        
+        callback_tests_passed = 0
+        total_callback_tests = 0
+        
+        # Test 1: Discord callback with OAuth error parameters (redirect_uri_mismatch)
+        total_callback_tests += 1
+        print("   🔍 Testing Discord callback with OAuth error parameters...")
+        
+        # Simulate OAuth provider error response
+        discord_error_params = "?error=redirect_uri_mismatch&error_description=Invalid%20OAuth2%20redirect_uri"
+        
+        try:
+            url = f"{self.api_url}/auth/discord/callback{discord_error_params}"
+            response = requests.get(url, allow_redirects=False, timeout=10)
+            
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Discord callback with error parameters")
+            print(f"   Method: GET | Endpoint: /auth/discord/callback{discord_error_params}")
+            
+            # Should redirect to frontend with error (302/301) instead of returning 422
+            if response.status_code in [301, 302]:
+                self.tests_passed += 1
+                callback_tests_passed += 1
+                print(f"   ✅ PASSED - Status: {response.status_code} (Redirect)")
+                
+                # Check redirect location contains error information
+                location = response.headers.get('Location', '')
+                if 'error=' in location and 'redirect_uri_mismatch' in location:
+                    print("   ✅ Redirect URL contains proper error information")
+                else:
+                    print(f"   ⚠️  Redirect URL may not contain error info: {location}")
+                    
+            elif response.status_code == 422:
+                print(f"   ❌ FAILED - Status: 422 (Still requiring code/state for error responses)")
+                print("   🔧 ISSUE: Backend still requires 'code' and 'state' parameters even for OAuth errors")
+            else:
+                print(f"   ❌ FAILED - Unexpected status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"   ❌ FAILED - Error: {str(e)}")
+        
+        # Test 2: Google callback with OAuth error parameters
+        total_callback_tests += 1
+        print("   🔍 Testing Google callback with OAuth error parameters...")
+        
+        google_error_params = "?error=access_denied&error_description=User%20denied%20access"
+        
+        try:
+            url = f"{self.api_url}/auth/google/callback{google_error_params}"
+            response = requests.get(url, allow_redirects=False, timeout=10)
+            
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Google callback with error parameters")
+            print(f"   Method: GET | Endpoint: /auth/google/callback{google_error_params}")
+            
+            # Should redirect to frontend with error (302/301) instead of returning 422
+            if response.status_code in [301, 302]:
+                self.tests_passed += 1
+                callback_tests_passed += 1
+                print(f"   ✅ PASSED - Status: {response.status_code} (Redirect)")
+                
+                # Check redirect location contains error information
+                location = response.headers.get('Location', '')
+                if 'error=' in location and 'access_denied' in location:
+                    print("   ✅ Redirect URL contains proper error information")
+                else:
+                    print(f"   ⚠️  Redirect URL may not contain error info: {location}")
+                    
+            elif response.status_code == 422:
+                print(f"   ❌ FAILED - Status: 422 (Still requiring code/state for error responses)")
+                print("   🔧 ISSUE: Backend still requires 'code' and 'state' parameters even for OAuth errors")
+            else:
+                print(f"   ❌ FAILED - Unexpected status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"   ❌ FAILED - Error: {str(e)}")
+        
+        # Test 3: Discord callback with missing code/state (should handle gracefully)
+        total_callback_tests += 1
+        print("   🔍 Testing Discord callback with missing parameters...")
+        
+        try:
+            url = f"{self.api_url}/auth/discord/callback"  # No parameters
+            response = requests.get(url, allow_redirects=False, timeout=10)
+            
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Discord callback with missing parameters")
+            print(f"   Method: GET | Endpoint: /auth/discord/callback")
+            
+            # Should redirect to frontend with error instead of returning 422
+            if response.status_code in [301, 302]:
+                self.tests_passed += 1
+                callback_tests_passed += 1
+                print(f"   ✅ PASSED - Status: {response.status_code} (Redirect)")
+                
+                # Check redirect location contains error information
+                location = response.headers.get('Location', '')
+                if 'error=' in location and 'missing_parameters' in location:
+                    print("   ✅ Redirect URL contains proper error information")
+                else:
+                    print(f"   ⚠️  Redirect URL may not contain error info: {location}")
+                    
+            elif response.status_code == 422:
+                print(f"   ❌ FAILED - Status: 422 (Still returning validation error)")
+                print("   🔧 ISSUE: Should redirect to frontend with error instead of 422")
+            else:
+                print(f"   ❌ FAILED - Unexpected status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"   ❌ FAILED - Error: {str(e)}")
+        
+        # Test 4: Google callback with missing code/state (should handle gracefully)
+        total_callback_tests += 1
+        print("   🔍 Testing Google callback with missing parameters...")
+        
+        try:
+            url = f"{self.api_url}/auth/google/callback"  # No parameters
+            response = requests.get(url, allow_redirects=False, timeout=10)
+            
+            self.tests_run += 1
+            print(f"\n🔍 Test {self.tests_run}: Google callback with missing parameters")
+            print(f"   Method: GET | Endpoint: /auth/google/callback")
+            
+            # Should redirect to frontend with error instead of returning 422
+            if response.status_code in [301, 302]:
+                self.tests_passed += 1
+                callback_tests_passed += 1
+                print(f"   ✅ PASSED - Status: {response.status_code} (Redirect)")
+                
+                # Check redirect location contains error information
+                location = response.headers.get('Location', '')
+                if 'error=' in location:
+                    print("   ✅ Redirect URL contains error information")
+                else:
+                    print(f"   ⚠️  Redirect URL may not contain error info: {location}")
+                    
+            elif response.status_code == 422:
+                print(f"   ❌ FAILED - Status: 422 (Still returning validation error)")
+                print("   🔧 ISSUE: Should redirect to frontend with error instead of 422")
+            else:
+                print(f"   ❌ FAILED - Unexpected status: {response.status_code}")
+                
+        except Exception as e:
+            print(f"   ❌ FAILED - Error: {str(e)}")
+        
+        # Test 5: Test various OAuth error scenarios
+        total_callback_tests += 1
+        print("   🔍 Testing various OAuth error scenarios...")
+        
+        error_scenarios = [
+            ("invalid_request", "The request is missing a required parameter"),
+            ("unauthorized_client", "The client is not authorized"),
+            ("access_denied", "The resource owner denied the request"),
+            ("unsupported_response_type", "The authorization server does not support this response type"),
+            ("invalid_scope", "The requested scope is invalid"),
+            ("server_error", "The authorization server encountered an unexpected condition"),
+            ("temporarily_unavailable", "The authorization server is currently unable to handle the request")
+        ]
+        
+        scenario_tests_passed = 0
+        for error_code, error_desc in error_scenarios:
+            try:
+                error_params = f"?error={error_code}&error_description={error_desc.replace(' ', '%20')}"
+                url = f"{self.api_url}/auth/discord/callback{error_params}"
+                response = requests.get(url, allow_redirects=False, timeout=10)
+                
+                # Should redirect to frontend with error (302/301) instead of returning 422
+                if response.status_code in [301, 302]:
+                    scenario_tests_passed += 1
+                    location = response.headers.get('Location', '')
+                    if 'error=' in location and error_code in location:
+                        print(f"   ✅ {error_code}: Handled correctly (redirect with error)")
+                    else:
+                        print(f"   ⚠️  {error_code}: Redirected but error info unclear")
+                elif response.status_code == 422:
+                    print(f"   ❌ {error_code}: Still returning 422 (not fixed)")
+                else:
+                    print(f"   ⚠️  {error_code}: Unexpected status {response.status_code}")
+                    
+            except Exception as e:
+                print(f"   ❌ {error_code}: Error - {str(e)}")
+        
+        if scenario_tests_passed >= len(error_scenarios) * 0.8:  # 80% success rate
+            callback_tests_passed += 1
+            self.tests_passed += 1
+            print(f"   ✅ OAuth error scenarios handled correctly ({scenario_tests_passed}/{len(error_scenarios)})")
+        else:
+            print(f"   ❌ OAuth error scenarios need improvement ({scenario_tests_passed}/{len(error_scenarios)})")
+        
+        self.tests_run += 1
+        
+        # Summary of OAuth callback testing
+        print(f"\n   📊 OAuth Callback Tests Summary: {callback_tests_passed}/{total_callback_tests} passed")
+        
+        if callback_tests_passed >= 4:  # Most critical tests should pass
+            print("   ✅ OAuth callback error handling is working correctly")
+            return True
+        else:
+            print("   ❌ OAuth callback error handling has critical issues")
+            print("   🔧 REQUIRED FIXES:")
+            print("      1. Backend callback endpoints must handle OAuth error parameters")
+            print("      2. Should redirect to frontend with error instead of returning 422")
+            print("      3. Must not require 'code' and 'state' when 'error' is present")
+            return False
+
     def test_oauth_user_model_updates(self):
         """Test user model updates with OAuth provider fields"""
         print("\n" + "="*60)
