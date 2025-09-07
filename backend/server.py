@@ -219,6 +219,88 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         raise credentials_exception
     return User(**user_dict)
 
+# OAuth Helper Functions
+async def create_or_update_oauth_user(oauth_user_data: Dict[str, Any]) -> User:
+    """Create or update user from OAuth provider data"""
+    provider = oauth_user_data.get("provider")
+    provider_id = oauth_user_data.get("provider_id")
+    email = oauth_user_data.get("email")
+    
+    # Check if user exists by OAuth provider ID
+    existing_user = await db.users.find_one({
+        f"oauth_providers.{provider}.provider_id": provider_id
+    })
+    
+    if existing_user:
+        # Update existing user's last login and OAuth data
+        await db.users.update_one(
+            {"id": existing_user["id"]},
+            {
+                "$set": {
+                    f"oauth_providers.{provider}": {
+                        "provider_id": provider_id,
+                        "email": email,
+                        "last_login": datetime.now(timezone.utc)
+                    },
+                    "last_login": datetime.now(timezone.utc),
+                    "login_method": provider,
+                    "avatar_url": oauth_user_data.get("avatar") or existing_user.get("avatar_url")
+                }
+            }
+        )
+        updated_user = await db.users.find_one({"id": existing_user["id"]})
+        return User(**updated_user)
+    
+    # Check if user exists by email
+    existing_user_by_email = await db.users.find_one({"email": email})
+    
+    if existing_user_by_email:
+        # Link OAuth provider to existing email account
+        await db.users.update_one(
+            {"id": existing_user_by_email["id"]},
+            {
+                "$set": {
+                    f"oauth_providers.{provider}": {
+                        "provider_id": provider_id,
+                        "email": email,
+                        "last_login": datetime.now(timezone.utc)
+                    },
+                    "last_login": datetime.now(timezone.utc),
+                    "login_method": provider,
+                    "avatar_url": oauth_user_data.get("avatar") or existing_user_by_email.get("avatar_url")
+                }
+            }
+        )
+        updated_user = await db.users.find_one({"id": existing_user_by_email["id"]})
+        return User(**updated_user)
+    
+    # Create new user
+    new_user = User(
+        email=email,
+        full_name=oauth_user_data.get("display_name") or oauth_user_data.get("name"),
+        avatar_url=oauth_user_data.get("avatar"),
+        role=UserRole.CLIENT,  # Default role for OAuth users
+        oauth_providers={
+            provider: {
+                "provider_id": provider_id,
+                "email": email,
+                "last_login": datetime.now(timezone.utc)
+            }
+        },
+        last_login=datetime.now(timezone.utc),
+        login_method=provider
+    )
+    
+    await db.users.insert_one(new_user.dict())
+    return new_user
+
+def determine_redirect_url(user: User) -> str:
+    """Determine where to redirect user based on their role"""
+    if user.role in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+        return "https://image-showcase-36.preview.emergentagent.com/dashboard"
+    else:
+        return "https://image-showcase-36.preview.emergentagent.com/client-portal"
+
 # Authentication routes
 @api_router.post("/auth/register", response_model=User)
 async def register_user(user_data: UserCreate):
