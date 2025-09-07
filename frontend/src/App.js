@@ -3253,89 +3253,372 @@ const ClientPortal = () => {
                 </Card>
               </div>
 
-          {/* Main Content */}
-          <div className="grid lg:grid-cols-3 gap-8">
-            {/* Current Projects */}
-            <div className="lg:col-span-2">
+              {/* Main Content */}
+              <div className="grid lg:grid-cols-3 gap-8">
+                {/* Current Projects */}
+                <div className="lg:col-span-2">
+                  <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                    <CardHeader>
+                      <CardTitle className="text-slate-900 dark:text-white">Current Projects</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        {[
+                          { 
+                            name: "Brand Identity Package", 
+                            status: "In Progress", 
+                            progress: 75,
+                            deadline: "Dec 15, 2024",
+                            team: "Design Team",
+                            type: "Branding"
+                          },
+                          { 
+                            name: "Website Development", 
+                            status: "Review", 
+                            progress: 90,
+                            deadline: "Nov 30, 2024",
+                            team: "Dev Team",
+                            type: "Web Development"
+                          },
+                          { 
+                            name: "Marketing Materials", 
+                            status: "In Progress", 
+                            progress: 45,
+                            deadline: "Jan 10, 2025",
+                            team: "Creative Team",
+                            type: "Design"
+                          }
+                        ].map((project, index) => (
+                          <div key={index} className="p-6 border border-slate-200 dark:border-slate-700 rounded-lg hover:shadow-md transition-shadow">
+                            <div className="flex justify-between items-start mb-4">
+                              <div>
+                                <h4 className="font-semibold text-slate-900 dark:text-white text-lg">{project.name}</h4>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">{project.type} • {project.team}</p>
+                              </div>
+                              <div className="text-right">
+                                <Badge variant={project.status === 'Review' ? 'default' : 'outline'} className="mb-2">
+                                  {project.status}
+                                </Badge>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">Due: {project.deadline}</p>
+                              </div>
+                            </div>
+                            <div className="mb-3">
+                              <div className="flex justify-between items-center mb-2">
+                                <span className="text-sm text-slate-600 dark:text-slate-400">Progress</span>
+                                <span className="text-sm font-medium text-slate-900 dark:text-white">{project.progress}%</span>
+                              </div>
+                              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">
+                                <div 
+                                  className="bg-gradient-to-r from-teal-500 to-teal-600 h-3 rounded-full transition-all duration-300" 
+                                  style={{ width: `${project.progress}%` }}
+                                ></div>
+                              </div>
+                            </div>
+                            <div className="flex justify-between items-center">
+                              <Button variant="outline" size="sm">
+                                <Eye className="w-4 h-4 mr-2" />
+                                View Details
+                              </Button>
+                              <Button variant="outline" size="sm">
+                                <MessageSquare className="w-4 h-4 mr-2" />
+                                Message Team
+                              </Button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+
+                {/* Sidebar */}
+                <div className="space-y-6">
+                  {/* Quick Actions */}
+                  <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                    <CardHeader>
+                      <CardTitle className="text-slate-900 dark:text-white">Quick Actions</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                        <Plus className="w-4 h-4 mr-2" />
+                        New Project Request
+                      </Button>
+                      <Button variant="outline" className="w-full">
+                        <MessageSquare className="w-4 h-4 mr-2" />
+                        Send Message
+                      </Button>
+                      <Button variant="outline" className="w-full">
+                        <FileText className="w-4 h-4 mr-2" />
+                        View Invoices
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  {/* Recent Messages */}
+                  <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                    <CardHeader>
+                      <CardTitle className="text-slate-900 dark:text-white">Recent Messages</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {[
+                          { from: "Design Team", message: "Logo concepts are ready for review", time: "2h ago", unread: true },
+                          { from: "Project Manager", message: "Timeline update for website project", time: "1d ago", unread: false },
+                          { from: "Creative Team", message: "Marketing materials draft complete", time: "2d ago", unread: true }
+                        ].map((msg, index) => (
+                          <div key={index} className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                            <div className="flex justify-between items-start mb-1">
+                              <div className="flex items-center">
+                                <p className="font-medium text-slate-900 dark:text-white text-sm">{msg.from}</p>
+                                {msg.unread && <div className="w-2 h-2 bg-teal-500 rounded-full ml-2"></div>}
+                              </div>
+                              <span className="text-xs text-slate-500 dark:text-slate-400">{msg.time}</span>
+                            </div>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">{msg.message}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Project Timeline */}
+                  <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                    <CardHeader>
+                      <CardTitle className="text-slate-900 dark:text-white">Upcoming Deadlines</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        {[
+                          { project: "Website Development", date: "Nov 30", priority: "high" },
+                          { project: "Brand Identity", date: "Dec 15", priority: "medium" },
+                          { project: "Marketing Materials", date: "Jan 10", priority: "low" }
+                        ].map((item, index) => (
+                          <div key={index} className="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-700">
+                            <div>
+                              <p className="text-sm font-medium text-slate-900 dark:text-white">{item.project}</p>
+                              <p className="text-xs text-slate-600 dark:text-slate-400">{item.date}</p>
+                            </div>
+                            <div className={`w-3 h-3 rounded-full ${
+                              item.priority === 'high' ? 'bg-red-500' :
+                              item.priority === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
+                            }`}></div>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              </div>
+            </TabsContent>
+
+            {/* Projects Tab */}
+            <TabsContent value="projects">
               <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-white">Current Projects</CardTitle>
+                  <CardTitle className="text-slate-900 dark:text-white">All Projects</CardTitle>
+                  <CardDescription className="text-slate-600 dark:text-slate-400">
+                    Complete overview of all your projects with Eternals Studio
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {[
-                      { name: "Brand Identity Package", status: "In Progress", progress: 75 },
-                      { name: "Website Development", status: "Review", progress: 90 },
-                      { name: "Marketing Materials", status: "In Progress", progress: 45 }
+                      { name: "Brand Identity Package", status: "In Progress", startDate: "Oct 15, 2024", team: "Design Team", budget: "$2,500" },
+                      { name: "Website Development", status: "Review", startDate: "Sep 20, 2024", team: "Dev Team", budget: "$4,200" },
+                      { name: "Marketing Materials", status: "In Progress", startDate: "Nov 1, 2024", team: "Creative Team", budget: "$1,800" },
+                      { name: "Logo Design", status: "Completed", startDate: "Aug 10, 2024", team: "Design Team", budget: "$800" },
+                      { name: "Social Media Graphics", status: "Completed", startDate: "Jul 25, 2024", team: "Creative Team", budget: "$1,200" }
                     ].map((project, index) => (
                       <div key={index} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-semibold text-slate-900 dark:text-white">{project.name}</h4>
-                          <Badge variant="outline" className="text-xs">
-                            {project.status}
-                          </Badge>
+                        <div className="grid md:grid-cols-5 gap-4 items-center">
+                          <div>
+                            <h4 className="font-semibold text-slate-900 dark:text-white">{project.name}</h4>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">{project.team}</p>
+                          </div>
+                          <div>
+                            <Badge variant={project.status === 'Completed' ? 'default' : project.status === 'Review' ? 'secondary' : 'outline'}>
+                              {project.status}
+                            </Badge>
+                          </div>
+                          <div>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">Started</p>
+                            <p className="font-medium text-slate-900 dark:text-white">{project.startDate}</p>
+                          </div>
+                          <div>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">Budget</p>
+                            <p className="font-medium text-slate-900 dark:text-white">{project.budget}</p>
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button variant="outline" size="sm">
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button variant="outline" size="sm">
+                              <Download className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </div>
-                        <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2 mb-2">
-                          <div 
-                            className="bg-gradient-to-r from-teal-500 to-teal-600 h-2 rounded-full" 
-                            style={{ width: `${project.progress}%` }}
-                          ></div>
-                        </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{project.progress}% complete</p>
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
-            </div>
+            </TabsContent>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* Quick Actions */}
+            {/* Messages Tab */}
+            <TabsContent value="messages">
               <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-white">Quick Actions</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
-                    <Plus className="w-4 h-4 mr-2" />
-                    New Project Request
-                  </Button>
-                  <Button variant="outline" className="w-full">
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    Send Message
-                  </Button>
-                  <Button variant="outline" className="w-full">
-                    <FileText className="w-4 h-4 mr-2" />
-                    View Invoices
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* Recent Messages */}
-              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-white">Recent Messages</CardTitle>
+                  <CardTitle className="text-slate-900 dark:text-white">Messages</CardTitle>
+                  <CardDescription className="text-slate-600 dark:text-slate-400">
+                    Communication with your project teams
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {[
-                      { from: "Design Team", message: "Logo concepts are ready for review", time: "2h ago" },
-                      { from: "Project Manager", message: "Timeline update for website project", time: "1d ago" }
+                      { 
+                        from: "Sarah Johnson - Design Team", 
+                        subject: "Brand Identity Concepts Ready", 
+                        message: "Hi! I've prepared 3 logo concepts for your brand identity project. They're ready for your review...",
+                        time: "2 hours ago",
+                        unread: true,
+                        avatar: "SJ"
+                      },
+                      { 
+                        from: "Mike Chen - Project Manager", 
+                        subject: "Website Development Update", 
+                        message: "Good news! The website development is ahead of schedule. We should be ready for review by...",
+                        time: "1 day ago",
+                        unread: false,
+                        avatar: "MC"
+                      },
+                      { 
+                        from: "Emma Davis - Creative Team", 
+                        subject: "Marketing Materials Draft", 
+                        message: "I've completed the first draft of your marketing materials. The brochure design incorporates...",
+                        time: "2 days ago",
+                        unread: true,
+                        avatar: "ED"
+                      }
                     ].map((msg, index) => (
-                      <div key={index} className="p-3 bg-slate-50 dark:bg-slate-700 rounded-lg">
-                        <div className="flex justify-between items-start mb-1">
-                          <p className="font-medium text-slate-900 dark:text-white text-sm">{msg.from}</p>
-                          <span className="text-xs text-slate-500 dark:text-slate-400">{msg.time}</span>
+                      <div key={index} className={`p-4 border rounded-lg cursor-pointer hover:shadow-md transition-shadow ${
+                        msg.unread ? 'border-teal-200 dark:border-teal-800 bg-teal-50 dark:bg-teal-900/20' : 'border-slate-200 dark:border-slate-700'
+                      }`}>
+                        <div className="flex items-start space-x-4">
+                          <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                            {msg.avatar}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between mb-2">
+                              <h4 className="font-semibold text-slate-900 dark:text-white">{msg.from}</h4>
+                              <span className="text-sm text-slate-500 dark:text-slate-400">{msg.time}</span>
+                            </div>
+                            <h5 className="font-medium text-slate-800 dark:text-slate-200 mb-2">{msg.subject}</h5>
+                            <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2">{msg.message}</p>
+                          </div>
+                          {msg.unread && (
+                            <div className="w-3 h-3 bg-teal-500 rounded-full"></div>
+                          )}
                         </div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">{msg.message}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-6">
+                    <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                      <Plus className="w-4 h-4 mr-2" />
+                      Compose New Message
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* Invoices Tab */}
+            <TabsContent value="invoices">
+              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-slate-900 dark:text-white">Invoices & Billing</CardTitle>
+                  <CardDescription className="text-slate-600 dark:text-slate-400">
+                    Manage your project invoices and payment history
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {[
+                      { 
+                        id: "INV-001", 
+                        project: "Website Development", 
+                        amount: "$4,200", 
+                        status: "Paid", 
+                        dueDate: "Nov 15, 2024",
+                        paidDate: "Nov 10, 2024"
+                      },
+                      { 
+                        id: "INV-002", 
+                        project: "Brand Identity Package", 
+                        amount: "$2,500", 
+                        status: "Pending", 
+                        dueDate: "Dec 1, 2024",
+                        paidDate: null
+                      },
+                      { 
+                        id: "INV-003", 
+                        project: "Marketing Materials", 
+                        amount: "$1,800", 
+                        status: "Draft", 
+                        dueDate: "Jan 15, 2025",
+                        paidDate: null
+                      }
+                    ].map((invoice, index) => (
+                      <div key={index} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                        <div className="grid md:grid-cols-6 gap-4 items-center">
+                          <div>
+                            <h4 className="font-semibold text-slate-900 dark:text-white">{invoice.id}</h4>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">{invoice.project}</p>
+                          </div>
+                          <div>
+                            <p className="font-bold text-lg text-slate-900 dark:text-white">{invoice.amount}</p>
+                          </div>
+                          <div>
+                            <Badge variant={
+                              invoice.status === 'Paid' ? 'default' : 
+                              invoice.status === 'Pending' ? 'destructive' : 'secondary'
+                            }>
+                              {invoice.status}
+                            </Badge>
+                          </div>
+                          <div>
+                            <p className="text-sm text-slate-600 dark:text-slate-400">Due Date</p>
+                            <p className="font-medium text-slate-900 dark:text-white">{invoice.dueDate}</p>
+                          </div>
+                          <div>
+                            {invoice.paidDate ? (
+                              <>
+                                <p className="text-sm text-slate-600 dark:text-slate-400">Paid</p>
+                                <p className="font-medium text-slate-900 dark:text-white">{invoice.paidDate}</p>
+                              </>
+                            ) : (
+                              <p className="text-sm text-slate-600 dark:text-slate-400">Not paid</p>
+                            )}
+                          </div>
+                          <div className="flex space-x-2">
+                            <Button variant="outline" size="sm">
+                              <Download className="w-4 h-4" />
+                            </Button>
+                            {invoice.status === 'Pending' && (
+                              <Button size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                                Pay Now
+                              </Button>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
-            </div>
-          </div>
+            </TabsContent>
+          </Tabs>
         </div>
       </div>
     </div>
