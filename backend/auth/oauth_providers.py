@@ -144,13 +144,53 @@ class GoogleOAuthProvider(OAuthProvider):
     
     async def get_access_token(self, code: str, state: str = None) -> Dict[str, Any]:
         """Exchange authorization code for Google access token"""
-        # Implementation will be added when Google credentials are provided
-        pass
+        try:
+            data = {
+                "client_id": self.client_id,
+                "client_secret": self.client_secret,
+                "code": code,
+                "grant_type": "authorization_code",
+                "redirect_uri": self.redirect_uri,
+            }
+            
+            async with httpx.AsyncClient() as client:
+                response = await client.post(
+                    self.TOKEN_URL,
+                    data=data,
+                    headers={"Content-Type": "application/x-www-form-urlencoded"}
+                )
+                response.raise_for_status()
+                return response.json()
+                
+        except Exception as e:
+            logger.error(f"Error getting Google access token: {e}")
+            raise AuthlibBaseError(f"Token exchange failed: {e}")
     
     async def get_user_info(self, access_token: str) -> Dict[str, Any]:
         """Get Google user information"""
-        # Implementation will be added when Google credentials are provided
-        pass
+        try:
+            async with httpx.AsyncClient() as client:
+                response = await client.get(
+                    f"{self.USER_INFO_URL}?access_token={access_token}"
+                )
+                response.raise_for_status()
+                user_data = response.json()
+                
+                # Normalize user data to common format
+                return {
+                    "id": user_data.get("id"),
+                    "email": user_data.get("email"),
+                    "name": user_data.get("name"),
+                    "display_name": user_data.get("name"),
+                    "avatar": user_data.get("picture"),
+                    "provider": "google",
+                    "provider_id": user_data.get("id"),
+                    "raw_data": user_data
+                }
+                
+        except Exception as e:
+            logger.error(f"Error getting Google user info: {e}")
+            raise AuthlibBaseError(f"User info retrieval failed: {e}")
 
 class OAuthManager:
     """OAuth Manager to handle multiple providers"""
