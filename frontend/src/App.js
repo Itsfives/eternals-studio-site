@@ -1436,7 +1436,7 @@ const PortfolioPage = () => {
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=384,fit=crop/YNqO7k0WyEUyB3w6/32320776-8c0e-4c5d-b506-fac8ccb15c1b_rw_1920-dWxy7qggWyUgvbxK.jpg",
         "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1224,h=530,fit=crop/YNqO7k0WyEUyB3w6/c_01-AR0yxZEzlGCnGzB5.jpg"
       ]
-    {
+    },
       id: 5,
       title: "Deceptive Grounds",
       category: "Gaming Community",
