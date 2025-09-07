@@ -2939,13 +2939,13 @@ const AuthPage = () => {
               <TabsContent value="register" className="space-y-4">
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="full_name" className="text-white">Full Name</Label>
+                    <Label htmlFor="full_name" className="text-slate-900 dark:text-white">Full Name</Label>
                     <Input
                       id="full_name"
                       placeholder="Enter your full name"
                       value={formData.full_name}
                       onChange={(e) => setFormData({...formData, full_name: e.target.value})}
-                      className="bg-slate-700 border-slate-600 text-white placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
+                      className="bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-teal-500 focus:ring-teal-500"
                       required
                     />
                   </div>
