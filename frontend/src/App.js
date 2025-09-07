@@ -3739,11 +3739,11 @@ const Footer = () => {
             
             <h4 className="text-slate-900 dark:text-white font-semibold mb-3 mt-6">FAQ</h4>
             <ul className="space-y-2">
-              <li><a href="#faq-pricing" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Pricing & Packages</a></li>
-              <li><a href="#faq-timeline" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Project Timeline</a></li>
-              <li><a href="#faq-revisions" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Revisions Policy</a></li>
-              <li><a href="#faq-files" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">File Formats</a></li>
-              <li><a href="#faq-support" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Support & Maintenance</a></li>
+              <li><Link to="/faq" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Pricing & Packages</Link></li>
+              <li><Link to="/faq" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Project Timeline</Link></li>
+              <li><Link to="/faq" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Revisions Policy</Link></li>
+              <li><Link to="/faq" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">File Formats</Link></li>
+              <li><Link to="/faq" className="text-slate-600 dark:text-slate-400 hover:text-teal-500 transition-colors text-sm">Support & Maintenance</Link></li>
             </ul>
           </div>
 
