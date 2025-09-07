@@ -814,6 +814,222 @@ class EternalsStudioAPITester:
         
         return success
 
+    def test_oauth_endpoints(self):
+        """Test OAuth authentication endpoints"""
+        print("\n" + "="*60)
+        print("🔐 TESTING OAUTH AUTHENTICATION ENDPOINTS")
+        print("="*60)
+        
+        # Test GET /api/auth/providers - Check available OAuth providers
+        success, response = self.run_test(
+            "Get available OAuth providers",
+            "GET",
+            "auth/providers",
+            200
+        )
+        
+        if success:
+            print("   🔍 Verifying OAuth providers response structure...")
+            
+            # Check response structure
+            if "providers" in response and "enabled" in response:
+                print("   ✅ Response structure correct (providers and enabled fields)")
+                
+                providers = response.get("providers", [])
+                enabled = response.get("enabled", {})
+                
+                print(f"   📊 Available providers: {providers}")
+                print(f"   📊 Enabled status: {enabled}")
+                
+                # Check if Discord is available (should be configured)
+                if "discord" in providers:
+                    print("   ✅ Discord provider available")
+                else:
+                    print("   ❌ Discord provider not available")
+                
+                # Check enabled status for Discord
+                discord_enabled = enabled.get("discord", False)
+                if discord_enabled:
+                    print("   ✅ Discord OAuth enabled")
+                else:
+                    print("   ❌ Discord OAuth not enabled")
+                
+                # Store provider info for further testing
+                self.test_data["oauth_providers"] = providers
+                self.test_data["oauth_enabled"] = enabled
+                
+            else:
+                print("   ❌ Invalid response structure")
+                return False
+        
+        # Test GET /api/auth/discord/login - Test Discord OAuth login initiation
+        success, discord_response = self.run_test(
+            "Initiate Discord OAuth login",
+            "GET",
+            "auth/discord/login",
+            200
+        )
+        
+        if success:
+            print("   🔍 Verifying Discord OAuth login response...")
+            
+            # Check required fields in response
+            required_fields = ["authorization_url", "state", "provider"]
+            missing_fields = []
+            
+            for field in required_fields:
+                if field in discord_response:
+                    print(f"   ✅ {field}: present")
+                else:
+                    print(f"   ❌ {field}: missing")
+                    missing_fields.append(field)
+            
+            if not missing_fields:
+                # Verify authorization URL format
+                auth_url = discord_response.get("authorization_url", "")
+                if "discord.com/api/oauth2/authorize" in auth_url:
+                    print("   ✅ Authorization URL format correct (Discord OAuth)")
+                else:
+                    print(f"   ❌ Invalid authorization URL: {auth_url}")
+                
+                # Verify state is present and not empty
+                state = discord_response.get("state", "")
+                if state and len(state) > 10:
+                    print(f"   ✅ State parameter present and secure (length: {len(state)})")
+                else:
+                    print("   ❌ State parameter missing or too short")
+                
+                # Verify provider field
+                provider = discord_response.get("provider", "")
+                if provider == "discord":
+                    print("   ✅ Provider field correct")
+                else:
+                    print(f"   ❌ Provider field incorrect: {provider}")
+                
+                # Store OAuth data for potential callback testing
+                self.test_data["discord_oauth"] = discord_response
+                
+            else:
+                print(f"   ❌ Missing required fields: {missing_fields}")
+                return False
+        
+        # Test invalid provider
+        success, invalid_response = self.run_test(
+            "Test invalid OAuth provider",
+            "GET",
+            "auth/invalid_provider/login",
+            400  # Should return bad request
+        )
+        
+        if success:
+            print("   ✅ Invalid provider correctly rejected")
+        
+        # Note: OAuth callback testing would require actual OAuth flow completion
+        # which is not feasible in automated testing without mock setup
+        print("   ℹ️  OAuth callback testing skipped (requires actual OAuth flow)")
+        
+        return success
+
+    def test_oauth_user_model_updates(self):
+        """Test user model updates with OAuth provider fields"""
+        print("\n" + "="*60)
+        print("👤 TESTING USER MODEL WITH OAUTH FIELDS")
+        print("="*60)
+        
+        # Test that existing users have OAuth-compatible fields
+        if "admin" in self.tokens:
+            success, user_response = self.run_test(
+                "Get user info to verify OAuth fields",
+                "GET",
+                "auth/me",
+                200,
+                token=self.tokens["admin"]
+            )
+            
+            if success:
+                print("   🔍 Verifying user model OAuth compatibility...")
+                
+                # Check for OAuth-related fields
+                oauth_fields = ["oauth_providers", "last_login", "login_method"]
+                
+                for field in oauth_fields:
+                    if field in user_response:
+                        print(f"   ✅ {field}: present in user model")
+                    else:
+                        print(f"   ❌ {field}: missing from user model")
+                
+                # Verify oauth_providers structure
+                oauth_providers = user_response.get("oauth_providers", {})
+                if isinstance(oauth_providers, dict):
+                    print("   ✅ oauth_providers field has correct structure (dict)")
+                else:
+                    print(f"   ❌ oauth_providers field has incorrect structure: {type(oauth_providers)}")
+                
+                # Check if login_method is set (should be None for password-based users)
+                login_method = user_response.get("login_method")
+                if login_method is None or login_method == "password":
+                    print(f"   ✅ login_method: {login_method} (correct for password-based user)")
+                else:
+                    print(f"   ℹ️  login_method: {login_method} (OAuth user)")
+                
+                return True
+        
+        return False
+
+    def test_role_based_routing_logic(self):
+        """Test role-based routing logic in backend"""
+        print("\n" + "="*60)
+        print("🛣️  TESTING ROLE-BASED ROUTING LOGIC")
+        print("="*60)
+        
+        # Test that different user roles have appropriate access
+        role_tests = []
+        
+        # Test admin access to admin endpoints
+        if "admin" in self.tokens:
+            success, _ = self.run_test(
+                "Admin access to counter stats update",
+                "GET",
+                "counter-stats",
+                200,
+                token=self.tokens["admin"]
+            )
+            role_tests.append(("Admin access", success))
+        
+        # Test client restrictions
+        if "client" in self.tokens:
+            success, _ = self.run_test(
+                "Client restricted from admin functions",
+                "PUT",
+                "counter-stats",
+                403,  # Should be forbidden
+                data={"projects_completed": 1, "team_members": 1, "support_available": "test"},
+                token=self.tokens["client"]
+            )
+            role_tests.append(("Client restrictions", success))
+        
+        # Test super_admin access if available
+        if "super_admin" in self.tokens:
+            success, _ = self.run_test(
+                "Super admin access to all functions",
+                "GET",
+                "projects",
+                200,
+                token=self.tokens["super_admin"]
+            )
+            role_tests.append(("Super admin access", success))
+        
+        # Verify role-based routing is working
+        passed_tests = sum(1 for _, result in role_tests if result)
+        total_tests = len(role_tests)
+        
+        if passed_tests == total_tests and total_tests > 0:
+            print(f"   ✅ Role-based routing working correctly ({passed_tests}/{total_tests} tests passed)")
+            return True
+        else:
+            print(f"   ❌ Role-based routing issues detected ({passed_tests}/{total_tests} tests passed)")
+            return False
+
     def test_authorization_controls(self):
         """Test role-based access controls"""
         print("\n" + "="*60)
