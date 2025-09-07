@@ -687,6 +687,133 @@ class EternalsStudioAPITester:
         
         return success
 
+    def test_testimonials_api(self):
+        """Test testimonials API endpoints - new testimonial submission functionality"""
+        print("\n" + "="*60)
+        print("⭐ TESTING TESTIMONIALS API (NEW FUNCTIONALITY)")
+        print("="*60)
+        
+        # Test GET testimonials (public endpoint)
+        success, response = self.run_test(
+            "Get all approved testimonials",
+            "GET",
+            "testimonials",
+            200
+        )
+        
+        if success:
+            print(f"   📊 Found {len(response)} approved testimonials")
+            self.test_data["initial_testimonial_count"] = len(response)
+        
+        # Test POST testimonial submission (public endpoint - no auth required)
+        testimonial_data = {
+            "client_name": "Sarah Johnson",
+            "client_role": "Marketing Director",
+            "client_avatar": "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150",
+            "rating": 5,
+            "title": "Outstanding Brand Identity Work",
+            "content": "Eternals Studio delivered exceptional brand identity design that perfectly captured our company vision. The team was professional, creative, and delivered on time. Highly recommend their services!",
+            "highlights": ["Creative Excellence", "Timely Delivery", "Professional Service"]
+        }
+        
+        success, testimonial_response = self.run_test(
+            "Submit new testimonial (public)",
+            "POST",
+            "testimonials",
+            200,
+            data=testimonial_data
+        )
+        
+        if success:
+            testimonial_id = testimonial_response.get("id")
+            self.test_data["testimonial_id"] = testimonial_id
+            
+            # Verify testimonial is created but not approved
+            if not testimonial_response.get("approved"):
+                print("   ✅ Testimonial correctly created as unapproved (requires admin approval)")
+            else:
+                print("   ⚠️  Testimonial was auto-approved (should require admin approval)")
+            
+            # Test that unapproved testimonial doesn't appear in public list
+            success, public_testimonials = self.run_test(
+                "Verify unapproved testimonial not in public list",
+                "GET",
+                "testimonials",
+                200
+            )
+            
+            if success:
+                current_count = len(public_testimonials)
+                initial_count = self.test_data.get("initial_testimonial_count", 0)
+                if current_count == initial_count:
+                    print("   ✅ Unapproved testimonial correctly hidden from public list")
+                else:
+                    print("   ⚠️  Unapproved testimonial may be visible in public list")
+            
+            # Test admin approval (if admin token available)
+            if "admin" in self.tokens:
+                success, approval_response = self.run_test(
+                    "Approve testimonial (admin)",
+                    "PUT",
+                    f"testimonials/{testimonial_id}/approve",
+                    200,
+                    token=self.tokens["admin"]
+                )
+                
+                if success and approval_response.get("approved"):
+                    print("   ✅ Testimonial successfully approved by admin")
+                    
+                    # Verify approved testimonial now appears in public list
+                    success, updated_testimonials = self.run_test(
+                        "Verify approved testimonial in public list",
+                        "GET",
+                        "testimonials",
+                        200
+                    )
+                    
+                    if success:
+                        new_count = len(updated_testimonials)
+                        if new_count == initial_count + 1:
+                            print("   ✅ Approved testimonial correctly appears in public list")
+                        else:
+                            print(f"   ⚠️  Expected {initial_count + 1} testimonials, found {new_count}")
+                
+                # Test admin delete testimonial
+                success, delete_response = self.run_test(
+                    "Delete testimonial (admin)",
+                    "DELETE",
+                    f"testimonials/{testimonial_id}",
+                    200,
+                    token=self.tokens["admin"]
+                )
+                
+                if success:
+                    print("   ✅ Testimonial successfully deleted by admin")
+            else:
+                print("   ⚠️  Skipping admin approval tests - no admin token available")
+        
+        # Test client trying to approve testimonial (should fail)
+        if "client" in self.tokens and "testimonial_id" in self.test_data:
+            self.run_test(
+                "Client approve testimonial (should fail)",
+                "PUT",
+                f"testimonials/{self.test_data['testimonial_id']}/approve",
+                403,  # Expecting forbidden
+                token=self.tokens["client"]
+            )
+        
+        # Test client trying to delete testimonial (should fail)
+        if "client" in self.tokens and "testimonial_id" in self.test_data:
+            self.run_test(
+                "Client delete testimonial (should fail)",
+                "DELETE",
+                f"testimonials/{self.test_data['testimonial_id']}",
+                403,  # Expecting forbidden
+                token=self.tokens["client"]
+            )
+        
+        return success
+
     def test_authorization_controls(self):
         """Test role-based access controls"""
         print("\n" + "="*60)
