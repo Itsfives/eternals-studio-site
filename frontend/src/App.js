@@ -3106,7 +3106,6 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { showToast } = useToast();
     
     try {
       if (isLogin) {
