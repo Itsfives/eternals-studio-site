@@ -117,7 +117,7 @@ class WorkflowStepStatus(str, Enum):
     COMPLETED = "completed"
     SKIPPED = "skipped"
 
-# Models
+# Enhanced User Model
 class User(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: EmailStr
@@ -125,11 +125,155 @@ class User(BaseModel):
     role: UserRole = UserRole.CLIENT
     is_active: bool = True
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: Optional[datetime] = None
     avatar_url: Optional[str] = None
+    
+    # Contact Information
     company: Optional[str] = None
-    oauth_providers: Dict[str, Dict[str, Any]] = Field(default_factory=dict)  # Store OAuth provider data
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    city: Optional[str] = None
+    state: Optional[str] = None
+    zip_code: Optional[str] = None
+    country: Optional[str] = None
+    website: Optional[str] = None
+    
+    # Business Information
+    industry: Optional[str] = None
+    company_size: Optional[str] = None
+    annual_revenue: Optional[str] = None
+    referral_source: Optional[str] = None
+    notes: Optional[str] = None
+    
+    # Account Information
+    oauth_providers: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
     last_login: Optional[datetime] = None
-    login_method: Optional[str] = None  # "password", "discord", "google", etc.
+    login_method: Optional[str] = None
+    assigned_client_manager: Optional[str] = None  # User ID of assigned client manager
+    
+    # Preferences
+    email_notifications: bool = True
+    project_notifications: bool = True
+    marketing_emails: bool = False
+
+# Project File Model
+class ProjectFile(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    filename: str
+    original_filename: str
+    file_path: str
+    file_size: int
+    file_type: str
+    access_type: FileAccessType = FileAccessType.FREE
+    uploaded_by: str  # User ID
+    uploaded_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    description: Optional[str] = None
+    is_active: bool = True
+    requires_payment: bool = False
+    associated_invoice: Optional[str] = None  # Invoice ID if payment required
+
+# Project Workflow Step Model
+class WorkflowStep(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    step_number: int
+    title: str
+    description: str
+    status: WorkflowStepStatus = WorkflowStepStatus.PENDING
+    estimated_duration: Optional[str] = None  # "3-5 days"
+    completed_at: Optional[datetime] = None
+    assigned_to: Optional[str] = None  # User ID
+    client_approval_required: bool = False
+    client_approved: bool = False
+    client_approved_at: Optional[datetime] = None
+    notes: Optional[str] = None
+
+# Enhanced Project Model
+class ClientProject(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    client_id: str  # User ID
+    assigned_team_members: List[str] = Field(default_factory=list)  # User IDs
+    status: ProjectStatus = ProjectStatus.DRAFT
+    priority: str = "medium"  # low, medium, high, urgent
+    
+    # Project Details
+    project_type: str  # "Logo Design", "Web Development", etc.
+    budget: Optional[float] = None
+    estimated_hours: Optional[float] = None
+    actual_hours: Optional[float] = 0
+    start_date: Optional[date] = None
+    due_date: Optional[date] = None
+    completed_date: Optional[date] = None
+    
+    # Workflow
+    workflow_steps: List[WorkflowStep] = Field(default_factory=list)
+    current_step: Optional[int] = None
+    
+    # Files and Assets
+    files: List[ProjectFile] = Field(default_factory=list)
+    client_files: List[str] = Field(default_factory=list)  # Files uploaded by client
+    deliverables: List[str] = Field(default_factory=list)  # Final deliverable file IDs
+    
+    # Communication
+    last_activity: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    client_last_seen: Optional[datetime] = None
+    
+    # Metadata
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: Optional[datetime] = None
+    is_template: bool = False
+    template_name: Optional[str] = None
+    tags: List[str] = Field(default_factory=list)
+    custom_fields: Dict[str, Any] = Field(default_factory=dict)
+
+# Message Model for Communication System
+class Message(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    project_id: Optional[str] = None  # Can be project-specific or general
+    sender_id: str  # User ID
+    recipient_id: Optional[str] = None  # If specific recipient, otherwise all project members
+    subject: Optional[str] = None
+    content: str
+    message_type: str = "text"  # text, file, system_notification
+    status: MessageStatus = MessageStatus.UNREAD
+    sent_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    read_at: Optional[datetime] = None
+    email_sent: bool = False
+    email_sent_at: Optional[datetime] = None
+    attachments: List[str] = Field(default_factory=list)  # File IDs
+    is_system_message: bool = False
+
+# Enhanced Invoice Model
+class Invoice(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    invoice_number: str = Field(default_factory=lambda: f"INV-{int(datetime.now().timestamp())}")
+    client_id: str  # User ID
+    project_id: Optional[str] = None
+    status: InvoiceStatus = InvoiceStatus.DRAFT
+    
+    # Invoice Details
+    title: str
+    description: Optional[str] = None
+    subtotal: float
+    tax_rate: float = 0.0
+    tax_amount: float = 0.0
+    discount_amount: float = 0.0
+    total_amount: float
+    
+    # Payment Information
+    due_date: date
+    paid_date: Optional[date] = None
+    payment_method: Optional[str] = None
+    payment_reference: Optional[str] = None
+    
+    # Dates
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    sent_at: Optional[datetime] = None
+    
+    # Access Control
+    locked_files: List[str] = Field(default_factory=list)  # File IDs locked until payment
+    unlocked_at: Optional[datetime] = None
 
 class UserCreate(BaseModel):
     email: EmailStr
