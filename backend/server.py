@@ -33,7 +33,7 @@ class Testimonial(BaseModel):
     client_name: str
     client_role: str = ""
     client_avatar: str = ""
-    rating: int = Field(default=5)
+    rating: int = Field(default=5, ge=1, le=5, description="Rating must be between 1 and 5")
     title: str
     content: str
     highlights: List[str] = Field(default_factory=list)
@@ -45,7 +45,7 @@ class TestimonialCreate(BaseModel):
     client_name: str
     client_role: str = ""
     client_avatar: str = ""
-    rating: int = Field(default=5)
+    rating: int = Field(default=5, ge=1, le=5, description="Rating must be between 1 and 5")
     title: str
     content: str
     highlights: List[str] = Field(default_factory=list)
