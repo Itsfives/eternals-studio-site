@@ -4304,63 +4304,178 @@ const Footer = () => {
   );
 };
 
+// Cart Sidebar Component
+const CartSidebar = () => {
+  const { cartItems, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity, getTotalPrice, clearCart } = useCart();
+
+  return (
+    <>
+      {/* Overlay */}
+      {isCartOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40"
+          onClick={() => setIsCartOpen(false)}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <div className={`fixed top-0 right-0 h-full w-96 bg-white dark:bg-slate-800 shadow-xl transform transition-transform duration-300 z-50 ${
+        isCartOpen ? 'translate-x-0' : 'translate-x-full'
+      }`}>
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Shopping Cart</h2>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsCartOpen(false)}
+              className="w-8 h-8 p-0"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+
+          {/* Cart Items */}
+          <div className="flex-1 overflow-y-auto p-6">
+            {cartItems.length === 0 ? (
+              <div className="text-center py-12">
+                <ShoppingCart className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                <p className="text-slate-600 dark:text-slate-400">Your cart is empty</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {cartItems.map((item) => (
+                  <div key={item.id} className="flex items-center space-x-4 p-4 bg-slate-50 dark:bg-slate-700 rounded-lg">
+                    <img 
+                      src={item.image} 
+                      alt={item.title}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      <h3 className="font-medium text-slate-900 dark:text-white text-sm">{item.title}</h3>
+                      <p className="text-teal-600 dark:text-teal-400 font-semibold">{item.price}</p>
+                      <div className="flex items-center space-x-2 mt-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="w-8 h-8 p-0"
+                        >
+                          -
+                        </Button>
+                        <span className="text-sm font-medium text-slate-900 dark:text-white">{item.quantity}</span>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="w-8 h-8 p-0"
+                        >
+                          +
+                        </Button>
+                      </div>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => removeFromCart(item.id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Footer */}
+          {cartItems.length > 0 && (
+            <div className="border-t border-slate-200 dark:border-slate-700 p-6">
+              <div className="flex justify-between items-center mb-4">
+                <span className="text-lg font-semibold text-slate-900 dark:text-white">Total:</span>
+                <span className="text-lg font-bold text-teal-600 dark:text-teal-400">${getTotalPrice()}</span>
+              </div>
+              <div className="space-y-2">
+                <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                  Checkout
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={clearCart}
+                >
+                  Clear Cart
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </>
+  );
+};
+
 // Main App Component
 const App = () => {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
-            <Navigation />
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/services" element={<ServicesPage />} />
-              <Route path="/portfolio" element={<PortfolioPage />} />
-              <Route path="/project/:projectId" element={<ProjectDetailPage />} />
-              <Route path="/store" element={<StorePage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/contact" element={<ContactPage />} />
-              <Route path="/auth" element={<AuthPage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/client-portal" element={<ClientPortal />} />
-              <Route path="/faq" element={<FAQPage />} />
-            </Routes>
-            <Footer />
-            <Toaster 
-              position="top-right"
-              reverseOrder={false}
-              gutter={8}
-              containerClassName=""
-              containerStyle={{}}
-              toastOptions={{
-                // Define default options
-                className: '',
-                duration: 4000,
-                style: {
-                  background: '#363636',
-                  color: '#fff',
-                },
-                // Default options for specific types
-                success: {
-                  duration: 3000,
-                  theme: {
-                    primary: 'green',
-                    secondary: 'black',
-                  },
-                },
-                error: {
+    <CartProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Router>
+            <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
+              <Navigation />
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/portfolio" element={<PortfolioPage />} />
+                <Route path="/project/:projectId" element={<ProjectDetailPage />} />
+                <Route path="/store" element={<StorePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+                <Route path="/auth" element={<AuthPage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/client-portal" element={<ClientPortal />} />
+                <Route path="/faq" element={<FAQPage />} />
+              </Routes>
+              <Footer />
+              <CartSidebar />
+              <Toaster 
+                position="top-right"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                toastOptions={{
+                  // Define default options
+                  className: '',
                   duration: 4000,
-                  theme: {
-                    primary: 'red',
-                    secondary: 'black',
+                  style: {
+                    background: '#363636',
+                    color: '#fff',
                   },
-                },
-              }}
-            />
-          </div>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+                  // Default options for specific types
+                  success: {
+                    duration: 3000,
+                    theme: {
+                      primary: 'green',
+                      secondary: 'black',
+                    },
+                  },
+                  error: {
+                    duration: 4000,
+                    theme: {
+                      primary: 'red',
+                      secondary: 'black',
+                    },
+                  },
+                }}
+              />
+            </div>
+          </Router>
+        </AuthProvider>
+      </ThemeProvider>
+    </CartProvider>
   );
 };
 
