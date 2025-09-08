@@ -3106,10 +3106,12 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const { showToast } = useToast();
+    
     try {
       if (isLogin) {
         const userData = await login(formData.email, formData.password);
-        toast.success("Logged in successfully!");
+        showToast("Logged in successfully!");
         
         // Navigate based on user role - only super_admin goes to dashboard
         if (userData.role === 'super_admin') {
@@ -3119,7 +3121,7 @@ const AuthPage = () => {
         }
       } else {
         const userData = await register(formData);
-        toast.success("Account created successfully! Redirecting to your portal...");
+        showToast("Account created successfully! Redirecting to your portal...");
         
         // Navigate based on user role - only super_admin goes to dashboard
         if (userData.role === 'super_admin') {
@@ -3129,7 +3131,7 @@ const AuthPage = () => {
         }
       }
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'An error occurred');
+      showToast(error.response?.data?.detail || 'An error occurred', 'error');
     }
   };
 
