@@ -111,14 +111,29 @@ class TestimonialSubmissionTester:
                 "password": admin_data["password"]
             }
             
-            success, login_response = self.run_test(
-                "Login admin user",
-                "POST", 
-                "auth/login",
-                200,
-                data=login_data,
-                headers={"Content-Type": "multipart/form-data"}
-            )
+            # Use form data for login
+            try:
+                url = f"{self.api_url}/auth/login"
+                response = requests.post(url, data=login_data, timeout=10)
+                
+                self.tests_run += 1
+                print(f"\n🔍 Test {self.tests_run}: Login admin user")
+                print(f"   Method: POST | Endpoint: /auth/login")
+                
+                if response.status_code == 200:
+                    self.tests_passed += 1
+                    print(f"   ✅ PASSED - Status: {response.status_code}")
+                    login_response = response.json()
+                    success = True
+                else:
+                    print(f"   ❌ FAILED - Expected 200, got {response.status_code}")
+                    print(f"   📄 Error: {response.text}")
+                    success = False
+                    login_response = {}
+            except Exception as e:
+                print(f"   ❌ FAILED - Error: {str(e)}")
+                success = False
+                login_response = {}
             
             if success and "access_token" in login_response:
                 self.admin_token = login_response["access_token"]
