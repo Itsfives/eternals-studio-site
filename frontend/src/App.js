@@ -3822,6 +3822,258 @@ const ClientPortal = () => {
   );
 };
 
+// Dashboard Tab Components
+const OverviewTab = ({ stats }) => (
+  <div className="space-y-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Projects Completed</CardTitle>
+          <CheckCircle className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{stats.projects_completed}</div>
+          <p className="text-xs text-muted-foreground">Successfully delivered</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Team Members</CardTitle>
+          <Users className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{stats.team_members}</div>
+          <p className="text-xs text-muted-foreground">Professional team</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Active Clients</CardTitle>
+          <Users className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-bold">{stats.total_clients || 0}</div>
+          <p className="text-xs text-muted-foreground">Current clients</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-sm font-medium">Support</CardTitle>
+          <Clock className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-lg font-bold">{stats.support_available}</div>
+          <p className="text-xs text-muted-foreground">Available support</p>
+        </CardContent>
+      </Card>
+    </div>
+  </div>
+);
+
+const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Client Management</CardTitle>
+        <CardDescription>Manage client accounts and assignments</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 dark:text-slate-400">Client management features coming soon...</p>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const ProjectManagementTab = ({ projects, clients }) => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Project Management</CardTitle>
+        <CardDescription>Manage all client projects</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 dark:text-slate-400">Project management features coming soon...</p>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const InvoiceBillingTab = ({ invoices, clients }) => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Invoice & Billing</CardTitle>
+        <CardDescription>Manage invoices and billing</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 dark:text-slate-400">Invoice and billing features coming soon...</p>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const CommunicationsTab = ({ messages }) => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Communications</CardTitle>
+        <CardDescription>Manage client communications</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 dark:text-slate-400">Communication features coming soon...</p>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const TestimonialsTab = ({ testimonials, onApprove }) => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Testimonial Management</CardTitle>
+        <CardDescription>Review and approve customer testimonials</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {testimonials.length === 0 ? (
+            <div className="text-center py-8">
+              <MessageSquare className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+              <p className="text-slate-600 dark:text-slate-400">No testimonials to review</p>
+            </div>
+          ) : (
+            testimonials.map((testimonial) => (
+              <div key={testimonial.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <h3 className="font-semibold text-slate-900 dark:text-white">
+                        {testimonial.client_name || testimonial.name}
+                      </h3>
+                      <div className="flex">
+                        {[...Array(testimonial.rating || 5)].map((_, i) => (
+                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                      {testimonial.approved && (
+                        <Badge variant="default" className="bg-green-100 text-green-700">
+                          Approved
+                        </Badge>
+                      )}
+                    </div>
+                    <p className="text-slate-600 dark:text-slate-400 mb-2">
+                      {testimonial.client_role || testimonial.company}
+                    </p>
+                    <p className="text-slate-800 dark:text-slate-200">
+                      {testimonial.content}
+                    </p>
+                  </div>
+                  {!testimonial.approved && (
+                    <Button
+                      onClick={() => onApprove(testimonial.id)}
+                      size="sm"
+                      className="ml-4"
+                    >
+                      <CheckCircle className="w-4 h-4 mr-1" />
+                      Approve
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const ContentManagementTab = () => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Content Management</CardTitle>
+        <CardDescription>Manage website content and settings</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 dark:text-slate-400">Content management features coming soon...</p>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const UserManagementTab = ({ users }) => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>User Management</CardTitle>
+        <CardDescription>Manage user accounts and permissions</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-4">
+          {users.length === 0 ? (
+            <div className="text-center py-8">
+              <Users className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+              <p className="text-slate-600 dark:text-slate-400">No users found</p>
+            </div>
+          ) : (
+            users.map((userData) => (
+              <div key={userData.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-slate-900 dark:text-white">
+                      {userData.full_name}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400">
+                      {userData.email}
+                    </p>
+                    <Badge variant="outline" className="mt-1">
+                      {userData.role}
+                    </Badge>
+                  </div>
+                  <div className="flex space-x-2">
+                    <Button size="sm" variant="outline">
+                      <Edit className="w-4 h-4 mr-1" />
+                      Edit
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const RoleManagementTab = () => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Role Management</CardTitle>
+        <CardDescription>Manage user roles and permissions</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 dark:text-slate-400">Role management features coming soon...</p>
+      </CardContent>
+    </Card>
+  </div>
+);
+
+const ClientPortalViewTab = ({ clientId }) => (
+  <div className="space-y-6">
+    <Card>
+      <CardHeader>
+        <CardTitle>Client Portal View</CardTitle>
+        <CardDescription>View client portal as admin</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-slate-600 dark:text-slate-400">Client portal view for client {clientId}</p>
+      </CardContent>
+    </Card>
+  </div>
+);
+
 // Enhanced Admin Dashboard Component
 const Dashboard = () => {
   const { user } = useAuth();
