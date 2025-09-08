@@ -2492,7 +2492,11 @@ const StorePage = () => {
                       >
                         <Eye className="w-4 h-4" />
                       </Button>
-                      <Button size="sm" className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                      <Button 
+                        size="sm" 
+                        className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white"
+                        onClick={() => addToCart(product)}
+                      >
                         <ShoppingCart className="w-4 h-4" />
                       </Button>
                     </div>
