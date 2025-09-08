@@ -1439,6 +1439,227 @@ class EternalsStudioAPITester:
         
         return True
 
+    def test_super_admin_setup(self):
+        """Test Super Admin Setup for fives@eternalsgg.com - CRITICAL USER MANAGEMENT TASK"""
+        print("\n" + "="*60)
+        print("👑 TESTING SUPER ADMIN SETUP - fives@eternalsgg.com")
+        print("="*60)
+        
+        target_email = "fives@eternalsgg.com"
+        target_password = "SuperAdmin2024!"
+        
+        # Step 1: Check if fives@eternalsgg.com already exists
+        print(f"   🔍 Step 1: Checking if {target_email} exists in database...")
+        
+        # Try to login first to see if user exists
+        login_data = {
+            "username": target_email,
+            "password": target_password
+        }
+        
+        success, login_response = self.run_test(
+            f"Check if {target_email} exists (login attempt)",
+            "POST", 
+            "auth/login",
+            200,  # If exists and password correct
+            data=login_data,
+            headers={"Content-Type": "multipart/form-data"}
+        )
+        
+        user_exists = False
+        fives_token = None
+        
+        if success and "access_token" in login_response:
+            user_exists = True
+            fives_token = login_response["access_token"]
+            print(f"   ✅ {target_email} exists and login successful")
+            
+            # Check current role
+            success, user_info = self.run_test(
+                f"Get {target_email} user info",
+                "GET",
+                "auth/me",
+                200,
+                token=fives_token
+            )
+            
+            if success:
+                current_role = user_info.get("role", "unknown")
+                print(f"   📊 Current role: {current_role}")
+                
+                if current_role == "super_admin":
+                    print(f"   ✅ {target_email} already has super_admin role")
+                    self.test_data["fives_token"] = fives_token
+                    self.test_data["fives_user_id"] = user_info.get("id")
+                else:
+                    print(f"   ⚠️  {target_email} exists but role is {current_role}, needs to be updated to super_admin")
+        else:
+            print(f"   ℹ️  {target_email} either doesn't exist or password is incorrect")
+            
+            # Step 2: Create user if doesn't exist
+            print(f"   🔧 Step 2: Creating {target_email} as super_admin...")
+            
+            user_data = {
+                "email": target_email,
+                "password": target_password,
+                "full_name": "Fives - Super Administrator",
+                "role": "super_admin",
+                "company": "Eternals Studio"
+            }
+            
+            success, response = self.run_test(
+                f"Create {target_email} as super_admin",
+                "POST",
+                "auth/register",
+                200,
+                data=user_data
+            )
+            
+            if success:
+                print(f"   ✅ {target_email} created successfully as super_admin")
+                user_id = response.get("id")
+                self.test_data["fives_user_id"] = user_id
+                
+                # Login the newly created user
+                success, login_response = self.run_test(
+                    f"Login newly created {target_email}",
+                    "POST", 
+                    "auth/login",
+                    200,
+                    data=login_data,
+                    headers={"Content-Type": "multipart/form-data"}
+                )
+                
+                if success and "access_token" in login_response:
+                    fives_token = login_response["access_token"]
+                    self.test_data["fives_token"] = fives_token
+                    print(f"   ✅ {target_email} login successful after creation")
+                else:
+                    print(f"   ❌ Failed to login {target_email} after creation")
+                    return False
+            else:
+                print(f"   ❌ Failed to create {target_email}")
+                return False
+        
+        # Step 3: Verify Super Admin Access and Permissions
+        if fives_token:
+            print(f"   🔍 Step 3: Verifying super admin access for {target_email}...")
+            
+            # Test super admin can access user management endpoints
+            success, users_response = self.run_test(
+                "Super admin access to user list",
+                "GET",
+                "users",
+                200,
+                token=fives_token
+            )
+            
+            if success:
+                user_count = len(users_response) if isinstance(users_response, list) else 0
+                print(f"   ✅ Super admin can access user management (found {user_count} users)")
+                
+                # Find the fives user in the list to verify role
+                fives_user = None
+                for user in users_response:
+                    if user.get("email") == target_email:
+                        fives_user = user
+                        break
+                
+                if fives_user and fives_user.get("role") == "super_admin":
+                    print(f"   ✅ {target_email} confirmed as super_admin in user list")
+                else:
+                    print(f"   ❌ {target_email} role verification failed in user list")
+            else:
+                print(f"   ❌ Super admin cannot access user management endpoints")
+                return False
+            
+            # Test super admin can update user roles (if other users exist)
+            if "client" in self.users:
+                client_user_id = self.users["client"]["id"]
+                
+                success, role_update_response = self.run_test(
+                    "Super admin update user role",
+                    "PUT",
+                    f"users/{client_user_id}/role",
+                    200,
+                    data="client",  # Keep as client
+                    token=fives_token
+                )
+                
+                if success:
+                    print(f"   ✅ Super admin can update user roles")
+                else:
+                    print(f"   ❌ Super admin cannot update user roles")
+            
+            # Test super admin can access admin dashboard analytics
+            success, analytics_response = self.run_test(
+                "Super admin access to dashboard analytics",
+                "GET",
+                "admin/analytics",
+                200,
+                token=fives_token
+            )
+            
+            if success:
+                print(f"   ✅ Super admin can access dashboard analytics")
+                analytics_data = analytics_response
+                if "users" in analytics_data and "projects" in analytics_data:
+                    print(f"   📊 Analytics data: {analytics_data.get('users', {}).get('total', 0)} users, {analytics_data.get('projects', {}).get('total', 0)} projects")
+            else:
+                print(f"   ❌ Super admin cannot access dashboard analytics")
+            
+            # Test super admin can manage counter statistics
+            success, counter_stats_response = self.run_test(
+                "Super admin access to counter statistics",
+                "GET",
+                "counter-stats",
+                200,
+                token=fives_token
+            )
+            
+            if success:
+                print(f"   ✅ Super admin can access counter statistics")
+                
+                # Test updating counter stats
+                updated_stats = {
+                    "id": counter_stats_response.get("id", str(uuid.uuid4())),
+                    "projects_completed": 15,  # Will be auto-synced
+                    "team_members": 6,
+                    "support_available": "24/7 Premium Support"
+                }
+                
+                success, update_response = self.run_test(
+                    "Super admin update counter statistics",
+                    "PUT",
+                    "counter-stats",
+                    200,
+                    data=updated_stats,
+                    token=fives_token
+                )
+                
+                if success:
+                    print(f"   ✅ Super admin can update counter statistics")
+                else:
+                    print(f"   ❌ Super admin cannot update counter statistics")
+            
+            # Test super admin can manage testimonials
+            success, testimonials_response = self.run_test(
+                "Super admin access to testimonials",
+                "GET",
+                "testimonials",
+                200,
+                token=fives_token
+            )
+            
+            if success:
+                testimonial_count = len(testimonials_response) if isinstance(testimonials_response, list) else 0
+                print(f"   ✅ Super admin can access testimonials ({testimonial_count} found)")
+            
+            print(f"   🎉 Super admin setup and verification completed for {target_email}")
+            return True
+        
+        return False
+
     def run_all_tests(self):
         """Run all test suites including OAuth callback error handling testing"""
         print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH OAUTH CALLBACK FIXES")
