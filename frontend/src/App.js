@@ -4044,450 +4044,68 @@ const Dashboard = () => {
       </div>
     );
   }
-      return;
-    }
-  }, [user, navigate]);
-
-  const isAdmin = user?.role === 'super_admin' || user?.role === 'admin';
-  const isSuperAdmin = user?.role === 'super_admin';
-
-  // Fetch dashboard data
-  useEffect(() => {
-    if (!user || !['admin', 'super_admin', 'editor'].includes(user.role)) return;
-
-    const fetchDashboardData = async () => {
-      setLoading(true);
-      try {
-        const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
-        const token = localStorage.getItem('token');
-        
-        // Fetch statistics
-        const statsResponse = await fetch(`${backendUrl}/api/counter-stats`);
-        if (statsResponse.ok) {
-          const statsData = await statsResponse.json();
-          setStats(statsData);
-        }
-
-        // Fetch testimonials (admin only)
-        if (isAdmin) {
-          const testimonialsResponse = await fetch(`${backendUrl}/api/testimonials`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (testimonialsResponse.ok) {
-            const testimonialsData = await testimonialsResponse.json();
-            setTestimonials(testimonialsData);
-          }
-        }
-
-        // Fetch users (super admin only)
-        if (isSuperAdmin) {
-          const usersResponse = await fetch(`${backendUrl}/api/users`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-          });
-          if (usersResponse.ok) {
-            const usersData = await usersResponse.json();
-            setUsers(usersData);
-          }
-        }
-
-      } catch (error) {
-        console.error('Error fetching dashboard data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDashboardData();
-  }, [user, isAdmin, isSuperAdmin]);
-
-  const updateStats = async () => {
-    setSaving(true);
-    try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(`${backendUrl}/api/counter-stats`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify(stats)
-      });
-
-      if (response.ok) {
-        showToast("Statistics updated successfully!");
-      } else {
-        const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to update statistics');
-      }
-    } catch (error) {
-      showToast(error.message || 'Failed to update statistics', 'error');
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleStatsChange = (field, value) => {
-    setStats(prev => ({
-      ...prev,
-      [field]: field === 'support_available' ? value : parseInt(value) || 0
-    }));
-  };
-
-  const approveTestimonial = async (testimonialId) => {
-    try {
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || import.meta.env.REACT_APP_BACKEND_URL;
-      const token = localStorage.getItem('token');
-      
-      const response = await fetch(`${backendUrl}/api/testimonials/${testimonialId}/approve`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-
-      if (response.ok) {
-        setTestimonials(prev => 
-          prev.map(t => t.id === testimonialId ? { ...t, approved: true } : t)
-        );
-        showToast("Testimonial approved!");
-      }
-    } catch (error) {
-      showToast("Failed to approve testimonial", 'error');
-    }
-  };
-
-  if (loading || !user) {
-    return (
-      <div className="min-h-screen bg-white dark:bg-slate-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
-          <p className="text-slate-600 dark:text-slate-400">Loading dashboard...</p>
-        </div>
-      </div>
-    );
-  }
-
+  // Dashboard render
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
-      <div className="py-8 px-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <div className="flex justify-between items-center">
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-2">
-                  Admin Dashboard
-                </h1>
-                <p className="text-slate-600 dark:text-slate-400">
-                  Welcome back, <span className="gradient-text font-semibold">{user?.full_name}</span>
-                </p>
-              </div>
-              <div className="flex space-x-4">
-                <Button variant="outline" onClick={() => navigate('/')}>
-                  <ArrowRight className="w-4 h-4 mr-2 rotate-180" />
-                  Back to Site
-                </Button>
-                <Button 
-                  onClick={() => navigate('/client-portal')}
-                  className="bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white"
-                >
-                  <Eye className="w-4 h-4 mr-2" />
-                  Client View
-                </Button>
-              </div>
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+      {/* Header */}
+      <div className="bg-white dark:bg-slate-800 shadow-sm border-b border-slate-200 dark:border-slate-700">
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">Admin Dashboard</h1>
+              <p className="text-slate-600 dark:text-slate-400">Welcome back, {user?.full_name}</p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <Badge variant="outline" className="bg-teal-50 text-teal-700 border-teal-200">
+                {user?.role === 'super_admin' ? 'Super Admin' : 
+                 user?.role === 'admin' ? 'Admin' : 'Client Manager'}
+              </Badge>
+              <Button 
+                variant="outline" 
+                onClick={() => navigate('/')}
+                className="flex items-center space-x-2"
+              >
+                <Home className="w-4 h-4" />
+                <span>View Site</span>
+              </Button>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Tabs */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-6 bg-slate-100 dark:bg-slate-800">
-              <TabsTrigger value="overview" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Overview</TabsTrigger>
-              <TabsTrigger value="content" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Content</TabsTrigger>
-              <TabsTrigger value="testimonials" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Testimonials</TabsTrigger>
-              <TabsTrigger value="projects" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Projects</TabsTrigger>
-              {isSuperAdmin && <TabsTrigger value="users" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Users</TabsTrigger>}
-              <TabsTrigger value="settings" className="data-[state=active]:bg-white dark:data-[state=active]:bg-slate-700">Settings</TabsTrigger>
-            </TabsList>
+      <div className="flex">
+        {/* Sidebar Navigation */}
+        <div className="w-64 bg-white dark:bg-slate-800 shadow-sm h-screen sticky top-0">
+          <nav className="mt-8">
+            {dashboardTabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full flex items-center space-x-3 px-6 py-3 text-left transition-colors ${
+                  activeTab === tab.id
+                    ? 'bg-teal-50 dark:bg-teal-900/20 text-teal-700 dark:text-teal-300 border-r-2 border-teal-500'
+                    : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700'
+                }`}
+              >
+                <tab.icon className="w-5 h-5" />
+                <span className="font-medium">{tab.name}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
 
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="mt-8">
-              <div className="grid md:grid-cols-4 gap-6 mb-8">
-                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <CheckCircle className="w-6 h-6 text-teal-600 dark:text-teal-400" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{stats.projects_completed}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">Projects Completed</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Users className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{stats.team_members}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">Team Members</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <MessageSquare className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{testimonials.length}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">Total Testimonials</p>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Clock className="w-6 h-6 text-green-600 dark:text-green-400" />
-                    </div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{stats.support_available}</h3>
-                    <p className="text-slate-600 dark:text-slate-400 text-sm">Support Available</p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Quick Actions */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="text-slate-900 dark:text-white">Quick Actions</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    <Button className="w-full justify-start" variant="outline">
-                      <Plus className="w-4 h-4 mr-2" />
-                      Add New Project
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <FileText className="w-4 h-4 mr-2" />
-                      Create Invoice
-                    </Button>
-                    <Button className="w-full justify-start" variant="outline">
-                      <MessageSquare className="w-4 h-4 mr-2" />
-                      Send Message to Client
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="text-slate-900 dark:text-white">Recent Activity</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">New testimonial submitted</p>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">Project completed</p>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">New user registered</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            </TabsContent>
-
-            {/* Content Management Tab */}
-            <TabsContent value="content" className="mt-8">
-              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-white">Content Management System</CardTitle>
-                  <CardDescription className="text-slate-600 dark:text-slate-400">
-                    Manage website content, statistics, and site settings
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  {/* Statistics Management */}
-                  <div>
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Site Statistics</h3>
-                    <div className="grid md:grid-cols-3 gap-4">
-                      <div>
-                        <Label htmlFor="projects_completed" className="text-slate-900 dark:text-white">Projects Completed</Label>
-                        <Input
-                          id="projects_completed"
-                          type="number"
-                          value={stats.projects_completed}
-                          onChange={(e) => handleStatsChange('projects_completed', e.target.value)}
-                          className="mt-1 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="team_members" className="text-slate-900 dark:text-white">Team Members</Label>
-                        <Input
-                          id="team_members"
-                          type="number"
-                          value={stats.team_members}
-                          onChange={(e) => handleStatsChange('team_members', e.target.value)}
-                          className="mt-1 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"
-                        />
-                      </div>
-                      <div>
-                        <Label htmlFor="support_available" className="text-slate-900 dark:text-white">Support Available</Label>
-                        <Input
-                          id="support_available"
-                          value={stats.support_available}
-                          onChange={(e) => handleStatsChange('support_available', e.target.value)}
-                          className="mt-1 bg-white dark:bg-slate-700 border-slate-300 dark:border-slate-600"
-                        />
-                      </div>
-                    </div>
-                    <Button 
-                      onClick={updateStats} 
-                      disabled={saving}
-                      className="mt-4 bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white"
-                    >
-                      {saving ? 'Saving...' : 'Update Statistics'}
-                    </Button>
-                  </div>
-
-                  {/* More CMS features can be added here */}
-                  <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
-                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Additional Content</h3>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <Button variant="outline" className="h-20 flex-col">
-                        <Palette className="w-6 h-6 mb-2" />
-                        Manage Portfolio
-                      </Button>
-                      <Button variant="outline" className="h-20 flex-col">
-                        <FileText className="w-6 h-6 mb-2" />
-                        Edit Pages
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Testimonials Tab */}
-            <TabsContent value="testimonials" className="mt-8">
-              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-white">Testimonial Management</CardTitle>
-                  <CardDescription className="text-slate-600 dark:text-slate-400">
-                    Review and approve customer testimonials
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  {testimonials.length === 0 ? (
-                    <div className="text-center py-8">
-                      <MessageSquare className="w-12 h-12 text-slate-400 mx-auto mb-4" />
-                      <p className="text-slate-600 dark:text-slate-400">No testimonials yet</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {testimonials.map((testimonial) => (
-                        <div key={testimonial.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <h4 className="font-semibold text-slate-900 dark:text-white">{testimonial.name}</h4>
-                              <p className="text-sm text-slate-600 dark:text-slate-400">{testimonial.company}</p>
-                            </div>
-                            <div className="flex items-center space-x-2">
-                              <div className="flex">
-                                {[...Array(testimonial.rating)].map((_, i) => (
-                                  <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                                ))}
-                              </div>
-                              {!testimonial.approved && (
-                                <Button
-                                  size="sm"
-                                  onClick={() => approveTestimonial(testimonial.id)}
-                                  className="bg-green-600 hover:bg-green-700 text-white"
-                                >
-                                  Approve
-                                </Button>
-                              )}
-                              {testimonial.approved && (
-                                <Badge className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                  Approved
-                                </Badge>
-                              )}
-                            </div>
-                          </div>
-                          <p className="text-slate-600 dark:text-slate-400">{testimonial.content}</p>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Projects Tab */}
-            <TabsContent value="projects" className="mt-8">
-              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-white">Project Management</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-600 dark:text-slate-400">Advanced project management tools coming soon...</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Users Tab (Super Admin only) */}
-            {isSuperAdmin && (
-              <TabsContent value="users" className="mt-8">
-                <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="text-slate-900 dark:text-white">User Management</CardTitle>
-                    <CardDescription className="text-slate-600 dark:text-slate-400">
-                      Manage user accounts and permissions
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {users.map((user) => (
-                        <div key={user.id} className="flex justify-between items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                          <div className="flex items-center space-x-4">
-                            {user.avatar_url && (
-                              <img src={user.avatar_url} alt={user.full_name} className="w-10 h-10 rounded-full" />
-                            )}
-                            <div>
-                              <h4 className="font-semibold text-slate-900 dark:text-white">{user.full_name}</h4>
-                              <p className="text-sm text-slate-600 dark:text-slate-400">{user.email}</p>
-                            </div>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <Badge variant={user.role === 'super_admin' ? 'default' : user.role === 'admin' ? 'secondary' : 'outline'}>
-                              {user.role}
-                            </Badge>
-                            <Badge variant={user.is_active ? 'default' : 'destructive'}>
-                              {user.is_active ? 'Active' : 'Inactive'}
-                            </Badge>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            )}
-
-            {/* Settings Tab */}
-            <TabsContent value="settings" className="mt-8">
-              <Card className="border-0 shadow-lg bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle className="text-slate-900 dark:text-white">Admin Settings</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-slate-600 dark:text-slate-400">Admin configuration settings coming soon...</p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+        {/* Main Content */}
+        <div className="flex-1 p-8">
+          {activeTab === 'overview' && <OverviewTab stats={stats} />}
+          {activeTab === 'clients' && <ClientManagementTab clients={clients} onAssignManager={handleAssignClientManager} onViewPortal={handleViewClientPortal} />}
+          {activeTab === 'projects' && <ProjectManagementTab projects={projects} clients={clients} />}
+          {activeTab === 'invoices' && <InvoiceBillingTab invoices={invoices} clients={clients} />}
+          {activeTab === 'messages' && <CommunicationsTab messages={messages} />}
+          {activeTab === 'testimonials' && <TestimonialsTab testimonials={testimonials} onApprove={approveTestimonial} />}
+          {activeTab === 'content' && <ContentManagementTab />}
+          {activeTab === 'users' && <UserManagementTab users={users} />}
+          {user?.role === 'super_admin' && activeTab === 'roles' && <RoleManagementTab />}
+          {activeTab === 'client-portal-view' && <ClientPortalViewTab clientId={selectedClient} />}
         </div>
       </div>
     </div>
