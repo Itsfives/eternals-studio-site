@@ -14,8 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar';
 import { Textarea } from './components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './components/ui/dialog';
-import { Toaster } from 'sonner';
-import { toast } from 'sonner';
+import toast, { Toaster } from 'react-hot-toast';
 
 // Icons
 import { 
