@@ -3667,7 +3667,6 @@ const Dashboard = () => {
   const [users, setUsers] = useState([]);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
 
   // Check if user has admin access
   useEffect(() => {
