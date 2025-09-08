@@ -520,6 +520,7 @@ const FloatingElements = () => {
 const Navigation = () => {
   const { isDark, toggleTheme } = useTheme();
   const { isAuthenticated, user } = useAuth();
+  const { getItemCount, setIsCartOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
