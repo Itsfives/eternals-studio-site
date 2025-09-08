@@ -1433,7 +1433,7 @@ const ServicesPage = () => {
       title: "Logo & Brand Identity",
       description: "Professional logo design and complete brand identity packages for businesses and individuals.",
       features: ["Custom Logo Design", "Brand Guidelines", "Color Palettes", "Typography Selection", "Multiple Formats"],
-      price: "$80-$120",
+      price: "Starting at $80",
       popular: false
     },
     {
@@ -1441,7 +1441,7 @@ const ServicesPage = () => {
       title: "Content Creator Branding",
       description: "Complete branding solutions for streamers, YouTubers, and content creators including overlays and graphics.",
       features: ["Stream Packages ($100-$400)", "Sub Badges ($25)", "Emotes ($45)", "Thumbnails ($25)", "Banners ($35)"],
-      price: "$100-$400",
+      price: "Starting at $25",
       popular: true
     },
     {
@@ -1449,7 +1449,7 @@ const ServicesPage = () => {
       title: "3D Modeling & Rendering",
       description: "High-quality 3D models, renders, and animations for product visualization and architectural projects.",
       features: ["Custom Models ($110/hr)", "Custom Renders ($80-$120)", "Textures ($25-$1000)", "Model Files (+$60)"],
-      price: "$80-$600",
+      price: "Starting at $25",
       popular: false
     },
     {
@@ -1457,7 +1457,7 @@ const ServicesPage = () => {
       title: "Video & Photo Production",
       description: "Professional video editing, photography, and content creation services for businesses and creators.",
       features: ["Video Shoots ($200/hr)", "Photo Shoots ($110/hr)", "Video Editing", "Photo Editing"],
-      price: "$110-$1500",
+      price: "Starting at $110",
       popular: false
     },
     {
@@ -1465,7 +1465,7 @@ const ServicesPage = () => {
       title: "Web Development",
       description: "Custom website development, hosting, and maintenance services for businesses of all sizes.",
       features: ["Website Setup ($500-$2000)", "Domain Hosting ($60/year)", "Web Hosting ($100/year)", "Maintenance"],
-      price: "$500-$2000",
+      price: "Starting at $60",
       popular: false
     },
     {
@@ -1473,7 +1473,7 @@ const ServicesPage = () => {
       title: "Audio & Music Production",
       description: "Custom beats, music tracks, and audio production for content creators and businesses.",
       features: ["Custom Beats ($115)", "Alert Tracks ($5-$20)", "Audio Editing", "Sound Design"],
-      price: "$5-$115",
+      price: "Starting at $5",
       popular: false
     }
   ];
