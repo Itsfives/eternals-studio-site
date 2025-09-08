@@ -2945,8 +2945,15 @@ const AuthPage = () => {
     e.preventDefault();
     try {
       if (isLogin) {
-        await login(formData.email, formData.password);
+        const userData = await login(formData.email, formData.password);
         toast.success("Logged in successfully!");
+        
+        // Navigate based on user role
+        if (userData.role === 'super_admin' || userData.role === 'admin') {
+          navigate('/dashboard');
+        } else {
+          navigate('/client-portal');
+        }
       } else {
         await register(formData);
         toast.success("Account created successfully! Please log in.");
