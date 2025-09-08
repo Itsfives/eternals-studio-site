@@ -4241,7 +4241,12 @@ const App = () => {
               <Route path="/faq" element={<FAQPage />} />
             </Routes>
             <Footer />
-            <Toaster />
+            <Toaster 
+              position="top-right"
+              expand={true}
+              richColors
+              closeButton
+            />
           </div>
         </Router>
       </AuthProvider>
