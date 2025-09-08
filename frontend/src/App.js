@@ -3150,7 +3150,6 @@ const AuthPage = () => {
       }
     } catch (error) {
       console.error(`${provider} login error:`, error);
-      const { showToast } = useToast();
       showToast(error.message || `${provider} login is currently unavailable`, 'error');
     }
   };
