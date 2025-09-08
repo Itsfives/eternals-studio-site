@@ -4081,6 +4081,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   
   // State management for different sections
   const [stats, setStats] = useState({
