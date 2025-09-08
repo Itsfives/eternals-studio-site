@@ -381,7 +381,7 @@ class Project(BaseModel):
     description: str
     client_id: str
     assigned_admin_id: Optional[str] = None
-    status: ProjectStatus = ProjectStatus.PENDING
+    status: ProjectStatus = ProjectStatus.DRAFT
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     due_date: Optional[datetime] = None
     files: List[str] = []
