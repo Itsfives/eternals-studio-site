@@ -3945,11 +3945,9 @@ const Dashboard = () => {
         setTestimonials(prev => 
           prev.map(t => t.id === testimonialId ? { ...t, approved: true } : t)
         );
-        const { showToast } = useToast();
         showToast("Testimonial approved!");
       }
     } catch (error) {
-      const { showToast } = useToast();
       showToast("Failed to approve testimonial", 'error');
     }
   };
