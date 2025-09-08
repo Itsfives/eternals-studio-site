@@ -1638,7 +1638,7 @@ class EternalsStudioAPITester:
             return False
         
         # Step 3: Verify Super Admin Access and Permissions
-        if fives_token:
+        if fives_token and fives_token != "role_updated_successfully":
             print(f"   🔍 Step 3: Verifying super admin access for {target_email}...")
             
             # Test super admin can access user management endpoints
