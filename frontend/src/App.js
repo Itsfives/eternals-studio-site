@@ -3817,6 +3817,7 @@ const ClientPortal = () => {
 // Dashboard Component (Admin Dashboard)
 const Dashboard = () => {
   const { user } = useAuth();
+  const { showToast } = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
   const [stats, setStats] = useState({
