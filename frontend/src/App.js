@@ -1597,15 +1597,15 @@ const ServicesPage = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-5 gap-8">
+            <div className="grid md:grid-cols-5 gap-8 relative">
               {processSteps.map((step, index) => (
-                <div key={index} className="text-center">
+                <div key={index} className="text-center relative">
                   <div className="relative mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full mx-auto flex items-center justify-center mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full mx-auto flex items-center justify-center mb-4 relative z-10">
                       <span className="text-white font-bold text-lg">{step.step}</span>
                     </div>
                     {index < processSteps.length - 1 && (
-                      <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-teal-500/30 to-purple-500/30 transform -translate-y-0.5"></div>
+                      <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-teal-500/30 to-purple-500/30 transform -translate-y-0.5 z-0" style={{left: 'calc(50% + 2rem)', width: 'calc(100% - 4rem)'}}></div>
                     )}
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">{step.title}</h3>
