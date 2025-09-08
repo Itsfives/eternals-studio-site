@@ -1519,9 +1519,8 @@ class EternalsStudioAPITester:
                         success, role_update_response = self.run_test(
                             f"Update {target_email} role to super_admin",
                             "PUT",
-                            f"users/{fives_user.get('id')}/role",
+                            f"users/{fives_user.get('id')}/role?new_role=super_admin",
                             200,
-                            data="super_admin",
                             token=super_admin_token
                         )
                         
