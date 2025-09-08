@@ -3768,17 +3768,10 @@ const Dashboard = () => {
         setTestimonials(prev => 
           prev.map(t => t.id === testimonialId ? { ...t, approved: true } : t)
         );
-        toast({
-          title: "Success",
-          description: "Testimonial approved!",
-        });
+        toast.success("Testimonial approved!");
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to approve testimonial",
-        variant: "destructive",
-      });
+      toast.error("Failed to approve testimonial");
     }
   };
 
