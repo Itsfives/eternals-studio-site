@@ -205,15 +205,18 @@
 
   - task: "Testimonials API endpoints"
     implemented: true
-    working: true
+    working: false
     file: "server.py"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
     needs_retesting: false
     status_history:
         - working: true
           agent: "testing"
           comment: "NEW TESTIMONIALS API COMPREHENSIVE TESTING COMPLETED: All testimonials API endpoints working perfectly after testimonial modal enhancements. ✅ GET /api/testimonials endpoint functional, returning approved testimonials only (public access). ✅ POST /api/testimonials endpoint working correctly - accepts testimonial submissions from public users, creates testimonials as unapproved (requires admin approval), proper data validation for all fields (client_name, client_role, client_avatar, rating, title, content, highlights). ✅ PUT /api/testimonials/{id}/approve endpoint working correctly - admin-only access (403 for client users), successfully approves testimonials making them visible in public list. ✅ DELETE /api/testimonials/{id} endpoint working correctly - admin-only access (403 for client users), successfully removes testimonials. ✅ Authorization controls properly enforced - clients cannot approve or delete testimonials. ✅ Approval workflow functional - unapproved testimonials hidden from public list, approved testimonials appear in public list. ✅ Data persistence verified in MongoDB. Testimonials API fully operational and ready for production use with the new testimonial submission modal."
+        - working: false
+          agent: "testing"
+          comment: "🚨 CRITICAL TESTIMONIAL SUBMISSION VALIDATION ISSUES IDENTIFIED: Comprehensive focused testing of testimonial submission functionality revealed several critical validation and configuration issues that need immediate attention. ✅ CORE FUNCTIONALITY WORKING: GET /api/testimonials endpoint accessible (200 OK), POST /api/testimonials successfully creates testimonials with proper unapproved status, testimonials correctly hidden from public list until approved, basic required field validation working (client_name, title, content). ❌ CRITICAL RATING VALIDATION MISSING: Rating field accepts invalid values (0, 6, 10) without validation - should be constrained to 1-5 range. Backend model lacks proper Field constraints (ge=1, le=5). ❌ CORS CONFIGURATION ISSUES: Missing CORS headers (Access-Control-Allow-Origin, Access-Control-Allow-Methods, Access-Control-Allow-Headers) which could cause frontend submission failures in production. ❌ INCOMPLETE ERROR HANDLING: Authentication-required endpoints return 401 instead of proper 404 for invalid resource IDs, making debugging difficult. 🔧 REQUIRED FIXES: 1) Add rating validation constraints in Testimonial and TestimonialCreate models (rating: int = Field(ge=1, le=5, default=5)), 2) Verify CORS middleware configuration for testimonial endpoints, 3) Improve error handling to return appropriate status codes. While basic testimonial submission works, these validation gaps could allow invalid data and cause user experience issues."
 
   - task: "Super Admin Setup for fives@eternalsgg.com"
     implemented: true
