@@ -4352,66 +4352,331 @@ const CommunicationsTab = ({ messages }) => (
   </div>
 );
 
-const TestimonialsTab = ({ testimonials, onApprove }) => (
-  <div className="space-y-6">
-    <Card>
-      <CardHeader>
-        <CardTitle>Testimonial Management</CardTitle>
-        <CardDescription>Review and approve customer testimonials</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {testimonials.length === 0 ? (
-            <div className="text-center py-8">
-              <MessageSquare className="w-12 h-12 text-slate-400 mx-auto mb-4" />
-              <p className="text-slate-600 dark:text-slate-400">No testimonials to review</p>
-            </div>
-          ) : (
-            testimonials.map((testimonial) => (
-              <div key={testimonial.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-2">
-                      <h3 className="font-semibold text-slate-900 dark:text-white">
-                        {testimonial.client_name || testimonial.name}
-                      </h3>
-                      <div className="flex">
-                        {[...Array(testimonial.rating || 5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        ))}
+const TestimonialsTab = ({ testimonials, onApprove }) => {
+  const [activeSubTab, setActiveSubTab] = useState('pending');
+  const [editingTestimonial, setEditingTestimonial] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editForm, setEditForm] = useState({});
+
+  const pendingTestimonials = testimonials.filter(t => !t.approved);
+  const approvedTestimonials = testimonials.filter(t => t.approved);
+
+  const handleEditTestimonial = (testimonial) => {
+    setEditingTestimonial(testimonial);
+    setEditForm({
+      client_name: testimonial.client_name || testimonial.name,
+      client_role: testimonial.client_role || testimonial.company,
+      content: testimonial.content,
+      rating: testimonial.rating || 5,
+      title: testimonial.title || `Review from ${testimonial.client_name || testimonial.name}`,
+      is_featured: testimonial.is_featured || false
+    });
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/testimonials/${editingTestimonial.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(editForm)
+      });
+
+      if (response.ok) {
+        showToast('Testimonial updated successfully!');
+        setShowEditModal(false);
+        // Refresh testimonials list
+        window.location.reload();
+      } else {
+        throw new Error('Failed to update testimonial');
+      }
+    } catch (error) {
+      showToast('Error updating testimonial', 'error');
+    }
+  };
+
+  const handleToggleFeatured = async (testimonialId, currentFeatured) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/testimonials/${testimonialId}/featured`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ is_featured: !currentFeatured })
+      });
+
+      if (response.ok) {
+        showToast(`Testimonial ${!currentFeatured ? 'featured' : 'unfeatured'} successfully!`);
+        window.location.reload();
+      }
+    } catch (error) {
+      showToast('Error updating testimonial featured status', 'error');
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Testimonial Management</CardTitle>
+          <CardDescription>Review, approve, and manage customer testimonials</CardDescription>
+        </CardHeader>
+        <CardContent>
+          {/* Sub-navigation */}
+          <div className="flex space-x-1 mb-6 bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+            <button
+              onClick={() => setActiveSubTab('pending')}
+              className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                activeSubTab === 'pending'
+                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Pending Review ({pendingTestimonials.length})
+            </button>
+            <button
+              onClick={() => setActiveSubTab('approved')}
+              className={`flex-1 px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+                activeSubTab === 'approved'
+                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Approved & Live ({approvedTestimonials.length})
+            </button>
+          </div>
+
+          {/* Pending Testimonials */}
+          {activeSubTab === 'pending' && (
+            <div className="space-y-4">
+              {pendingTestimonials.length === 0 ? (
+                <div className="text-center py-8">
+                  <MessageSquare className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                  <p className="text-slate-600 dark:text-slate-400">No testimonials pending review</p>
+                </div>
+              ) : (
+                pendingTestimonials.map((testimonial) => (
+                  <div key={testimonial.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 bg-yellow-50 dark:bg-yellow-900/10">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-2 mb-2">
+                          <h3 className="font-semibold text-slate-900 dark:text-white">
+                            {testimonial.client_name || testimonial.name}
+                          </h3>
+                          <div className="flex">
+                            {[...Array(testimonial.rating || 5)].map((_, i) => (
+                              <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                            ))}
+                          </div>
+                          <Badge variant="outline" className="bg-yellow-100 text-yellow-700">
+                            Pending Review
+                          </Badge>
+                        </div>
+                        <p className="text-slate-600 dark:text-slate-400 mb-2">
+                          {testimonial.client_role || testimonial.company}
+                        </p>
+                        <p className="text-slate-800 dark:text-slate-200 mb-3">
+                          {testimonial.content}
+                        </p>
+                        <p className="text-xs text-slate-500">
+                          Submitted: {new Date(testimonial.created_at).toLocaleDateString()}
+                        </p>
                       </div>
-                      {testimonial.approved && (
-                        <Badge variant="default" className="bg-green-100 text-green-700">
-                          Approved
-                        </Badge>
-                      )}
+                      <div className="flex flex-col space-y-2 ml-4">
+                        <Button
+                          onClick={() => onApprove(testimonial.id)}
+                          size="sm"
+                          className="bg-green-600 hover:bg-green-700"
+                        >
+                          <CheckCircle className="w-4 h-4 mr-1" />
+                          Approve
+                        </Button>
+                        <Button
+                          onClick={() => handleEditTestimonial(testimonial)}
+                          size="sm"
+                          variant="outline"
+                        >
+                          <Edit className="w-4 h-4 mr-1" />
+                          Edit
+                        </Button>
+                      </div>
                     </div>
-                    <p className="text-slate-600 dark:text-slate-400 mb-2">
-                      {testimonial.client_role || testimonial.company}
-                    </p>
-                    <p className="text-slate-800 dark:text-slate-200">
-                      {testimonial.content}
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* Approved Testimonials */}
+          {activeSubTab === 'approved' && (
+            <div className="space-y-4">
+              {approvedTestimonials.length === 0 ? (
+                <div className="text-center py-8">
+                  <CheckCircle className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                  <p className="text-slate-600 dark:text-slate-400">No approved testimonials yet</p>
+                </div>
+              ) : (
+                <>
+                  <div className="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                    <h4 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">Homepage Management</h4>
+                    <p className="text-sm text-blue-700 dark:text-blue-400">
+                      Use the "Feature" button to highlight testimonials on your homepage. Featured testimonials appear prominently in the testimonials section.
                     </p>
                   </div>
-                  {!testimonial.approved && (
-                    <Button
-                      onClick={() => onApprove(testimonial.id)}
-                      size="sm"
-                      className="ml-4"
-                    >
-                      <CheckCircle className="w-4 h-4 mr-1" />
-                      Approve
-                    </Button>
-                  )}
+                  
+                  {approvedTestimonials.map((testimonial) => (
+                    <div key={testimonial.id} className={`border rounded-lg p-4 ${
+                      testimonial.is_featured 
+                        ? 'border-teal-200 bg-teal-50 dark:bg-teal-900/20 dark:border-teal-800' 
+                        : 'border-slate-200 dark:border-slate-700'
+                    }`}>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <h3 className="font-semibold text-slate-900 dark:text-white">
+                              {testimonial.client_name || testimonial.name}
+                            </h3>
+                            <div className="flex">
+                              {[...Array(testimonial.rating || 5)].map((_, i) => (
+                                <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                              ))}
+                            </div>
+                            <Badge variant="default" className="bg-green-100 text-green-700">
+                              Live
+                            </Badge>
+                            {testimonial.is_featured && (
+                              <Badge className="bg-teal-100 text-teal-700">
+                                <Star className="w-3 h-3 mr-1" />
+                                Featured
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-slate-600 dark:text-slate-400 mb-2">
+                            {testimonial.client_role || testimonial.company}
+                          </p>
+                          <p className="text-slate-800 dark:text-slate-200 mb-3">
+                            {testimonial.content}
+                          </p>
+                          <p className="text-xs text-slate-500">
+                            Approved: {new Date(testimonial.created_at).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <div className="flex flex-col space-y-2 ml-4">
+                          <Button
+                            onClick={() => handleToggleFeatured(testimonial.id, testimonial.is_featured)}
+                            size="sm"
+                            variant={testimonial.is_featured ? "default" : "outline"}
+                            className={testimonial.is_featured ? "bg-teal-600 hover:bg-teal-700" : ""}
+                          >
+                            <Star className="w-4 h-4 mr-1" />
+                            {testimonial.is_featured ? 'Unfeature' : 'Feature'}
+                          </Button>
+                          <Button
+                            onClick={() => handleEditTestimonial(testimonial)}
+                            size="sm"
+                            variant="outline"
+                          >
+                            <Edit className="w-4 h-4 mr-1" />
+                            Edit
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Edit Testimonial Modal */}
+      {showEditModal && editingTestimonial && (
+        <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Edit Testimonial</DialogTitle>
+              <DialogDescription>
+                Make changes to this testimonial. Changes will be reflected on your website.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="client_name">Client Name</Label>
+                  <Input
+                    id="client_name"
+                    value={editForm.client_name || ''}
+                    onChange={(e) => setEditForm({...editForm, client_name: e.target.value})}
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="client_role">Role/Company</Label>
+                  <Input
+                    id="client_role"
+                    value={editForm.client_role || ''}
+                    onChange={(e) => setEditForm({...editForm, client_role: e.target.value})}
+                  />
                 </div>
               </div>
-            ))
-          )}
-        </div>
-      </CardContent>
-    </Card>
-  </div>
-);
+              
+              <div>
+                <Label htmlFor="title">Title</Label>
+                <Input
+                  id="title"
+                  value={editForm.title || ''}
+                  onChange={(e) => setEditForm({...editForm, title: e.target.value})}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="content">Testimonial Content</Label>
+                <Textarea
+                  id="content"
+                  rows={4}
+                  value={editForm.content || ''}
+                  onChange={(e) => setEditForm({...editForm, content: e.target.value})}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="rating">Rating</Label>
+                <Select 
+                  value={editForm.rating?.toString() || '5'} 
+                  onValueChange={(value) => setEditForm({...editForm, rating: parseInt(value)})}
+                >
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="5">5 Stars</SelectItem>
+                    <SelectItem value="4">4 Stars</SelectItem>
+                    <SelectItem value="3">3 Stars</SelectItem>
+                    <SelectItem value="2">2 Stars</SelectItem>
+                    <SelectItem value="1">1 Star</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setShowEditModal(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleSaveEdit}>
+                  Save Changes
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
 
 const ContentManagementTab = () => (
   <div className="space-y-6">
