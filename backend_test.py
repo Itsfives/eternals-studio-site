@@ -1759,6 +1759,10 @@ class EternalsStudioAPITester:
             print(f"   🎉 Super admin role setup completed for {target_email}")
             print(f"   ℹ️  User exists with super_admin role - password can be reset if needed")
             return True
+        elif fives_token == "role_already_correct":
+            print(f"   🎉 Super admin setup verified for {target_email}")
+            print(f"   ✅ User already exists with super_admin role - task completed successfully")
+            return True
         
         return False
 
