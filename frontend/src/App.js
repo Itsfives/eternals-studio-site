@@ -3870,19 +3870,168 @@ const OverviewTab = ({ stats }) => (
   </div>
 );
 
-const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => (
-  <div className="space-y-6">
-    <Card>
-      <CardHeader>
-        <CardTitle>Client Management</CardTitle>
-        <CardDescription>Manage client accounts and assignments</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-slate-600 dark:text-slate-400">Client management features coming soon...</p>
-      </CardContent>
-    </Card>
-  </div>
-);
+const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [showClientDetails, setShowClientDetails] = useState(false);
+  
+  const filteredClients = clients.filter(client => 
+    client.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (client.company && client.company.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  const handleViewClient = (client) => {
+    setSelectedClient(client);
+    setShowClientDetails(true);
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle>Client Management</CardTitle>
+              <CardDescription>Manage client accounts and assignments</CardDescription>
+            </div>
+            <Button className="bg-teal-600 hover:bg-teal-700">
+              <Plus className="w-4 h-4 mr-2" />
+              Add New Client
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {/* Search and Filter */}
+          <div className="mb-6">
+            <div className="relative">
+              <Input
+                placeholder="Search clients by name, email, or company..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+              <Users className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            </div>
+          </div>
+
+          {/* Client List */}
+          <div className="space-y-4">
+            {filteredClients.length === 0 ? (
+              <div className="text-center py-8">
+                <Users className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                <p className="text-slate-600 dark:text-slate-400">
+                  {searchTerm ? 'No clients match your search' : 'No clients found'}
+                </p>
+              </div>
+            ) : (
+              filteredClients.map((client) => (
+                <div key={client.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full flex items-center justify-center text-white font-semibold">
+                        {client.full_name.charAt(0).toUpperCase()}
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-slate-900 dark:text-white">
+                          {client.full_name}
+                        </h3>
+                        <p className="text-slate-600 dark:text-slate-400">{client.email}</p>
+                        {client.company && (
+                          <p className="text-sm text-slate-500">{client.company}</p>
+                        )}
+                        <div className="flex items-center space-x-2 mt-1">
+                          <Badge variant="outline" className="text-xs">
+                            {client.role}
+                          </Badge>
+                          {client.assigned_client_manager && (
+                            <Badge variant="secondary" className="text-xs">
+                              Managed
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="flex space-x-2">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => handleViewClient(client)}
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
+                        View
+                      </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => onViewPortal(client.id)}
+                      >
+                        <User className="w-4 h-4 mr-1" />
+                        Portal
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <MessageSquare className="w-4 h-4 mr-1" />
+                        Message
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Client Details Modal */}
+      {showClientDetails && selectedClient && (
+        <Dialog open={showClientDetails} onOpenChange={setShowClientDetails}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Client Details - {selectedClient.full_name}</DialogTitle>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-sm font-medium">Email</Label>
+                  <p className="text-sm text-slate-600">{selectedClient.email}</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Company</Label>
+                  <p className="text-sm text-slate-600">{selectedClient.company || 'Not provided'}</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Phone</Label>
+                  <p className="text-sm text-slate-600">{selectedClient.phone || 'Not provided'}</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Role</Label>
+                  <Badge variant="outline">{selectedClient.role}</Badge>
+                </div>
+              </div>
+              
+              {selectedClient.notes && (
+                <div>
+                  <Label className="text-sm font-medium">Notes</Label>
+                  <p className="text-sm text-slate-600 mt-1">{selectedClient.notes}</p>
+                </div>
+              )}
+
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setShowClientDetails(false)}>
+                  Close
+                </Button>
+                <Button>
+                  Edit Client
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
 
 const ProjectManagementTab = ({ projects, clients }) => (
   <div className="space-y-6">
