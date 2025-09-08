@@ -2203,6 +2203,264 @@ class EternalsStudioAPITester:
             print("\n✅ Testimonial system working correctly")
             return True
 
+    def test_admin_testimonials_endpoint(self):
+        """Test admin testimonials endpoint for dashboard review functionality - CRITICAL VERIFICATION"""
+        print("\n" + "="*60)
+        print("⭐ TESTING ADMIN TESTIMONIALS ENDPOINT - CRITICAL VERIFICATION")
+        print("="*60)
+        
+        admin_testimonial_tests_passed = 0
+        total_admin_testimonial_tests = 0
+        
+        # Test 1: Verify GET /api/testimonials/all endpoint exists and requires admin authentication
+        total_admin_testimonial_tests += 1
+        print("   🔍 Testing admin testimonials endpoint authentication...")
+        
+        # Test without authentication (should fail)
+        success, response = self.run_test(
+            "Get all testimonials without auth (should fail)",
+            "GET",
+            "testimonials/all",
+            401  # Expecting unauthorized
+        )
+        
+        if success:
+            admin_testimonial_tests_passed += 1
+            print("   ✅ Admin endpoint correctly requires authentication")
+        
+        # Test 2: Test with client token (should fail)
+        total_admin_testimonial_tests += 1
+        if "client" in self.tokens:
+            success, response = self.run_test(
+                "Get all testimonials with client token (should fail)",
+                "GET",
+                "testimonials/all",
+                403,  # Expecting forbidden
+                token=self.tokens["client"]
+            )
+            
+            if success:
+                admin_testimonial_tests_passed += 1
+                print("   ✅ Client users correctly denied access to admin endpoint")
+        
+        # Test 3: Test with admin token (should succeed)
+        total_admin_testimonial_tests += 1
+        if "admin" in self.tokens:
+            success, admin_response = self.run_test(
+                "Get all testimonials with admin token",
+                "GET",
+                "testimonials/all",
+                200,
+                token=self.tokens["admin"]
+            )
+            
+            if success:
+                admin_testimonial_tests_passed += 1
+                print("   ✅ Admin users can access all testimonials endpoint")
+                
+                # Store admin testimonials for comparison
+                self.test_data["admin_testimonials"] = admin_response
+                print(f"   📊 Admin can see {len(admin_response)} total testimonials")
+        
+        # Test 4: Test with super_admin token (should succeed)
+        total_admin_testimonial_tests += 1
+        if "super_admin" in self.tokens:
+            success, super_admin_response = self.run_test(
+                "Get all testimonials with super_admin token",
+                "GET",
+                "testimonials/all",
+                200,
+                token=self.tokens["super_admin"]
+            )
+            
+            if success:
+                admin_testimonial_tests_passed += 1
+                print("   ✅ Super admin users can access all testimonials endpoint")
+        
+        # Test 5: Compare public vs admin endpoints
+        total_admin_testimonial_tests += 1
+        print("   🔍 Comparing public vs admin testimonial endpoints...")
+        
+        # Get public testimonials (approved only)
+        success, public_testimonials = self.run_test(
+            "Get public testimonials (approved only)",
+            "GET",
+            "testimonials",
+            200
+        )
+        
+        if success and "admin_testimonials" in self.test_data:
+            admin_testimonials = self.test_data["admin_testimonials"]
+            
+            print(f"   📊 Public endpoint: {len(public_testimonials)} testimonials")
+            print(f"   📊 Admin endpoint: {len(admin_testimonials)} testimonials")
+            
+            # Admin should see same or more testimonials than public
+            if len(admin_testimonials) >= len(public_testimonials):
+                admin_testimonial_tests_passed += 1
+                print("   ✅ Admin endpoint returns same or more testimonials than public")
+                
+                # Check if admin endpoint includes unapproved testimonials
+                approved_count = sum(1 for t in admin_testimonials if t.get("approved", False))
+                unapproved_count = len(admin_testimonials) - approved_count
+                
+                print(f"   📊 Approved testimonials: {approved_count}")
+                print(f"   📊 Unapproved testimonials: {unapproved_count}")
+                
+                if unapproved_count > 0:
+                    print("   ✅ Admin endpoint includes unapproved testimonials for review")
+                else:
+                    print("   ⚠️  No unapproved testimonials found (may be expected)")
+            else:
+                print("   ❌ Admin endpoint returns fewer testimonials than public (unexpected)")
+        
+        # Test 6: Create new testimonial and verify admin can see it
+        total_admin_testimonial_tests += 1
+        print("   🔍 Testing complete testimonial workflow...")
+        
+        # Create a new testimonial (should be unapproved)
+        new_testimonial = {
+            "client_name": "Sarah Johnson",
+            "client_role": "Marketing Director at TechCorp",
+            "title": "Outstanding Creative Solutions",
+            "content": "Eternals Studio delivered exceptional design work that transformed our brand presence. Their creative approach and attention to detail exceeded our expectations.",
+            "rating": 5
+        }
+        
+        success, testimonial_response = self.run_test(
+            "Create new testimonial for admin testing",
+            "POST",
+            "testimonials",
+            200,
+            data=new_testimonial
+        )
+        
+        if success:
+            new_testimonial_id = testimonial_response.get("id")
+            self.test_data["new_testimonial_id"] = new_testimonial_id
+            
+            # Verify it's created as unapproved
+            if not testimonial_response.get("approved", True):
+                print("   ✅ New testimonial created as unapproved")
+                
+                # Check if admin can see the new unapproved testimonial
+                if "admin" in self.tokens:
+                    success, updated_admin_testimonials = self.run_test(
+                        "Verify admin can see new unapproved testimonial",
+                        "GET",
+                        "testimonials/all",
+                        200,
+                        token=self.tokens["admin"]
+                    )
+                    
+                    if success:
+                        # Check if new testimonial is in admin list
+                        found_new_testimonial = any(
+                            t.get("id") == new_testimonial_id 
+                            for t in updated_admin_testimonials
+                        )
+                        
+                        if found_new_testimonial:
+                            admin_testimonial_tests_passed += 1
+                            print("   ✅ Admin can see newly created unapproved testimonial")
+                        else:
+                            print("   ❌ Admin cannot see newly created unapproved testimonial")
+                
+                # Verify it doesn't appear in public list
+                success, updated_public_testimonials = self.run_test(
+                    "Verify new testimonial not in public list",
+                    "GET",
+                    "testimonials",
+                    200
+                )
+                
+                if success:
+                    found_in_public = any(
+                        t.get("id") == new_testimonial_id 
+                        for t in updated_public_testimonials
+                    )
+                    
+                    if not found_in_public:
+                        print("   ✅ Unapproved testimonial correctly hidden from public")
+                    else:
+                        print("   ❌ Unapproved testimonial visible in public list")
+            else:
+                print("   ❌ New testimonial was auto-approved (should be unapproved)")
+        
+        # Test 7: Test approval workflow
+        total_admin_testimonial_tests += 1
+        if "admin" in self.tokens and "new_testimonial_id" in self.test_data:
+            print("   🔍 Testing testimonial approval workflow...")
+            
+            success, approval_response = self.run_test(
+                "Approve testimonial (admin)",
+                "PUT",
+                f"testimonials/{self.test_data['new_testimonial_id']}/approve",
+                200,
+                token=self.tokens["admin"]
+            )
+            
+            if success and approval_response.get("approved"):
+                print("   ✅ Testimonial successfully approved by admin")
+                
+                # Verify it now appears in public list
+                success, final_public_testimonials = self.run_test(
+                    "Verify approved testimonial in public list",
+                    "GET",
+                    "testimonials",
+                    200
+                )
+                
+                if success:
+                    found_in_public = any(
+                        t.get("id") == self.test_data['new_testimonial_id'] 
+                        for t in final_public_testimonials
+                    )
+                    
+                    if found_in_public:
+                        admin_testimonial_tests_passed += 1
+                        print("   ✅ Approved testimonial now appears in public list")
+                    else:
+                        print("   ❌ Approved testimonial not visible in public list")
+                
+                # Verify it still appears in admin list
+                if "admin" in self.tokens:
+                    success, final_admin_testimonials = self.run_test(
+                        "Verify approved testimonial still in admin list",
+                        "GET",
+                        "testimonials/all",
+                        200,
+                        token=self.tokens["admin"]
+                    )
+                    
+                    if success:
+                        found_in_admin = any(
+                            t.get("id") == self.test_data['new_testimonial_id'] 
+                            for t in final_admin_testimonials
+                        )
+                        
+                        if found_in_admin:
+                            print("   ✅ Approved testimonial still visible in admin list")
+                        else:
+                            print("   ❌ Approved testimonial missing from admin list")
+            else:
+                print("   ❌ Testimonial approval failed")
+        
+        # Summary of admin testimonials testing
+        print(f"\n   📊 Admin Testimonials Tests Summary: {admin_testimonial_tests_passed}/{total_admin_testimonial_tests} passed")
+        
+        if admin_testimonial_tests_passed >= total_admin_testimonial_tests * 0.8:  # 80% success rate
+            print("   ✅ Admin testimonials endpoint working correctly for dashboard review")
+            return True
+        else:
+            print("   ❌ Admin testimonials endpoint has critical issues")
+            print("   🔧 ISSUES IDENTIFIED:")
+            if admin_testimonial_tests_passed < total_admin_testimonial_tests * 0.5:
+                print("      - Admin endpoint may not exist or have authorization issues")
+                print("      - Testimonial approval workflow may not be working")
+                print("      - Admin dashboard cannot properly review testimonials")
+            return False
+
     def run_all_tests(self):
         """Run all test suites including OAuth callback error handling testing"""
         print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH SUPER ADMIN SETUP")
