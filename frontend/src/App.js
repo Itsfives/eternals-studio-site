@@ -3051,8 +3051,8 @@ const AuthPage = () => {
         const userData = await login(formData.email, formData.password);
         toast.success("Logged in successfully!");
         
-        // Navigate based on user role
-        if (userData.role === 'super_admin' || userData.role === 'admin') {
+        // Navigate based on user role - only super_admin goes to dashboard
+        if (userData.role === 'super_admin') {
           navigate('/dashboard');
         } else {
           navigate('/client-portal');
