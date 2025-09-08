@@ -137,7 +137,7 @@ const CartProvider = ({ children }) => {
         return [...prev, { ...product, quantity: 1 }];
       }
     });
-    toast.success(`${product.title} added to cart!`);
+    // We'll add toast notification when the cart sidebar is opened
   };
 
   const removeFromCart = (productId) => {
