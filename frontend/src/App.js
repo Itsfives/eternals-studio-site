@@ -4353,6 +4353,7 @@ const CommunicationsTab = ({ messages }) => (
 );
 
 const TestimonialsTab = ({ testimonials, onApprove }) => {
+  const { showToast } = useToast();
   const [activeSubTab, setActiveSubTab] = useState('pending');
   const [editingTestimonial, setEditingTestimonial] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
