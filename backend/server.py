@@ -304,6 +304,51 @@ class ProjectPriority(str, Enum):
     HIGH = "high"
     URGENT = "urgent"
 
+# Legacy Project Model (for backward compatibility)
+class Project(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    title: str
+    description: str
+    client_id: str
+    assigned_admin_id: Optional[str] = None
+    status: ProjectStatus = ProjectStatus.DRAFT
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    due_date: Optional[datetime] = None
+    files: List[str] = []
+    invoice_id: Optional[str] = None
+    is_locked: bool = False
+
+# Legacy Project Create Model
+class ProjectCreate(BaseModel):
+    title: str
+    description: str
+    client_id: str
+    due_date: Optional[datetime] = None
+
+# Legacy Invoice Create Model
+class InvoiceCreate(BaseModel):
+    project_id: str
+    amount: float
+    description: str
+    due_date: Optional[datetime] = None
+
+# Legacy Message Create Model
+class MessageCreate(BaseModel):
+    project_id: str
+    content: str
+
+# Content Management Models
+class ContentSection(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    section_name: str
+    content: Dict[str, Any]
+    page: str = "home"
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_by: str
+
+class ContentSectionUpdate(BaseModel):
+    content: Dict[str, Any]
+
 # Message System Models
 class MessageType(str, Enum):
     PROJECT_UPDATE = "project_update"
