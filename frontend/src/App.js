@@ -2223,6 +2223,7 @@ const PortfolioPage = () => {
 
 // Store Page Component
 const StorePage = () => {
+  const { addToCart } = useCart();
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedProduct, setSelectedProduct] = useState(null);
 
