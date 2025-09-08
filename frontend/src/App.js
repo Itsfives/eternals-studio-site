@@ -3920,7 +3920,8 @@ const Dashboard = () => {
         throw new Error(errorData.detail || 'Failed to update statistics');
       }
     } catch (error) {
-      toast.error(error.message || 'Failed to update statistics');
+      const { showToast } = useToast();
+      showToast(error.message || 'Failed to update statistics', 'error');
     } finally {
       setSaving(false);
     }
