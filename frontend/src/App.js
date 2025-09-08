@@ -3058,9 +3058,15 @@ const AuthPage = () => {
           navigate('/client-portal');
         }
       } else {
-        await register(formData);
-        toast.success("Account created successfully! Please log in.");
-        setIsLogin(true);
+        const userData = await register(formData);
+        toast.success("Account created successfully! Redirecting to your portal...");
+        
+        // Navigate based on user role - only super_admin goes to dashboard
+        if (userData.role === 'super_admin') {
+          navigate('/dashboard');
+        } else {
+          navigate('/client-portal');
+        }
       }
     } catch (error) {
       toast.error(error.response?.data?.detail || 'An error occurred');
