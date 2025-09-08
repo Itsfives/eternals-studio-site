@@ -1988,6 +1988,221 @@ class EternalsStudioAPITester:
         
         return False
 
+    def test_testimonial_admin_dashboard_debug(self):
+        """Debug testimonial system to identify why testimonials are not appearing in admin dashboard"""
+        print("\n" + "="*60)
+        print("🚨 DEBUGGING TESTIMONIAL ADMIN DASHBOARD ISSUE")
+        print("="*60)
+        
+        debug_tests_passed = 0
+        total_debug_tests = 0
+        
+        # Step 1: Test testimonial submission from frontend perspective
+        print("\n🔍 Step 1: Testing testimonial submission flow...")
+        total_debug_tests += 1
+        
+        testimonial_data = {
+            "client_name": "Sarah Johnson",
+            "client_role": "Marketing Director at TechCorp",
+            "title": "Outstanding Creative Work",
+            "content": "Eternals Studio delivered exceptional branding that transformed our company image. Their creative vision and professional execution exceeded our expectations.",
+            "rating": 5
+        }
+        
+        success, response = self.run_test(
+            "Submit testimonial (frontend simulation)",
+            "POST",
+            "testimonials",
+            200,
+            data=testimonial_data
+        )
+        
+        if success:
+            debug_tests_passed += 1
+            testimonial_id = response.get("id")
+            self.test_data["debug_testimonial_id"] = testimonial_id
+            
+            print(f"   ✅ Testimonial submitted successfully (ID: {testimonial_id})")
+            print(f"   📊 Approved status: {response.get('approved', 'Unknown')}")
+            
+            # Verify testimonial structure
+            if response.get("approved") == False:
+                print("   ✅ Testimonial correctly created as unapproved (needs admin approval)")
+            else:
+                print("   ⚠️  Testimonial approval status unexpected")
+        else:
+            print("   ❌ Failed to submit testimonial")
+        
+        # Step 2: Check if testimonial appears in public list (should NOT appear if unapproved)
+        print("\n🔍 Step 2: Checking public testimonials list...")
+        total_debug_tests += 1
+        
+        success, public_testimonials = self.run_test(
+            "Get public testimonials (should not include unapproved)",
+            "GET",
+            "testimonials",
+            200
+        )
+        
+        if success:
+            debug_tests_passed += 1
+            print(f"   📊 Public testimonials count: {len(public_testimonials)}")
+            
+            # Check if our unapproved testimonial appears (it shouldn't)
+            if "debug_testimonial_id" in self.test_data:
+                found_in_public = any(t.get("id") == self.test_data["debug_testimonial_id"] for t in public_testimonials)
+                if not found_in_public:
+                    print("   ✅ Unapproved testimonial correctly hidden from public list")
+                else:
+                    print("   ❌ Unapproved testimonial incorrectly visible in public list")
+        
+        # Step 3: Check for admin endpoint to get ALL testimonials (including unapproved)
+        print("\n🔍 Step 3: Testing admin access to ALL testimonials...")
+        total_debug_tests += 1
+        
+        if "admin" not in self.tokens:
+            print("   ⚠️  No admin token available - creating admin user for testing")
+            # This should have been done in authentication tests
+        
+        if "admin" in self.tokens:
+            # Try different possible admin endpoints
+            admin_endpoints_to_test = [
+                ("testimonials/all", "Get all testimonials (admin)"),
+                ("admin/testimonials", "Get admin testimonials"),
+                ("testimonials?include_unapproved=true", "Get testimonials with unapproved"),
+                ("testimonials", "Get testimonials (admin token)")
+            ]
+            
+            admin_endpoint_found = False
+            
+            for endpoint, description in admin_endpoints_to_test:
+                success, admin_response = self.run_test(
+                    description,
+                    "GET",
+                    endpoint,
+                    200,
+                    token=self.tokens["admin"]
+                )
+                
+                if success:
+                    admin_endpoint_found = True
+                    print(f"   ✅ Admin endpoint found: {endpoint}")
+                    print(f"   📊 Admin testimonials count: {len(admin_response) if isinstance(admin_response, list) else 'Not a list'}")
+                    
+                    # Check if our unapproved testimonial appears in admin view
+                    if "debug_testimonial_id" in self.test_data and isinstance(admin_response, list):
+                        found_in_admin = any(t.get("id") == self.test_data["debug_testimonial_id"] for t in admin_response)
+                        if found_in_admin:
+                            print("   ✅ Unapproved testimonial visible in admin view")
+                        else:
+                            print("   ❌ Unapproved testimonial NOT visible in admin view - THIS IS THE ISSUE!")
+                    break
+            
+            if admin_endpoint_found:
+                debug_tests_passed += 1
+            else:
+                print("   ❌ NO ADMIN ENDPOINT FOUND FOR ALL TESTIMONIALS!")
+                print("   🔧 ROOT CAUSE: Missing admin endpoint to view unapproved testimonials")
+        
+        # Step 4: Test database storage directly by checking approval workflow
+        print("\n🔍 Step 4: Testing testimonial approval workflow...")
+        total_debug_tests += 1
+        
+        if "admin" in self.tokens and "debug_testimonial_id" in self.test_data:
+            success, approval_response = self.run_test(
+                "Approve testimonial (admin)",
+                "PUT",
+                f"testimonials/{self.test_data['debug_testimonial_id']}/approve",
+                200,
+                token=self.tokens["admin"]
+            )
+            
+            if success:
+                debug_tests_passed += 1
+                print("   ✅ Testimonial approval workflow working")
+                
+                # Check if approved testimonial now appears in public list
+                success, updated_public = self.run_test(
+                    "Get public testimonials after approval",
+                    "GET",
+                    "testimonials",
+                    200
+                )
+                
+                if success:
+                    found_after_approval = any(t.get("id") == self.test_data["debug_testimonial_id"] for t in updated_public)
+                    if found_after_approval:
+                        print("   ✅ Approved testimonial now visible in public list")
+                    else:
+                        print("   ❌ Approved testimonial still not visible in public list")
+            else:
+                print("   ❌ Testimonial approval failed")
+        
+        # Step 5: Check database persistence and field mapping
+        print("\n🔍 Step 5: Testing database field mapping...")
+        total_debug_tests += 1
+        
+        # Submit another testimonial with all fields to test field mapping
+        complete_testimonial = {
+            "client_name": "Michael Chen",
+            "client_role": "CEO at StartupXYZ",
+            "client_avatar": "https://example.com/avatar.jpg",
+            "title": "Exceptional Service",
+            "content": "The team at Eternals Studio provided outstanding design services that helped launch our brand successfully.",
+            "rating": 4,
+            "highlights": ["Creative Design", "Fast Delivery", "Professional Service"]
+        }
+        
+        success, complete_response = self.run_test(
+            "Submit complete testimonial (all fields)",
+            "POST",
+            "testimonials",
+            200,
+            data=complete_testimonial
+        )
+        
+        if success:
+            debug_tests_passed += 1
+            print("   ✅ Complete testimonial submission working")
+            
+            # Verify all fields are stored correctly
+            expected_fields = ["client_name", "client_role", "client_avatar", "title", "content", "rating", "highlights"]
+            missing_fields = []
+            
+            for field in expected_fields:
+                if field not in complete_response:
+                    missing_fields.append(field)
+            
+            if not missing_fields:
+                print("   ✅ All testimonial fields stored correctly")
+            else:
+                print(f"   ❌ Missing fields in response: {missing_fields}")
+        
+        # Summary and diagnosis
+        print(f"\n📊 Debug Summary: {debug_tests_passed}/{total_debug_tests} tests passed")
+        
+        if debug_tests_passed < total_debug_tests:
+            print("\n🚨 TESTIMONIAL ADMIN DASHBOARD ISSUES IDENTIFIED:")
+            
+            if debug_tests_passed <= 2:
+                print("   ❌ CRITICAL: Missing admin endpoint to view unapproved testimonials")
+                print("   🔧 SOLUTION: Need to create GET /api/testimonials/all endpoint for admin users")
+                print("   🔧 ALTERNATIVE: Modify GET /api/testimonials to show all testimonials for admin users")
+            
+            if "admin" not in self.tokens:
+                print("   ❌ Admin authentication may have issues")
+            
+            print("\n🔧 RECOMMENDED FIXES:")
+            print("   1. Create admin endpoint: GET /api/testimonials/all")
+            print("   2. Ensure admin users can see both approved and unapproved testimonials")
+            print("   3. Verify admin dashboard is calling the correct endpoint")
+            print("   4. Check frontend-backend field name mapping")
+            
+            return False
+        else:
+            print("\n✅ Testimonial system working correctly")
+            return True
+
     def run_all_tests(self):
         """Run all test suites including OAuth callback error handling testing"""
         print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH SUPER ADMIN SETUP")
