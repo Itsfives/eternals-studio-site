@@ -740,7 +740,7 @@ class EternalsStudioAPITester:
                     testimonial_validation_passed += 1
                 else:
                     print(f"   ❌ {field}: missing")
-                total_validation_tests += len(expected_fields)
+                total_validation_tests += 1
             
             # Verify testimonial is created but not approved
             if not testimonial_response.get("approved"):
