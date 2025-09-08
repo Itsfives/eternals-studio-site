@@ -1662,13 +1662,14 @@ class EternalsStudioAPITester:
 
     def run_all_tests(self):
         """Run all test suites including OAuth callback error handling testing"""
-        print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH OAUTH CALLBACK FIXES")
+        print("🎯 ETERNALS STUDIO API COMPREHENSIVE TESTING WITH SUPER ADMIN SETUP")
         print("=" * 60)
         
         test_results = []
         
         # Run test suites in order
         test_results.append(("Authentication", self.test_user_registration_and_login()))
+        test_results.append(("Super Admin Setup", self.test_super_admin_setup()))  # CRITICAL TEST
         test_results.append(("OAuth Endpoints", self.test_oauth_endpoints()))
         test_results.append(("OAuth Callback Error Handling", self.test_oauth_callback_error_handling()))
         test_results.append(("OAuth User Model", self.test_oauth_user_model_updates()))
@@ -1693,8 +1694,15 @@ class EternalsStudioAPITester:
         
         print(f"\nOverall: {self.tests_passed}/{self.tests_run} tests passed")
         
+        # Special focus on Super Admin Setup result
+        super_admin_result = next((result for name, result in test_results if name == "Super Admin Setup"), False)
+        if super_admin_result:
+            print("\n🎉 CRITICAL SUCCESS: fives@eternalsgg.com Super Admin setup completed successfully!")
+        else:
+            print("\n❌ CRITICAL FAILURE: fives@eternalsgg.com Super Admin setup failed!")
+        
         if self.tests_passed == self.tests_run:
-            print("🎉 ALL TESTS PASSED! Backend with OAuth is working correctly.")
+            print("🎉 ALL TESTS PASSED! Backend with Super Admin is working correctly.")
             return 0
         else:
             failed_tests = self.tests_run - self.tests_passed
