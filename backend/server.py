@@ -398,7 +398,7 @@ class Invoice(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     project_id: str
     amount: float
-    status: InvoiceStatus = InvoiceStatus.PENDING
+    status: InvoiceStatus = InvoiceStatus.DRAFT
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     due_date: Optional[datetime] = None
     description: str
