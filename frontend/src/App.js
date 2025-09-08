@@ -2947,24 +2947,14 @@ const AuthPage = () => {
     try {
       if (isLogin) {
         await login(formData.email, formData.password);
-        toast({
-          title: "Success",
-          description: "Logged in successfully!",
-        });
+        toast.success("Logged in successfully!");
       } else {
         await register(formData);
-        toast({
-          title: "Success",
-          description: "Account created successfully! Please log in.",
-        });
+        toast.success("Account created successfully! Please log in.");
         setIsLogin(true);
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.response?.data?.detail || 'An error occurred',
-        variant: "destructive",
-      });
+      toast.error(error.response?.data?.detail || 'An error occurred');
     }
   };
 
