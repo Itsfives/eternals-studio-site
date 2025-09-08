@@ -58,6 +58,85 @@ const useTheme = () => {
 
 // Auth Context
 const AuthContext = React.createContext();
+const CartContext = React.createContext();
+
+// Cart Provider
+const CartProvider = ({ children }) => {
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const addToCart = (product) => {
+    setCartItems(prev => {
+      const existingItem = prev.find(item => item.id === product.id);
+      if (existingItem) {
+        return prev.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...prev, { ...product, quantity: 1 }];
+      }
+    });
+    toast.success(`${product.title} added to cart!`);
+  };
+
+  const removeFromCart = (productId) => {
+    setCartItems(prev => prev.filter(item => item.id !== productId));
+  };
+
+  const updateQuantity = (productId, quantity) => {
+    if (quantity === 0) {
+      removeFromCart(productId);
+      return;
+    }
+    setCartItems(prev =>
+      prev.map(item =>
+        item.id === productId
+          ? { ...item, quantity }
+          : item
+      )
+    );
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  const getTotalPrice = () => {
+    return cartItems.reduce((total, item) => {
+      return total + (parseFloat(item.price.replace('$', '')) * item.quantity);
+    }, 0).toFixed(2);
+  };
+
+  const getItemCount = () => {
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
+  };
+
+  return (
+    <CartContext.Provider value={{
+      cartItems,
+      addToCart,
+      removeFromCart,
+      updateQuantity,
+      clearCart,
+      getTotalPrice,
+      getItemCount,
+      isCartOpen,
+      setIsCartOpen
+    }}>
+      {children}
+    </CartContext.Provider>
+  );
+};
+
+const useCart = () => {
+  const context = useContext(CartContext);
+  if (!context) {
+    throw new Error('useCart must be used within a CartProvider');
+  }
+  return context;
+};
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
