@@ -3822,22 +3822,38 @@ const ClientPortal = () => {
   );
 };
 
-// Dashboard Component (Admin Dashboard)
+// Enhanced Admin Dashboard Component
 const Dashboard = () => {
   const { user } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('overview');
+  const [loading, setLoading] = useState(false);
+  
+  // State management for different sections
   const [stats, setStats] = useState({
     projects_completed: 0,
     team_members: 0,
-    support_available: '24/7 Premium Support'
+    support_available: '24/7 Premium Support',
+    total_clients: 0,
+    active_projects: 0,
+    pending_invoices: 0
   });
-  const [testimonials, setTestimonials] = useState([]);
+  
+  const [clients, setClients] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [invoices, setInvoices] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
   const [users, setUsers] = useState([]);
-  const [saving, setSaving] = useState(false);
-  const [loading, setLoading] = useState(false);
+  
+  // Modal states
+  const [showClientModal, setShowClientModal] = useState(false);
+  const [showProjectModal, setShowProjectModal] = useState(false);
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
+  const [showRoleModal, setShowRoleModal] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   // Check if user has admin access
   useEffect(() => {
@@ -3845,9 +3861,189 @@ const Dashboard = () => {
       navigate('/auth');
       return;
     }
-    // Only admin, super_admin, and editor roles can access dashboard
-    if (!['admin', 'super_admin', 'editor'].includes(user.role)) {
+    // Enhanced role checking
+    if (!['admin', 'super_admin', 'client_manager'].includes(user.role)) {
       navigate('/client-portal');
+      return;
+    }
+    
+    // Load initial data
+    loadDashboardData();
+  }, [user, navigate]);
+
+  const loadDashboardData = async () => {
+    setLoading(true);
+    try {
+      await Promise.all([
+        loadClients(),
+        loadProjects(),
+        loadInvoices(),
+        loadMessages(),
+        loadTestimonials(),
+        loadStats()
+      ]);
+    } catch (error) {
+      showToast('Error loading dashboard data', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadClients = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/clients`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setClients(data);
+      }
+    } catch (error) {
+      console.error('Error loading clients:', error);
+    }
+  };
+
+  const loadProjects = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/projects/enhanced`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setProjects(data);
+      }
+    } catch (error) {
+      console.error('Error loading projects:', error);
+    }
+  };
+
+  const loadInvoices = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/invoices`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setInvoices(data);
+      }
+    } catch (error) {
+      console.error('Error loading invoices:', error);
+    }
+  };
+
+  const loadMessages = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/messages`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(data);
+      }
+    } catch (error) {
+      console.error('Error loading messages:', error);
+    }
+  };
+
+  const loadTestimonials = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/testimonials/all`, {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setTestimonials(data);
+      }
+    } catch (error) {
+      console.error('Error loading testimonials:', error);
+    }
+  };
+
+  const loadStats = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/counter-stats`);
+      if (response.ok) {
+        const data = await response.json();
+        setStats({
+          ...data,
+          total_clients: clients.length,
+          active_projects: projects.filter(p => p.status === 'in_progress').length,
+          pending_invoices: invoices.filter(i => i.status === 'sent').length
+        });
+      }
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  };
+
+  // Admin action handlers
+  const handleAssignClientManager = async (clientId, managerId) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/clients/${clientId}/assign-manager`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ manager_id: managerId })
+      });
+      
+      if (response.ok) {
+        showToast('Client manager assigned successfully!');
+        loadClients();
+      }
+    } catch (error) {
+      showToast('Error assigning client manager', 'error');
+    }
+  };
+
+  const handleViewClientPortal = (clientId) => {
+    // This will allow admins to view client's portal
+    setSelectedClient(clientId);
+    setActiveTab('client-portal-view');
+  };
+
+  const approveTestimonial = async (testimonialId) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/testimonials/${testimonialId}/approve`, {
+        method: 'PUT',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+
+      if (response.ok) {
+        setTestimonials(prev => 
+          prev.map(t => t.id === testimonialId ? { ...t, approved: true } : t)
+        );
+        showToast("Testimonial approved!");
+      }
+    } catch (error) {
+      showToast("Failed to approve testimonial", 'error');
+    }
+  };
+
+  // Enhanced Dashboard Tabs Configuration
+  const dashboardTabs = [
+    { id: 'overview', name: 'Overview', icon: Home },
+    { id: 'clients', name: 'Client Management', icon: Users },
+    { id: 'projects', name: 'Project Management', icon: Briefcase },
+    { id: 'invoices', name: 'Invoices & Billing', icon: CreditCard },
+    { id: 'messages', name: 'Communications', icon: MessageSquare },
+    { id: 'testimonials', name: 'Testimonials', icon: Quote },
+    { id: 'content', name: 'Content Management', icon: FileText },
+    { id: 'users', name: 'User Management', icon: User },
+    ...(user?.role === 'super_admin' ? [{ id: 'roles', name: 'Role Management', icon: Settings }] : [])
+  ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+          <p className="text-slate-600 dark:text-slate-400">Loading dashboard...</p>
+        </div>
+      </div>
+    );
+  }
       return;
     }
   }, [user, navigate]);
