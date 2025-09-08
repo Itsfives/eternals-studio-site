@@ -1664,7 +1664,14 @@ const ServicesPage = () => {
                       <span className="text-white font-bold text-lg">{step.step}</span>
                     </div>
                     {index < processSteps.length - 1 && (
-                      <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-to-r from-teal-500/30 to-purple-500/30 transform -translate-y-0.5 z-0" style={{left: 'calc(50% + 2rem)', width: 'calc(100% - 4rem)'}}></div>
+                      <div 
+                        className="hidden md:block absolute top-8 h-0.5 bg-gradient-to-r from-teal-500/30 to-purple-500/30 z-0"
+                        style={{
+                          left: '50%', 
+                          width: `calc(100vw / 5 - 2rem)`,
+                          marginLeft: '2rem'
+                        }}
+                      ></div>
                     )}
                   </div>
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">{step.title}</h3>
