@@ -1656,28 +1656,29 @@ const ServicesPage = () => {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-5 gap-8 relative">
-              {processSteps.map((step, index) => (
-                <div key={index} className="text-center relative">
-                  <div className="relative mb-6">
-                    <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full mx-auto flex items-center justify-center mb-4 relative z-10">
-                      <span className="text-white font-bold text-lg">{step.step}</span>
+            <div className="relative">
+              <div className="grid md:grid-cols-5 gap-8">
+                {processSteps.map((step, index) => (
+                  <div key={index} className="text-center relative">
+                    <div className="relative mb-6">
+                      <div className="w-16 h-16 bg-gradient-to-r from-teal-500 to-purple-500 rounded-full mx-auto flex items-center justify-center mb-4 relative z-10">
+                        <span className="text-white font-bold text-lg">{step.step}</span>
+                      </div>
                     </div>
-                    {index < processSteps.length - 1 && (
-                      <div 
-                        className="hidden md:block absolute top-8 h-0.5 bg-gradient-to-r from-teal-500/30 to-purple-500/30 z-0"
-                        style={{
-                          left: '50%', 
-                          width: `calc(100vw / 5 - 2rem)`,
-                          marginLeft: '2rem'
-                        }}
-                      ></div>
-                    )}
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">{step.title}</h3>
+                    <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{step.description}</p>
                   </div>
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">{step.title}</h3>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">{step.description}</p>
-                </div>
-              ))}
+                ))}
+              </div>
+              
+              {/* Connecting lines positioned absolutely over the grid */}
+              <div className="hidden md:block absolute top-8 left-0 right-0 h-0.5 bg-gradient-to-r from-teal-500/30 via-teal-500/30 to-purple-500/30 z-0" 
+                   style={{
+                     left: 'calc(10% + 2rem)',
+                     right: 'calc(10% + 2rem)',
+                     width: 'calc(80% - 4rem)'
+                   }}>
+              </div>
             </div>
           </div>
 
