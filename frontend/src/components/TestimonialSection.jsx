@@ -74,11 +74,15 @@ const TestimonialSection = () => {
     e.preventDefault();
     
     try {
-      // Create the testimonial data
+      // Create the testimonial data with correct field names for backend
       const testimonialData = {
-        ...formData,
-        approved: false, // Default to not approved for admin review
-        created_at: new Date().toISOString()
+        client_name: formData.name,
+        client_role: formData.company || "Client",
+        client_avatar: "",
+        rating: formData.rating,
+        title: `Review from ${formData.name}`,
+        content: formData.content,
+        highlights: []
       };
 
       // Get the backend URL from environment
@@ -98,11 +102,13 @@ const TestimonialSection = () => {
         setShowModal(false);
         alert('Thank you! Your testimonial has been submitted and is awaiting approval.');
       } else {
-        throw new Error('Failed to submit testimonial');
+        const errorData = await response.json();
+        console.error('Server error:', errorData);
+        throw new Error(errorData.detail || 'Failed to submit testimonial');
       }
     } catch (error) {
       console.error('Error submitting testimonial:', error);
-      alert('Sorry, there was an error submitting your testimonial. Please try again.');
+      alert(`Sorry, there was an error submitting your testimonial: ${error.message}. Please try again.`);
     }
   };
 
