@@ -703,7 +703,418 @@ async def get_available_providers():
         }
     }
 
-# Project routes
+# =============================================
+# ENHANCED PROJECT MANAGEMENT API ENDPOINTS
+# =============================================
+
+# Enhanced Project Management
+@api_router.post("/projects/create", response_model=ClientProject)
+async def create_enhanced_project(project: ProjectCreate, current_user: User = Depends(get_current_user)):
+    """Create a new project with workflow steps"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to create projects")
+    
+    project_data = {
+        "id": str(uuid.uuid4()),
+        "title": project.title,
+        "description": project.description,
+        "client_id": project.client_id,
+        "project_type": "General",
+        "status": ProjectStatus.DRAFT,
+        "priority": "medium",
+        "workflow_steps": [],
+        "files": [],
+        "client_files": [],
+        "deliverables": [],
+        "assigned_team_members": [],
+        "tags": [],
+        "custom_fields": {},
+        "created_at": datetime.now(timezone.utc),
+        "last_activity": datetime.now(timezone.utc)
+    }
+    
+    await db.enhanced_projects.insert_one(project_data)
+    return ClientProject(**project_data)
+
+@api_router.get("/projects/enhanced", response_model=List[ClientProject])
+async def get_enhanced_projects(current_user: User = Depends(get_current_user)):
+    """Get all projects for admin users or client's projects for client users"""
+    if current_user.role == UserRole.CLIENT:
+        projects = await db.enhanced_projects.find({"client_id": current_user.id}).to_list(length=None)
+    else:
+        projects = await db.enhanced_projects.find().to_list(length=None)
+    
+    return [ClientProject(**project) for project in projects]
+
+@api_router.get("/projects/enhanced/{project_id}", response_model=ClientProject)
+async def get_enhanced_project(project_id: str, current_user: User = Depends(get_current_user)):
+    """Get specific project details"""
+    project = await db.enhanced_projects.find_one({"id": project_id})
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    # Check permissions
+    if (current_user.role == UserRole.CLIENT and project["client_id"] != current_user.id):
+        raise HTTPException(status_code=403, detail="Not authorized to view this project")
+    
+    return ClientProject(**project)
+
+# Client Management API
+@api_router.get("/clients", response_model=List[User])
+async def get_clients(current_user: User = Depends(get_current_user)):
+    """Get all clients for admin users"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to view clients")
+    
+    # Client managers can only see their assigned clients
+    if current_user.role == UserRole.CLIENT_MANAGER:
+        clients = await db.users.find({
+            "$or": [
+                {"assigned_client_manager": current_user.id},
+                {"role": UserRole.CLIENT}
+            ]
+        }).to_list(length=None)
+    else:
+        clients = await db.users.find({"role": UserRole.CLIENT}).to_list(length=None)
+    
+    return [User(**client) for client in clients]
+
+@api_router.get("/clients/{client_id}/projects", response_model=List[ClientProject])
+async def get_client_projects(client_id: str, current_user: User = Depends(get_current_user)):
+    """Get all projects for a specific client"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    projects = await db.enhanced_projects.find({"client_id": client_id}).to_list(length=None)
+    return [ClientProject(**project) for project in projects]
+
+@api_router.put("/clients/{client_id}/assign-manager")
+async def assign_client_manager(client_id: str, manager_data: dict, current_user: User = Depends(get_current_user)):
+    """Assign a client manager to a client"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    manager_id = manager_data.get("manager_id")
+    await db.users.update_one(
+        {"id": client_id},
+        {"$set": {"assigned_client_manager": manager_id, "updated_at": datetime.now(timezone.utc)}}
+    )
+    
+    return {"message": "Client manager assigned successfully"}
+
+# File Management API
+@api_router.post("/projects/{project_id}/files/upload")
+async def upload_project_file(
+    project_id: str,
+    file: UploadFile = File(...),
+    access_type: str = Form("free"),
+    description: str = Form(""),
+    current_user: User = Depends(get_current_user)
+):
+    """Upload a file to a project"""
+    # Create uploads directory if it doesn't exist
+    upload_dir = Path("uploads")
+    upload_dir.mkdir(exist_ok=True)
+    
+    # Generate unique filename
+    file_id = str(uuid.uuid4())
+    file_extension = Path(file.filename).suffix
+    stored_filename = f"{file_id}{file_extension}"
+    file_path = upload_dir / stored_filename
+    
+    # Save file
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    
+    # Create file record
+    project_file = {
+        "id": file_id,
+        "filename": stored_filename,
+        "original_filename": file.filename,
+        "file_path": str(file_path),
+        "file_size": file_path.stat().st_size,
+        "file_type": file.content_type,
+        "access_type": FileAccessType(access_type),
+        "uploaded_by": current_user.id,
+        "uploaded_at": datetime.now(timezone.utc),
+        "description": description,
+        "is_active": True,
+        "requires_payment": access_type == "paid",
+        "associated_invoice": None
+    }
+    
+    # Add file to project
+    await db.enhanced_projects.update_one(
+        {"id": project_id},
+        {
+            "$push": {"files": project_file},
+            "$set": {"updated_at": datetime.now(timezone.utc)}
+        }
+    )
+    
+    return {"message": "File uploaded successfully", "file_id": file_id}
+
+@api_router.get("/projects/{project_id}/files")
+async def get_project_files(project_id: str, current_user: User = Depends(get_current_user)):
+    """Get all files for a project"""
+    project = await db.enhanced_projects.find_one({"id": project_id})
+    if not project:
+        raise HTTPException(status_code=404, detail="Project not found")
+    
+    # Check permissions
+    if (current_user.role == UserRole.CLIENT and project["client_id"] != current_user.id):
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    files = project.get("files", [])
+    
+    # Filter files based on access permissions for clients
+    if current_user.role == UserRole.CLIENT:
+        accessible_files = []
+        for file_data in files:
+            if (file_data["access_type"] == "free" or 
+                file_data["access_type"] == "contract" or
+                not file_data["requires_payment"]):
+                accessible_files.append(file_data)
+        files = accessible_files
+    
+    return files
+
+# Workflow Management API
+@api_router.post("/projects/{project_id}/workflow/step")
+async def add_workflow_step(
+    project_id: str, 
+    step_data: dict, 
+    current_user: User = Depends(get_current_user)
+):
+    """Add a workflow step to a project"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    workflow_step = {
+        "id": str(uuid.uuid4()),
+        "step_number": step_data["step_number"],
+        "title": step_data["title"],
+        "description": step_data["description"],
+        "status": WorkflowStepStatus.PENDING,
+        "estimated_duration": step_data.get("estimated_duration"),
+        "assigned_to": step_data.get("assigned_to"),
+        "client_approval_required": step_data.get("client_approval_required", False),
+        "client_approved": False,
+        "notes": step_data.get("notes", "")
+    }
+    
+    await db.enhanced_projects.update_one(
+        {"id": project_id},
+        {
+            "$push": {"workflow_steps": workflow_step},
+            "$set": {"updated_at": datetime.now(timezone.utc)}
+        }
+    )
+    
+    return {"message": "Workflow step added successfully", "step_id": workflow_step["id"]}
+
+@api_router.put("/projects/{project_id}/workflow/step/{step_id}/complete")
+async def complete_workflow_step(
+    project_id: str, 
+    step_id: str, 
+    current_user: User = Depends(get_current_user)
+):
+    """Mark a workflow step as completed"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    await db.enhanced_projects.update_one(
+        {"id": project_id, "workflow_steps.id": step_id},
+        {
+            "$set": {
+                "workflow_steps.$.status": WorkflowStepStatus.COMPLETED,
+                "workflow_steps.$.completed_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            }
+        }
+    )
+    
+    # Send notification to client
+    await create_system_notification(
+        project_id=project_id,
+        message=f"Workflow step completed: {step_id}",
+        recipient_role=UserRole.CLIENT
+    )
+    
+    return {"message": "Workflow step completed successfully"}
+
+# Communication System API
+@api_router.post("/messages/send")
+async def send_message(message_data: dict, current_user: User = Depends(get_current_user)):
+    """Send a message"""
+    message = {
+        "id": str(uuid.uuid4()),
+        "project_id": message_data.get("project_id"),
+        "sender_id": current_user.id,
+        "recipient_id": message_data.get("recipient_id"),
+        "subject": message_data.get("subject"),
+        "content": message_data["content"],
+        "message_type": message_data.get("message_type", "text"),
+        "status": MessageStatus.UNREAD,
+        "sent_at": datetime.now(timezone.utc),
+        "email_sent": False,
+        "attachments": message_data.get("attachments", []),
+        "is_system_message": False
+    }
+    
+    await db.messages.insert_one(message)
+    
+    # TODO: Send email notification
+    
+    return {"message": "Message sent successfully", "message_id": message["id"]}
+
+@api_router.get("/messages")
+async def get_messages(
+    project_id: Optional[str] = None,
+    current_user: User = Depends(get_current_user)
+):
+    """Get messages for current user"""
+    query = {
+        "$or": [
+            {"sender_id": current_user.id},
+            {"recipient_id": current_user.id},
+            {"recipient_id": None}  # Broadcast messages
+        ]
+    }
+    
+    if project_id:
+        query["project_id"] = project_id
+    
+    messages = await db.messages.find(query).sort("sent_at", -1).to_list(length=100)
+    return [Message(**message) for message in messages]
+
+# System notification helper
+async def create_system_notification(project_id: str, message: str, recipient_role: UserRole = None):
+    """Create a system notification"""
+    system_message = {
+        "id": str(uuid.uuid4()),
+        "project_id": project_id,
+        "sender_id": "system",
+        "recipient_id": None,
+        "subject": "Project Update",
+        "content": message,
+        "message_type": "system_notification",
+        "status": MessageStatus.UNREAD,
+        "sent_at": datetime.now(timezone.utc),
+        "email_sent": False,
+        "attachments": [],
+        "is_system_message": True
+    }
+    
+    await db.messages.insert_one(system_message)
+
+# Enhanced Invoice Management
+@api_router.post("/invoices/create", response_model=Invoice)
+async def create_enhanced_invoice(invoice_data: dict, current_user: User = Depends(get_current_user)):
+    """Create a new invoice"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    invoice = {
+        "id": str(uuid.uuid4()),
+        "invoice_number": f"INV-{int(datetime.now().timestamp())}",
+        "client_id": invoice_data["client_id"],
+        "project_id": invoice_data.get("project_id"),
+        "status": InvoiceStatus.DRAFT,
+        "title": invoice_data["title"],
+        "description": invoice_data.get("description"),
+        "subtotal": invoice_data["subtotal"],
+        "tax_rate": invoice_data.get("tax_rate", 0.0),
+        "tax_amount": invoice_data.get("tax_amount", 0.0),
+        "discount_amount": invoice_data.get("discount_amount", 0.0),
+        "total_amount": invoice_data["total_amount"],
+        "due_date": datetime.strptime(invoice_data["due_date"], "%Y-%m-%d").date(),
+        "created_at": datetime.now(timezone.utc),
+        "locked_files": invoice_data.get("locked_files", [])
+    }
+    
+    await db.enhanced_invoices.insert_one(invoice)
+    return Invoice(**invoice)
+
+@api_router.get("/invoices", response_model=List[Invoice])
+async def get_enhanced_invoices(current_user: User = Depends(get_current_user)):
+    """Get invoices"""
+    if current_user.role == UserRole.CLIENT:
+        invoices = await db.enhanced_invoices.find({"client_id": current_user.id}).to_list(length=None)
+    else:
+        invoices = await db.enhanced_invoices.find().to_list(length=None)
+    
+    return [Invoice(**invoice) for invoice in invoices]
+
+# Role Management API
+@api_router.post("/admin/roles/create")
+async def create_custom_role(role_data: dict, current_user: User = Depends(get_current_user)):
+    """Create a custom role (Super Admin only)"""
+    if current_user.role != UserRole.SUPER_ADMIN:
+        raise HTTPException(status_code=403, detail="Only Super Admin can create roles")
+    
+    custom_role = {
+        "id": str(uuid.uuid4()),
+        "name": role_data["name"],
+        "display_name": role_data["display_name"],
+        "permissions": role_data["permissions"],
+        "created_by": current_user.id,
+        "created_at": datetime.now(timezone.utc),
+        "is_active": True
+    }
+    
+    await db.custom_roles.insert_one(custom_role)
+    return {"message": "Custom role created successfully", "role_id": custom_role["id"]}
+
+@api_router.get("/admin/roles")
+async def get_custom_roles(current_user: User = Depends(get_current_user)):
+    """Get all custom roles"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    roles = await db.custom_roles.find({"is_active": True}).to_list(length=None)
+    return roles
+
+# Content Management API
+@api_router.put("/admin/content/{section}")
+async def update_content_section(
+    section: str, 
+    content_data: dict, 
+    current_user: User = Depends(get_current_user)
+):
+    """Update content section"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    content_update = {
+        "id": str(uuid.uuid4()),
+        "section_name": section,
+        "content": content_data["content"],
+        "page": content_data.get("page", "home"),
+        "updated_at": datetime.now(timezone.utc),
+        "updated_by": current_user.id
+    }
+    
+    await db.content_sections.replace_one(
+        {"section_name": section},
+        content_update,
+        upsert=True
+    )
+    
+    return {"message": "Content updated successfully"}
+
+@api_router.get("/content/{section}")
+async def get_content_section(section: str):
+    """Get content section (public endpoint)"""
+    content = await db.content_sections.find_one({"section_name": section})
+    if not content:
+        return {"content": {}}
+    
+    return {"content": content["content"]}
+
+# =============================================
+# LEGACY API ENDPOINTS (for backward compatibility)
+# =============================================
 @api_router.post("/projects", response_model=Project)
 async def create_project(project_data: ProjectCreate, current_user: User = Depends(get_current_user)):
     if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
