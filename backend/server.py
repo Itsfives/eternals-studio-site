@@ -72,27 +72,50 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key-here")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-# User Roles
+# Enhanced Role System
 class UserRole(str, Enum):
-    SUPER_ADMIN = "super_admin"
-    ADMIN = "admin"
-    EDITOR = "editor"
     CLIENT = "client"
+    CLIENT_MANAGER = "client_manager"  # New role: can manage clients + content
+    ADMIN = "admin"
+    SUPER_ADMIN = "super_admin"
 
+# Project Status Enum
 class ProjectStatus(str, Enum):
-    PENDING = "pending"
     DRAFT = "draft"
-    IN_PROGRESS = "in_progress"
+    IN_PROGRESS = "in_progress"  
     REVIEW = "review"
+    REVISION = "revision"
+    APPROVED = "approved"
     COMPLETED = "completed"
     ON_HOLD = "on_hold"
     CANCELLED = "cancelled"
-    LOCKED = "locked"
 
+# Invoice Status Enum
 class InvoiceStatus(str, Enum):
-    PENDING = "pending"
+    DRAFT = "draft"
+    SENT = "sent"
     PAID = "paid"
     OVERDUE = "overdue"
+    CANCELLED = "cancelled"
+
+# Message Status Enum
+class MessageStatus(str, Enum):
+    UNREAD = "unread"
+    READ = "read"
+    ARCHIVED = "archived"
+
+# File Access Type Enum
+class FileAccessType(str, Enum):
+    FREE = "free"           # Always accessible
+    PAID = "paid"           # Requires payment/invoice completion
+    CONTRACT = "contract"   # Contract work - always accessible to client
+
+# Workflow Step Status
+class WorkflowStepStatus(str, Enum):
+    PENDING = "pending"
+    IN_PROGRESS = "in_progress"
+    COMPLETED = "completed"
+    SKIPPED = "skipped"
 
 # Models
 class User(BaseModel):
