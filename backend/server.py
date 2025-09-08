@@ -1478,9 +1478,10 @@ async def get_dashboard_analytics(current_user: User = Depends(get_current_user)
         }
     }
 # Testimonial Management Endpoints
+# Public testimonials (approved only)
 @api_router.get("/testimonials", response_model=List[Testimonial])
 async def get_testimonials():
-    """Get all approved testimonials"""
+    """Get all approved testimonials for public display"""
     try:
         testimonials = await db.testimonials.find({"approved": True}).to_list(length=None)
         
@@ -1492,6 +1493,25 @@ async def get_testimonials():
         return [Testimonial(**testimonial) for testimonial in testimonials]
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching testimonials: {str(e)}")
+
+# Admin testimonials (all testimonials for review)
+@api_router.get("/testimonials/all", response_model=List[Testimonial])
+async def get_all_testimonials(current_user: User = Depends(get_current_user)):
+    """Get all testimonials (approved and unapproved) for admin review"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to view all testimonials")
+    
+    try:
+        testimonials = await db.testimonials.find().to_list(length=None)
+        
+        # Remove MongoDB's _id field from each testimonial
+        for testimonial in testimonials:
+            if "_id" in testimonial:
+                del testimonial["_id"]
+        
+        return [Testimonial(**testimonial) for testimonial in testimonials]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching all testimonials: {str(e)}")
 
 @api_router.post("/testimonials", response_model=Testimonial)
 async def create_testimonial(testimonial: TestimonialCreate):
