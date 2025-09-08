@@ -2330,6 +2330,8 @@ const StorePage = () => {
     : products.filter(product => product.category === selectedCategory);
 
   const ProductModal = ({ product, onClose }) => {
+    const { addToCart } = useCart();
+    
     if (!product) return null;
 
     return (
