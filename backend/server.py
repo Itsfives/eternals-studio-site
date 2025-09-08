@@ -1528,58 +1528,300 @@ async def create_testimonial(testimonial: TestimonialCreate):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error creating testimonial: {str(e)}")
 
-@api_router.put("/testimonials/{testimonial_id}/approve", response_model=Testimonial)
-async def approve_testimonial(
-    testimonial_id: str,
+# Enhanced Testimonial Management Endpoints
+@api_router.put("/testimonials/{testimonial_id}", response_model=Testimonial)
+async def update_testimonial(
+    testimonial_id: str, 
+    testimonial_data: dict, 
     current_user: User = Depends(get_current_user)
 ):
-    """Approve a testimonial (Admin only)"""
+    """Update a testimonial (admin only)"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to update testimonials")
+    
     try:
-        # Check if user is admin
-        if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
-            raise HTTPException(status_code=403, detail="Admin access required")
+        # Update testimonial in database
+        update_data = {
+            "client_name": testimonial_data.get("client_name"),
+            "client_role": testimonial_data.get("client_role"),
+            "title": testimonial_data.get("title"),
+            "content": testimonial_data.get("content"),
+            "rating": testimonial_data.get("rating", 5),
+            "is_featured": testimonial_data.get("is_featured", False),
+            "updated_at": datetime.now(timezone.utc)
+        }
         
-        # Find and approve testimonial
         result = await db.testimonials.update_one(
             {"id": testimonial_id},
-            {"$set": {"approved": True}}
+            {"$set": update_data}
         )
         
         if result.matched_count == 0:
             raise HTTPException(status_code=404, detail="Testimonial not found")
         
         # Get updated testimonial
-        testimonial = await db.testimonials.find_one({"id": testimonial_id})
-        if "_id" in testimonial:
-            del testimonial["_id"]
+        updated_testimonial = await db.testimonials.find_one({"id": testimonial_id})
+        if "_id" in updated_testimonial:
+            del updated_testimonial["_id"]
             
-        return Testimonial(**testimonial)
-    except HTTPException:
-        raise
+        return Testimonial(**updated_testimonial)
+        
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error approving testimonial: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error updating testimonial: {str(e)}")
 
-@api_router.delete("/testimonials/{testimonial_id}")
-async def delete_testimonial(
-    testimonial_id: str,
+@api_router.put("/testimonials/{testimonial_id}/featured")
+async def toggle_testimonial_featured(
+    testimonial_id: str, 
+    featured_data: dict, 
     current_user: User = Depends(get_current_user)
 ):
-    """Delete a testimonial (Admin only)"""
+    """Toggle testimonial featured status (admin only)"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to feature testimonials")
+    
     try:
-        # Check if user is admin
-        if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN]:
-            raise HTTPException(status_code=403, detail="Admin access required")
+        result = await db.testimonials.update_one(
+            {"id": testimonial_id},
+            {"$set": {"is_featured": featured_data.get("is_featured", False)}}
+        )
         
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Testimonial not found")
+            
+        return {"message": "Testimonial featured status updated successfully"}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating featured status: {str(e)}")
+
+@api_router.delete("/testimonials/{testimonial_id}")
+async def delete_testimonial(testimonial_id: str, current_user: User = Depends(get_current_user)):
+    """Delete a testimonial (admin only)"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete testimonials")
+    
+    try:
         result = await db.testimonials.delete_one({"id": testimonial_id})
         
         if result.deleted_count == 0:
             raise HTTPException(status_code=404, detail="Testimonial not found")
-        
+            
         return {"message": "Testimonial deleted successfully"}
-    except HTTPException:
-        raise
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error deleting testimonial: {str(e)}")
+
+# Enhanced Client Management Endpoints
+@api_router.post("/clients/create", response_model=User)
+async def create_client(client_data: dict, current_user: User = Depends(get_current_user)):
+    """Create a new client (admin only)"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to create clients")
+    
+    try:
+        # Check if email already exists
+        existing_user = await db.users.find_one({"email": client_data["email"]})
+        if existing_user:
+            raise HTTPException(status_code=400, detail="Email already exists")
+        
+        # Create new client
+        new_client = {
+            "id": str(uuid.uuid4()),
+            "email": client_data["email"],
+            "full_name": client_data["full_name"],
+            "role": UserRole.CLIENT,
+            "is_active": True,
+            "created_at": datetime.now(timezone.utc),
+            "company": client_data.get("company"),
+            "phone": client_data.get("phone"),
+            "address": client_data.get("address"),
+            "city": client_data.get("city"),
+            "state": client_data.get("state"),
+            "zip_code": client_data.get("zip_code"),
+            "country": client_data.get("country"),
+            "website": client_data.get("website"),
+            "industry": client_data.get("industry"),
+            "notes": client_data.get("notes"),
+            "assigned_client_manager": client_data.get("assigned_client_manager"),
+            "email_notifications": True,
+            "project_notifications": True,
+            "marketing_emails": False,
+            "oauth_providers": {}
+        }
+        
+        await db.users.insert_one(new_client)
+        
+        # Remove MongoDB's _id field
+        if "_id" in new_client:
+            del new_client["_id"]
+            
+        return User(**new_client)
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error creating client: {str(e)}")
+
+@api_router.put("/clients/{client_id}", response_model=User)
+async def update_client(
+    client_id: str, 
+    client_data: dict, 
+    current_user: User = Depends(get_current_user)
+):
+    """Update client information (admin only)"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to update clients")
+    
+    try:
+        update_data = {
+            "full_name": client_data.get("full_name"),
+            "company": client_data.get("company"),
+            "phone": client_data.get("phone"),
+            "address": client_data.get("address"),
+            "city": client_data.get("city"),
+            "state": client_data.get("state"),
+            "zip_code": client_data.get("zip_code"),
+            "country": client_data.get("country"),
+            "website": client_data.get("website"),
+            "industry": client_data.get("industry"),
+            "notes": client_data.get("notes"),
+            "assigned_client_manager": client_data.get("assigned_client_manager"),
+            "updated_at": datetime.now(timezone.utc)
+        }
+        
+        # Remove None values
+        update_data = {k: v for k, v in update_data.items() if v is not None}
+        
+        result = await db.users.update_one(
+            {"id": client_id},
+            {"$set": update_data}
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Client not found")
+        
+        # Get updated client
+        updated_client = await db.users.find_one({"id": client_id})
+        if "_id" in updated_client:
+            del updated_client["_id"]
+            
+        return User(**updated_client)
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error updating client: {str(e)}")
+
+@api_router.delete("/clients/{client_id}")
+async def delete_client(client_id: str, current_user: User = Depends(get_current_user)):
+    """Delete a client (super admin only)"""
+    if current_user.role != UserRole.SUPER_ADMIN:
+        raise HTTPException(status_code=403, detail="Only super admin can delete clients")
+    
+    try:
+        # Check if client has active projects
+        active_projects = await db.enhanced_projects.find({"client_id": client_id}).to_list(length=1)
+        if active_projects:
+            raise HTTPException(status_code=400, detail="Cannot delete client with active projects")
+        
+        result = await db.users.delete_one({"id": client_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Client not found")
+            
+        return {"message": "Client deleted successfully"}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting client: {str(e)}")
+
+# Enhanced Project Management Endpoints
+@api_router.delete("/projects/{project_id}")
+async def delete_project(project_id: str, current_user: User = Depends(get_current_user)):
+    """Delete a project (admin only)"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to delete projects")
+    
+    try:
+        result = await db.enhanced_projects.delete_one({"id": project_id})
+        
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Project not found")
+            
+        return {"message": "Project deleted successfully"}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting project: {str(e)}")
+
+# Client Portal Access for Admins
+@api_router.get("/clients/{client_id}/portal-view")
+async def get_client_portal_view(client_id: str, current_user: User = Depends(get_current_user)):
+    """Get client portal view for admin users"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to view client portals")
+    
+    try:
+        # Get client information
+        client = await db.users.find_one({"id": client_id})
+        if not client:
+            raise HTTPException(status_code=404, detail="Client not found")
+        
+        # Get client's projects
+        projects = await db.enhanced_projects.find({"client_id": client_id}).to_list(length=None)
+        
+        # Get client's messages
+        messages = await db.messages.find({
+            "$or": [
+                {"sender_id": client_id},
+                {"recipient_id": client_id}
+            ]
+        }).sort("sent_at", -1).to_list(length=50)
+        
+        # Get client's invoices
+        invoices = await db.enhanced_invoices.find({"client_id": client_id}).to_list(length=None)
+        
+        # Clean MongoDB _id fields
+        for item_list in [projects, messages, invoices]:
+            for item in item_list:
+                if "_id" in item:
+                    del item["_id"]
+        
+        if "_id" in client:
+            del client["_id"]
+        
+        return {
+            "client": client,
+            "projects": projects,
+            "messages": messages,
+            "invoices": invoices
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting client portal view: {str(e)}")
+
+# Message System Endpoints
+@api_router.post("/messages/send-to-client")
+async def send_message_to_client(message_data: dict, current_user: User = Depends(get_current_user)):
+    """Send a message to a client"""
+    if current_user.role not in [UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.CLIENT_MANAGER]:
+        raise HTTPException(status_code=403, detail="Not authorized to send messages")
+    
+    try:
+        message = {
+            "id": str(uuid.uuid4()),
+            "project_id": message_data.get("project_id"),
+            "sender_id": current_user.id,
+            "recipient_id": message_data["client_id"],
+            "subject": message_data.get("subject", "Message from Admin"),
+            "content": message_data["content"],
+            "message_type": "text",
+            "status": MessageStatus.UNREAD,
+            "sent_at": datetime.now(timezone.utc),
+            "email_sent": False,
+            "attachments": message_data.get("attachments", []),
+            "is_system_message": False
+        }
+        
+        await db.messages.insert_one(message)
+        
+        return {"message": "Message sent successfully", "message_id": message["id"]}
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error sending message: {str(e)}")
 
 # Include the router in the main app
 app.include_router(api_router)
