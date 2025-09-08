@@ -14,8 +14,8 @@ import { Avatar, AvatarFallback, AvatarImage } from './components/ui/avatar';
 import { Textarea } from './components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './components/ui/dialog';
-import { Toaster } from './components/ui/toaster';
-import { useToast } from './hooks/use-toast';
+import { Toaster } from 'sonner';
+import { toast } from 'sonner';
 
 // Icons
 import { 
