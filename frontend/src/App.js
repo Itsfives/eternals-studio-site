@@ -1340,50 +1340,50 @@ const ServicesPage = () => {
   const services = [
     {
       icon: Palette,
-      title: "Graphic Design",
-      description: "Professional logo design, branding packages, and visual identity creation that makes your brand stand out.",
-      features: ["Logo Design", "Brand Identity", "Print Design", "Marketing Materials"],
-      price: "Starting at $299",
-      popular: false
-    },
-    {
-      icon: Video,
-      title: "Motion Graphics & VFX",
-      description: "Dynamic animations, visual effects, and motion graphics that bring your ideas to life with stunning visuals.",
-      features: ["2D/3D Animation", "Visual Effects", "Motion Graphics", "Video Editing"],
-      price: "Starting at $499",
-      popular: true
-    },
-    {
-      icon: Code,
-      title: "Web Development",
-      description: "Custom websites and web applications built with modern technologies for optimal performance and user experience.",
-      features: ["Custom Websites", "Web Applications", "E-commerce", "Mobile Responsive"],
-      price: "Starting at $799",
-      popular: false
-    },
-    {
-      icon: Music,
-      title: "Audio Production",
-      description: "Professional music production, sound design, and audio editing services for content creators and businesses.",
-      features: ["Music Production", "Sound Design", "Audio Editing", "Podcast Production"],
-      price: "Starting at $199",
+      title: "Logo & Brand Identity",
+      description: "Professional logo design and complete brand identity packages for businesses and individuals.",
+      features: ["Custom Logo Design", "Brand Guidelines", "Color Palettes", "Typography Selection", "Multiple Formats"],
+      price: "$80-$120",
       popular: false
     },
     {
       icon: Users,
       title: "Content Creator Branding",
       description: "Complete branding solutions for streamers, YouTubers, and content creators including overlays and graphics.",
-      features: ["Stream Overlays", "Social Media Graphics", "Thumbnails", "Brand Packages"],
-      price: "Starting at $399",
+      features: ["Stream Packages ($100-$400)", "Sub Badges ($25)", "Emotes ($45)", "Thumbnails ($25)", "Banners ($35)"],
+      price: "$100-$400",
       popular: true
     },
     {
       icon: Box,
       title: "3D Modeling & Rendering",
       description: "High-quality 3D models, renders, and animations for product visualization and architectural projects.",
-      features: ["3D Modeling", "Product Renders", "Architectural Visualization", "3D Animation"],
-      price: "Starting at $599",
+      features: ["Custom Models ($110/hr)", "Custom Renders ($80-$120)", "Textures ($25-$1000)", "Model Files (+$60)"],
+      price: "$80-$600",
+      popular: false
+    },
+    {
+      icon: Video,
+      title: "Video & Photo Production",
+      description: "Professional video editing, photography, and content creation services for businesses and creators.",
+      features: ["Video Shoots ($200/hr)", "Photo Shoots ($110/hr)", "Video Editing", "Photo Editing"],
+      price: "$110-$1500",
+      popular: false
+    },
+    {
+      icon: Code,
+      title: "Web Development",
+      description: "Custom website development, hosting, and maintenance services for businesses of all sizes.",
+      features: ["Website Setup ($500-$2000)", "Domain Hosting ($60/year)", "Web Hosting ($100/year)", "Maintenance"],
+      price: "$500-$2000",
+      popular: false
+    },
+    {
+      icon: Music,
+      title: "Audio & Music Production",
+      description: "Custom beats, music tracks, and audio production for content creators and businesses.",
+      features: ["Custom Beats ($115)", "Alert Tracks ($5-$20)", "Audio Editing", "Sound Design"],
+      price: "$5-$115",
       popular: false
     }
   ];
