@@ -3741,11 +3741,7 @@ const Dashboard = () => {
         throw new Error(errorData.detail || 'Failed to update statistics');
       }
     } catch (error) {
-      toast({
-        title: "Error",
-        description: error.message || 'Failed to update statistics',
-        variant: "destructive",
-      });
+      toast.error(error.message || 'Failed to update statistics');
     } finally {
       setSaving(false);
     }
