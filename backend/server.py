@@ -304,48 +304,6 @@ class ProjectPriority(str, Enum):
     HIGH = "high"
     URGENT = "urgent"
 
-class ClientProject(BaseModel):
-    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    title: str
-    description: str
-    client_id: str
-    assigned_team: List[str] = Field(default_factory=list)
-    status: ProjectStatus = ProjectStatus.DRAFT
-    priority: ProjectPriority = ProjectPriority.MEDIUM
-    budget: Optional[float] = None
-    progress: int = Field(default=0, ge=0, le=100)
-    start_date: Optional[datetime] = None
-    due_date: Optional[datetime] = None
-    completed_date: Optional[datetime] = None
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    tags: List[str] = Field(default_factory=list)
-    files: List[str] = Field(default_factory=list)
-    notes: Optional[str] = None
-
-class ProjectCreate(BaseModel):
-    title: str
-    description: str
-    client_id: str
-    assigned_team: List[str] = Field(default_factory=list)
-    priority: ProjectPriority = ProjectPriority.MEDIUM
-    budget: Optional[float] = None
-    due_date: Optional[datetime] = None
-    tags: List[str] = Field(default_factory=list)
-    notes: Optional[str] = None
-
-class ProjectUpdate(BaseModel):
-    title: Optional[str] = None
-    description: Optional[str] = None
-    status: Optional[ProjectStatus] = None
-    priority: Optional[ProjectPriority] = None
-    progress: Optional[int] = Field(None, ge=0, le=100)
-    budget: Optional[float] = None
-    due_date: Optional[datetime] = None
-    assigned_team: Optional[List[str]] = None
-    tags: Optional[List[str]] = None
-    notes: Optional[str] = None
-
 # Message System Models
 class MessageType(str, Enum):
     PROJECT_UPDATE = "project_update"
