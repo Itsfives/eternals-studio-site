@@ -2397,7 +2397,13 @@ const StorePage = () => {
                 </div>
                 
                 <div className="space-y-3">
-                  <Button className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white"
+                    onClick={() => {
+                      addToCart(product);
+                      onClose();
+                    }}
+                  >
                     <ShoppingCart className="w-4 h-4 mr-2" />
                     Add to Cart
                   </Button>
