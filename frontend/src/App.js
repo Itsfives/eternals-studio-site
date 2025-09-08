@@ -4511,63 +4511,34 @@ const CartSidebar = () => {
 // Main App Component
 const App = () => {
   return (
-    <CartProvider>
-      <ThemeProvider>
-        <AuthProvider>
-          <Router>
-            <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
-              <Navigation />
-              <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route path="/services" element={<ServicesPage />} />
-                <Route path="/portfolio" element={<PortfolioPage />} />
-                <Route path="/project/:projectId" element={<ProjectDetailPage />} />
-                <Route path="/store" element={<StorePage />} />
-                <Route path="/about" element={<AboutPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-                <Route path="/auth" element={<AuthPage />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/client-portal" element={<ClientPortal />} />
-                <Route path="/faq" element={<FAQPage />} />
-              </Routes>
-              <Footer />
-              <CartSidebar />
-              <Toaster 
-                position="top-right"
-                reverseOrder={false}
-                gutter={8}
-                containerClassName=""
-                containerStyle={{}}
-                toastOptions={{
-                  // Define default options
-                  className: '',
-                  duration: 4000,
-                  style: {
-                    background: '#363636',
-                    color: '#fff',
-                  },
-                  // Default options for specific types
-                  success: {
-                    duration: 3000,
-                    theme: {
-                      primary: 'green',
-                      secondary: 'black',
-                    },
-                  },
-                  error: {
-                    duration: 4000,
-                    theme: {
-                      primary: 'red',
-                      secondary: 'black',
-                    },
-                  },
-                }}
-              />
-            </div>
-          </Router>
-        </AuthProvider>
-      </ThemeProvider>
-    </CartProvider>
+    <ToastProvider>
+      <CartProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Router>
+              <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
+                <Navigation />
+                <Routes>
+                  <Route path="/" element={<HomePage />} />
+                  <Route path="/services" element={<ServicesPage />} />
+                  <Route path="/portfolio" element={<PortfolioPage />} />
+                  <Route path="/project/:projectId" element={<ProjectDetailPage />} />
+                  <Route path="/store" element={<StorePage />} />
+                  <Route path="/about" element={<AboutPage />} />
+                  <Route path="/contact" element={<ContactPage />} />
+                  <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/client-portal" element={<ClientPortal />} />
+                  <Route path="/faq" element={<FAQPage />} />
+                </Routes>
+                <Footer />
+                <CartSidebar />
+              </div>
+            </Router>
+          </AuthProvider>
+        </ThemeProvider>
+      </CartProvider>
+    </ToastProvider>
   );
 };
 
