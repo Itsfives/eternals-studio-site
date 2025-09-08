@@ -2886,7 +2886,6 @@ const AuthPage = () => {
     company: ''
   });
   const { login, register, handleOAuthToken } = useAuth();
-  const { toast } = useToast();
   const navigate = useNavigate();
 
   // Handle OAuth callback tokens
@@ -2926,11 +2925,7 @@ const AuthPage = () => {
         }
       }
       
-      toast({
-        title: "Authentication Error",
-        description: errorMessage,
-        variant: "destructive",
-      });
+      toast.error(errorMessage);
       
       console.error('OAuth Error:', { error, provider, message });
       
@@ -2939,16 +2934,13 @@ const AuthPage = () => {
     } else if (token) {
       // Use the AuthContext method to handle OAuth token
       handleOAuthToken(token);
-      toast({
-        title: "Success",
-        description: `Successfully logged in with ${provider || 'OAuth'}!`,
-      });
+      toast.success(`Successfully logged in with ${provider || 'OAuth'}!`);
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
       // Navigate based on user role (handled by AuthContext)
       setTimeout(() => window.location.reload(), 1000);
     }
-  }, [toast, handleOAuthToken]);
+  }, [handleOAuthToken]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
