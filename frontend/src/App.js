@@ -573,8 +573,18 @@ const Navigation = () => {
             </Button>
 
             {/* Cart */}
-            <Button variant="ghost" size="sm" className="w-9 h-9 p-0">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="w-9 h-9 p-0 relative"
+              onClick={() => setIsCartOpen(true)}
+            >
               <ShoppingCart className="w-4 h-4" />
+              {getItemCount() > 0 && (
+                <span className="absolute -top-1 -right-1 bg-teal-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {getItemCount()}
+                </span>
+              )}
             </Button>
 
             {/* Get Started / Dashboard */}
