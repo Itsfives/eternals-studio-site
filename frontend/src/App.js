@@ -3912,14 +3912,12 @@ const Dashboard = () => {
       });
 
       if (response.ok) {
-        const { showToast } = useToast();
         showToast("Statistics updated successfully!");
       } else {
         const errorData = await response.json();
         throw new Error(errorData.detail || 'Failed to update statistics');
       }
     } catch (error) {
-      const { showToast } = useToast();
       showToast(error.message || 'Failed to update statistics', 'error');
     } finally {
       setSaving(false);
