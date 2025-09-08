@@ -4033,19 +4033,296 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
   );
 };
 
-const ProjectManagementTab = ({ projects, clients }) => (
-  <div className="space-y-6">
-    <Card>
-      <CardHeader>
-        <CardTitle>Project Management</CardTitle>
-        <CardDescription>Manage all client projects</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <p className="text-slate-600 dark:text-slate-400">Project management features coming soon...</p>
-      </CardContent>
-    </Card>
-  </div>
-);
+const ProjectManagementTab = ({ projects, clients }) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [showProjectDetails, setShowProjectDetails] = useState(false);
+  
+  const statusOptions = [
+    { value: 'all', label: 'All Projects' },
+    { value: 'draft', label: 'Draft' },
+    { value: 'in_progress', label: 'In Progress' },
+    { value: 'review', label: 'Review' },
+    { value: 'approved', label: 'Approved' },
+    { value: 'completed', label: 'Completed' },
+    { value: 'on_hold', label: 'On Hold' }
+  ];
+
+  const filteredProjects = projects.filter(project => {
+    const matchesSearch = project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         project.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = statusFilter === 'all' || project.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'draft': return 'bg-gray-100 text-gray-700';
+      case 'in_progress': return 'bg-blue-100 text-blue-700';
+      case 'review': return 'bg-yellow-100 text-yellow-700';
+      case 'approved': return 'bg-green-100 text-green-700';
+      case 'completed': return 'bg-emerald-100 text-emerald-700';
+      case 'on_hold': return 'bg-orange-100 text-orange-700';
+      default: return 'bg-gray-100 text-gray-700';
+    }
+  };
+
+  const getClientName = (clientId) => {
+    const client = clients.find(c => c.id === clientId);
+    return client ? client.full_name : 'Unknown Client';
+  };
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <div className="flex justify-between items-center">
+            <div>
+              <CardTitle>Project Management</CardTitle>
+              <CardDescription>Manage all client projects and workflows</CardDescription>
+            </div>
+            <Button className="bg-teal-600 hover:bg-teal-700">
+              <Plus className="w-4 h-4 mr-2" />
+              New Project
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {/* Search and Filters */}
+          <div className="mb-6 flex flex-col sm:flex-row gap-4">
+            <div className="relative flex-1">
+              <Input
+                placeholder="Search projects..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+              <Briefcase className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            </div>
+            <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                {statusOptions.map(option => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Project Statistics */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                {projects.filter(p => p.status === 'in_progress').length}
+              </div>
+              <div className="text-sm text-blue-600 dark:text-blue-400">Active Projects</div>
+            </div>
+            <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
+              <div className="text-2xl font-bold text-yellow-600 dark:text-yellow-400">
+                {projects.filter(p => p.status === 'review').length}
+              </div>
+              <div className="text-sm text-yellow-600 dark:text-yellow-400">In Review</div>
+            </div>
+            <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg">
+              <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {projects.filter(p => p.status === 'completed').length}
+              </div>
+              <div className="text-sm text-green-600 dark:text-green-400">Completed</div>
+            </div>
+            <div className="bg-gray-50 dark:bg-gray-900/20 p-4 rounded-lg">
+              <div className="text-2xl font-bold text-gray-600 dark:text-gray-400">
+                {projects.length}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">Total Projects</div>
+            </div>
+          </div>
+
+          {/* Project List */}
+          <div className="space-y-4">
+            {filteredProjects.length === 0 ? (
+              <div className="text-center py-8">
+                <Briefcase className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+                <p className="text-slate-600 dark:text-slate-400">
+                  {searchTerm || statusFilter !== 'all' ? 'No projects match your filters' : 'No projects found'}
+                </p>
+              </div>
+            ) : (
+              filteredProjects.map((project) => (
+                <div key={project.id} className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <h3 className="font-semibold text-slate-900 dark:text-white">
+                          {project.title}
+                        </h3>
+                        <Badge className={getStatusColor(project.status)}>
+                          {project.status.replace('_', ' ').toUpperCase()}
+                        </Badge>
+                        {project.priority && (
+                          <Badge variant="outline" className="text-xs">
+                            {project.priority.toUpperCase()} PRIORITY
+                          </Badge>
+                        )}
+                      </div>
+                      
+                      <p className="text-slate-600 dark:text-slate-400 mb-2 line-clamp-2">
+                        {project.description}
+                      </p>
+                      
+                      <div className="flex items-center space-x-4 text-sm text-slate-500">
+                        <span className="flex items-center">
+                          <User className="w-4 h-4 mr-1" />
+                          {getClientName(project.client_id)}
+                        </span>
+                        {project.project_type && (
+                          <span className="flex items-center">
+                            <Briefcase className="w-4 h-4 mr-1" />
+                            {project.project_type}
+                          </span>
+                        )}
+                        {project.due_date && (
+                          <span className="flex items-center">
+                            <Clock className="w-4 h-4 mr-1" />
+                            Due: {new Date(project.due_date).toLocaleDateString()}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Workflow Progress */}
+                      {project.workflow_steps && project.workflow_steps.length > 0 && (
+                        <div className="mt-3">
+                          <div className="flex items-center space-x-2 text-sm text-slate-600">
+                            <span>Progress:</span>
+                            <div className="flex-1 bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-teal-600 h-2 rounded-full" 
+                                style={{
+                                  width: `${(project.workflow_steps.filter(s => s.status === 'completed').length / project.workflow_steps.length) * 100}%`
+                                }}
+                              ></div>
+                            </div>
+                            <span>{project.workflow_steps.filter(s => s.status === 'completed').length}/{project.workflow_steps.length}</span>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="flex space-x-2 ml-4">
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => {
+                          setSelectedProject(project);
+                          setShowProjectDetails(true);
+                        }}
+                      >
+                        <Eye className="w-4 h-4 mr-1" />
+                        View
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <Edit className="w-4 h-4 mr-1" />
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="outline">
+                        <MessageSquare className="w-4 h-4 mr-1" />
+                        Chat
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Project Details Modal */}
+      {showProjectDetails && selectedProject && (
+        <Dialog open={showProjectDetails} onOpenChange={setShowProjectDetails}>
+          <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle className="flex items-center space-x-2">
+                <span>Project Details - {selectedProject.title}</span>
+                <Badge className={getStatusColor(selectedProject.status)}>
+                  {selectedProject.status.replace('_', ' ').toUpperCase()}
+                </Badge>
+              </DialogTitle>
+            </DialogHeader>
+            <div className="space-y-6">
+              {/* Project Info */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="text-sm font-medium">Client</Label>
+                  <p className="text-sm text-slate-600">{getClientName(selectedProject.client_id)}</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Project Type</Label>
+                  <p className="text-sm text-slate-600">{selectedProject.project_type || 'Not specified'}</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Priority</Label>
+                  <p className="text-sm text-slate-600">{selectedProject.priority || 'Medium'}</p>
+                </div>
+                <div>
+                  <Label className="text-sm font-medium">Due Date</Label>
+                  <p className="text-sm text-slate-600">
+                    {selectedProject.due_date ? new Date(selectedProject.due_date).toLocaleDateString() : 'Not set'}
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <Label className="text-sm font-medium">Description</Label>
+                <p className="text-sm text-slate-600 mt-1">{selectedProject.description}</p>
+              </div>
+
+              {/* Workflow Steps */}
+              {selectedProject.workflow_steps && selectedProject.workflow_steps.length > 0 && (
+                <div>
+                  <Label className="text-sm font-medium mb-3 block">Workflow Steps</Label>
+                  <div className="space-y-2">
+                    {selectedProject.workflow_steps.map((step, index) => (
+                      <div key={step.id || index} className="flex items-center space-x-3 p-2 border rounded">
+                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
+                          step.status === 'completed' ? 'bg-green-100 text-green-700' :
+                          step.status === 'in_progress' ? 'bg-blue-100 text-blue-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {step.step_number || index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-sm font-medium">{step.title}</p>
+                          <p className="text-xs text-slate-500">{step.description}</p>
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {step.status}
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setShowProjectDetails(false)}>
+                  Close
+                </Button>
+                <Button>
+                  Edit Project
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
 
 const InvoiceBillingTab = ({ invoices, clients }) => (
   <div className="space-y-6">
