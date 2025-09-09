@@ -215,9 +215,17 @@ const AuthProvider = ({ children }) => {
       const response = await axios.get(`${API}/auth/me`);
       setUser(response.data);
     } catch (error) {
-      localStorage.removeItem('token');
-      setToken(null);
-      delete axios.defaults.headers.common['Authorization'];
+      // Only logout on authentication errors (401, 403), not on other errors
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        console.log('Authentication expired, logging out user');
+        localStorage.removeItem('token');
+        setToken(null);
+        setUser(null);
+        delete axios.defaults.headers.common['Authorization'];
+      } else {
+        // For other errors (network, server errors), keep user logged in
+        console.error('Error fetching user info (keeping session):', error);
+      }
     } finally {
       setLoading(false);
     }
