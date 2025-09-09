@@ -152,6 +152,7 @@ class User(BaseModel):
     annual_revenue: Optional[str] = None
     referral_source: Optional[str] = None
     notes: Optional[str] = None
+    client_type: ClientType = ClientType.REGULAR  # Client category
     
     # Account Information
     oauth_providers: Dict[str, Dict[str, Any]] = Field(default_factory=dict)
