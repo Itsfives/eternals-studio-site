@@ -1232,7 +1232,7 @@ async def update_content_section(
     content_update: ContentSectionUpdate, 
     current_user: User = Depends(get_current_user)
 ):
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.CLIENT_MANAGER]:
         raise HTTPException(status_code=403, detail="Not authorized to update content")
     
     updated_content = ContentSection(
