@@ -4112,6 +4112,9 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
                           <Badge variant="outline" className="text-xs">
                             {client.role}
                           </Badge>
+                          <Badge className={`text-xs ${getCategoryInfo(client.client_type || 'regular').color}`}>
+                            {getCategoryInfo(client.client_type || 'regular').label}
+                          </Badge>
                           {client.assigned_client_manager && (
                             <Badge variant="secondary" className="text-xs">
                               Managed
