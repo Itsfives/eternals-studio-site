@@ -72,6 +72,14 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key-here")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
+# Client Category Enum
+class ClientType(str, Enum):
+    REGULAR = "regular"           # Regular store purchasers
+    PARTNER = "partner"           # Business partners
+    CONTRACTUAL = "contractual"   # Contractual work clients
+    VIP = "vip"                  # VIP clients
+    ENTERPRISE = "enterprise"     # Enterprise clients
+
 # Enhanced Role System
 class UserRole(str, Enum):
     CLIENT = "client"
