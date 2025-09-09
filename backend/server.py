@@ -1692,6 +1692,7 @@ async def update_client(
             "website": client_data.get("website"),
             "industry": client_data.get("industry"),
             "notes": client_data.get("notes"),
+            "client_type": ClientType(client_data.get("client_type", "regular")),
             "assigned_client_manager": client_data.get("assigned_client_manager"),
             "updated_at": datetime.now(timezone.utc)
         }
