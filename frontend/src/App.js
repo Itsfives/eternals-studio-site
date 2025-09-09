@@ -4130,6 +4130,193 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Add New Client Modal */}
+      {showAddClientModal && (
+        <Dialog open={showAddClientModal} onOpenChange={setShowAddClientModal}>
+          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>Add New Client</DialogTitle>
+              <DialogDescription>
+                Create a new client account with their information.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="email">Email Address *</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={newClientForm.email}
+                    onChange={(e) => setNewClientForm({...newClientForm, email: e.target.value})}
+                    placeholder="client@example.com"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="full_name">Full Name *</Label>
+                  <Input
+                    id="full_name"
+                    value={newClientForm.full_name}
+                    onChange={(e) => setNewClientForm({...newClientForm, full_name: e.target.value})}
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="company">Company</Label>
+                  <Input
+                    id="company"
+                    value={newClientForm.company}
+                    onChange={(e) => setNewClientForm({...newClientForm, company: e.target.value})}
+                    placeholder="Company Name"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phone">Phone</Label>
+                  <Input
+                    id="phone"
+                    value={newClientForm.phone}
+                    onChange={(e) => setNewClientForm({...newClientForm, phone: e.target.value})}
+                    placeholder="(555) 123-4567"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="industry">Industry</Label>
+                  <Input
+                    id="industry"
+                    value={newClientForm.industry}
+                    onChange={(e) => setNewClientForm({...newClientForm, industry: e.target.value})}
+                    placeholder="Technology, Healthcare, etc."
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="website">Website</Label>
+                  <Input
+                    id="website"
+                    value={newClientForm.website}
+                    onChange={(e) => setNewClientForm({...newClientForm, website: e.target.value})}
+                    placeholder="https://example.com"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="address">Address</Label>
+                <Input
+                  id="address"
+                  value={newClientForm.address}
+                  onChange={(e) => setNewClientForm({...newClientForm, address: e.target.value})}
+                  placeholder="123 Main Street"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label htmlFor="city">City</Label>
+                  <Input
+                    id="city"
+                    value={newClientForm.city}
+                    onChange={(e) => setNewClientForm({...newClientForm, city: e.target.value})}
+                    placeholder="New York"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="state">State</Label>
+                  <Input
+                    id="state"
+                    value={newClientForm.state}
+                    onChange={(e) => setNewClientForm({...newClientForm, state: e.target.value})}
+                    placeholder="NY"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="zip_code">Zip Code</Label>
+                  <Input
+                    id="zip_code"
+                    value={newClientForm.zip_code}
+                    onChange={(e) => setNewClientForm({...newClientForm, zip_code: e.target.value})}
+                    placeholder="10001"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="country">Country</Label>
+                <Input
+                  id="country"
+                  value={newClientForm.country}
+                  onChange={(e) => setNewClientForm({...newClientForm, country: e.target.value})}
+                  placeholder="United States"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="notes">Notes</Label>
+                <Textarea
+                  id="notes"
+                  rows={3}
+                  value={newClientForm.notes}
+                  onChange={(e) => setNewClientForm({...newClientForm, notes: e.target.value})}
+                  placeholder="Any additional notes about this client..."
+                />
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setShowAddClientModal(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleAddClient}>
+                  Add Client
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Delete Client Confirmation Modal */}
+      {showDeleteModal && clientToDelete && (
+        <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Client</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this client? This action cannot be undone and will remove all associated data.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <h4 className="font-semibold text-red-900 dark:text-red-300">
+                  {clientToDelete.full_name}
+                </h4>
+                <p className="text-sm text-red-700 dark:text-red-400 mt-1">
+                  {clientToDelete.email}
+                </p>
+                {clientToDelete.company && (
+                  <p className="text-sm text-red-600 dark:text-red-500">
+                    {clientToDelete.company}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  variant="destructive" 
+                  onClick={handleDeleteClient}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete Client
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
