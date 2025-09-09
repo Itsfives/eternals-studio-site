@@ -4063,6 +4063,18 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
                         <MessageSquare className="w-4 h-4 mr-1" />
                         Message
                       </Button>
+                      <Button 
+                        size="sm" 
+                        variant="outline"
+                        onClick={() => {
+                          setClientToDelete(client);
+                          setShowDeleteModal(true);
+                        }}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                      >
+                        <X className="w-4 h-4 mr-1" />
+                        Delete
+                      </Button>
                     </div>
                   </div>
                 </div>
