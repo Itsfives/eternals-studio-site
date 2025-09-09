@@ -3981,7 +3981,8 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
           country: '',
           website: '',
           industry: '',
-          notes: ''
+          notes: '',
+          client_type: 'regular'
         });
         window.location.reload();
       } else {
