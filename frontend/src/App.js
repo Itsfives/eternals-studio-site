@@ -3871,9 +3871,27 @@ const OverviewTab = ({ stats }) => (
 );
 
 const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
+  const { showToast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClient, setSelectedClient] = useState(null);
   const [showClientDetails, setShowClientDetails] = useState(false);
+  const [showAddClientModal, setShowAddClientModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [clientToDelete, setClientToDelete] = useState(null);
+  const [newClientForm, setNewClientForm] = useState({
+    email: '',
+    full_name: '',
+    company: '',
+    phone: '',
+    address: '',
+    city: '',
+    state: '',
+    zip_code: '',
+    country: '',
+    website: '',
+    industry: '',
+    notes: ''
+  });
   
   const filteredClients = clients.filter(client => 
     client.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -3884,6 +3902,74 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
   const handleViewClient = (client) => {
     setSelectedClient(client);
     setShowClientDetails(true);
+  };
+
+  const handleAddClient = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/clients/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(newClientForm)
+      });
+
+      if (response.ok) {
+        showToast('Client added successfully!');
+        setShowAddClientModal(false);
+        setNewClientForm({
+          email: '',
+          full_name: '',
+          company: '',
+          phone: '',
+          address: '',
+          city: '',
+          state: '',
+          zip_code: '',
+          country: '',
+          website: '',
+          industry: '',
+          notes: ''
+        });
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to add client');
+      }
+    } catch (error) {
+      showToast(`Error adding client: ${error.message}`, 'error');
+    }
+  };
+
+  const handleDeleteClient = async () => {
+    if (!clientToDelete) return;
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/clients/${clientToDelete.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (response.ok) {
+        showToast('Client deleted successfully!');
+        setShowDeleteModal(false);
+        setClientToDelete(null);
+        window.location.reload();
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Failed to delete client');
+      }
+    } catch (error) {
+      showToast(`Error deleting client: ${error.message}`, 'error');
+    }
+  };
+
+  const handleSendMessage = (clientId) => {
+    // TODO: Implement messaging functionality
+    showToast('Messaging feature will be implemented soon', 'error');
   };
 
   return (
