@@ -545,7 +545,7 @@ async def create_or_update_oauth_user(oauth_user_data: Dict[str, Any]) -> User:
 
 def determine_redirect_url(user: User) -> str:
     """Determine where to redirect user based on their role"""
-    if user.role in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+    if user.role in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.CLIENT_MANAGER]:
         return "https://graphix-hub-4.preview.emergentagent.com/dashboard"
     else:
         return "https://graphix-hub-4.preview.emergentagent.com/client-portal"
