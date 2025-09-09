@@ -170,7 +170,8 @@ class AuthenticationDebugger:
                 "POST",
                 "auth/login",
                 data=login_data,
-                expected_status=200
+                expected_status=200,
+                form_data=True
             )
             
             if success and "access_token" in login_response:
