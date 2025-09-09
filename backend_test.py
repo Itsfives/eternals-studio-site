@@ -1661,6 +1661,266 @@ class EternalsStudioAPITester:
         
         return True
 
+    def test_authentication_debug(self):
+        """Debug authentication issues preventing dashboard access - CRITICAL TESTING"""
+        print("\n" + "="*60)
+        print("🔐 AUTHENTICATION DEBUG - DASHBOARD ACCESS INVESTIGATION")
+        print("="*60)
+        
+        auth_debug_passed = 0
+        total_auth_tests = 0
+        
+        # Step 1: Verify/Create Super Admin User (fives@eternalsgg.com)
+        print("\n🔍 STEP 1: VERIFY/CREATE SUPER ADMIN USER")
+        print("-" * 40)
+        
+        total_auth_tests += 1
+        
+        # First, try to find existing fives@eternalsgg.com user
+        if "super_admin" in self.tokens:
+            success, me_response = self.run_test(
+                "Check existing super admin user",
+                "GET",
+                "auth/me",
+                200,
+                token=self.tokens["super_admin"]
+            )
+            
+            if success and me_response.get("email") == "fives@eternalsgg.com":
+                print("   ✅ fives@eternalsgg.com already exists as super_admin")
+                auth_debug_passed += 1
+                self.test_data["fives_user"] = me_response
+            else:
+                print("   ❌ Super admin token doesn't match fives@eternalsgg.com")
+        
+        # If we don't have fives user, try to create one
+        if "fives_user" not in self.test_data:
+            print("   🔧 Creating fives@eternalsgg.com super admin user...")
+            
+            fives_user_data = {
+                "email": "fives@eternalsgg.com",
+                "password": "FivesEternals2024!",
+                "full_name": "Fives",
+                "role": "super_admin",
+                "company": "Eternals Studio"
+            }
+            
+            success, register_response = self.run_test(
+                "Register fives@eternalsgg.com as super_admin",
+                "POST",
+                "auth/register",
+                200,
+                data=fives_user_data
+            )
+            
+            if success:
+                print("   ✅ fives@eternalsgg.com created successfully")
+                auth_debug_passed += 1
+                self.test_data["fives_user"] = register_response
+                self.test_data["fives_password"] = fives_user_data["password"]
+            else:
+                print("   ❌ Failed to create fives@eternalsgg.com user")
+                # User might already exist, try to login
+                print("   🔧 User might exist, attempting login...")
+        
+        # Step 2: Test Token Generation for fives@eternalsgg.com
+        print("\n🔍 STEP 2: TEST TOKEN GENERATION")
+        print("-" * 40)
+        
+        total_auth_tests += 1
+        
+        # Try different possible passwords for fives@eternalsgg.com
+        possible_passwords = [
+            "FivesEternals2024!",
+            "password123",
+            "admin123",
+            "fives123",
+            "eternals123"
+        ]
+        
+        fives_token = None
+        
+        for password in possible_passwords:
+            login_data = {
+                "username": "fives@eternalsgg.com",
+                "password": password
+            }
+            
+            success, login_response = self.run_test(
+                f"Login fives@eternalsgg.com with password: {password[:3]}***",
+                "POST",
+                "auth/login",
+                200,
+                data=login_data,
+                headers={"Content-Type": "multipart/form-data"}
+            )
+            
+            if success and "access_token" in login_response:
+                print(f"   ✅ Login successful with password: {password[:3]}***")
+                fives_token = login_response["access_token"]
+                self.tokens["fives"] = fives_token
+                self.test_data["fives_login"] = login_response
+                auth_debug_passed += 1
+                break
+            else:
+                print(f"   ❌ Login failed with password: {password[:3]}***")
+        
+        if not fives_token:
+            print("   🚨 CRITICAL: Cannot login fives@eternalsgg.com with any password")
+            print("   🔧 User may not have password set or account may not exist")
+        
+        # Step 3: Test GET /api/auth/me with generated token
+        print("\n🔍 STEP 3: TEST TOKEN VALIDATION")
+        print("-" * 40)
+        
+        total_auth_tests += 1
+        
+        if fives_token:
+            success, me_response = self.run_test(
+                "Validate fives token with /auth/me",
+                "GET",
+                "auth/me",
+                200,
+                token=fives_token
+            )
+            
+            if success:
+                print("   ✅ JWT token validation working correctly")
+                print(f"   📊 User ID: {me_response.get('id')}")
+                print(f"   📊 Email: {me_response.get('email')}")
+                print(f"   📊 Role: {me_response.get('role')}")
+                print(f"   📊 Active: {me_response.get('is_active')}")
+                
+                # Verify user has super_admin role
+                if me_response.get("role") == "super_admin":
+                    print("   ✅ User has super_admin role")
+                    auth_debug_passed += 1
+                else:
+                    print(f"   ❌ User role is {me_response.get('role')}, not super_admin")
+                
+                # Verify user is active
+                if me_response.get("is_active"):
+                    print("   ✅ User account is active")
+                else:
+                    print("   ❌ User account is inactive")
+                
+                self.test_data["fives_user_info"] = me_response
+            else:
+                print("   ❌ JWT token validation failed")
+        else:
+            print("   ⚠️  Skipping token validation - no valid token available")
+        
+        # Step 4: Test Dashboard Access with Admin Token
+        print("\n🔍 STEP 4: TEST DASHBOARD ACCESS")
+        print("-" * 40)
+        
+        dashboard_endpoints = [
+            ("users", "GET", "Get all users"),
+            ("admin/projects", "GET", "Get admin projects"),
+            ("admin/analytics", "GET", "Get dashboard analytics"),
+            ("counter-stats", "GET", "Get counter statistics"),
+            ("testimonials/all", "GET", "Get all testimonials for admin")
+        ]
+        
+        dashboard_tests_passed = 0
+        
+        if fives_token:
+            for endpoint, method, description in dashboard_endpoints:
+                total_auth_tests += 1
+                
+                success, response = self.run_test(
+                    f"Dashboard: {description}",
+                    method,
+                    endpoint,
+                    200,
+                    token=fives_token
+                )
+                
+                if success:
+                    dashboard_tests_passed += 1
+                    print(f"   ✅ {description}: Working")
+                    
+                    # Log data counts for verification
+                    if isinstance(response, list):
+                        print(f"      📊 Records found: {len(response)}")
+                    elif isinstance(response, dict) and "total" in str(response):
+                        print(f"      📊 Response: {response}")
+                else:
+                    print(f"   ❌ {description}: Failed")
+            
+            if dashboard_tests_passed == len(dashboard_endpoints):
+                print("   ✅ ALL DASHBOARD ENDPOINTS ACCESSIBLE")
+                auth_debug_passed += 1
+            else:
+                print(f"   ❌ Dashboard access issues: {dashboard_tests_passed}/{len(dashboard_endpoints)} working")
+        else:
+            print("   ⚠️  Skipping dashboard tests - no valid admin token")
+        
+        # Step 5: Check User Password Status
+        print("\n🔍 STEP 5: USER PASSWORD STATUS ANALYSIS")
+        print("-" * 40)
+        
+        total_auth_tests += 1
+        
+        if "fives_user_info" in self.test_data:
+            user_info = self.test_data["fives_user_info"]
+            
+            # Check if user has OAuth providers (might be OAuth-only user)
+            oauth_providers = user_info.get("oauth_providers", {})
+            login_method = user_info.get("login_method")
+            
+            if oauth_providers:
+                print(f"   📊 OAuth providers: {list(oauth_providers.keys())}")
+                print(f"   📊 Last login method: {login_method}")
+                
+                if login_method in oauth_providers:
+                    print("   ⚠️  User may be OAuth-only (no password set)")
+                    print("   🔧 Consider setting password for email/password login")
+                else:
+                    print("   ✅ User has both OAuth and password authentication")
+                    auth_debug_passed += 1
+            else:
+                if fives_token:
+                    print("   ✅ User has password authentication working")
+                    auth_debug_passed += 1
+                else:
+                    print("   ❌ User has no OAuth providers and password login failed")
+                    print("   🔧 Password may not be set or account may be inactive")
+        
+        # Summary and Recommendations
+        print("\n" + "="*60)
+        print("📊 AUTHENTICATION DEBUG SUMMARY")
+        print("="*60)
+        
+        print(f"✅ Tests Passed: {auth_debug_passed}/{total_auth_tests}")
+        
+        if auth_debug_passed >= total_auth_tests * 0.8:  # 80% success rate
+            print("🎉 AUTHENTICATION SYSTEM WORKING CORRECTLY")
+            print("✅ fives@eternalsgg.com can access dashboard")
+            
+            if fives_token:
+                print(f"🔑 Valid JWT Token: {fives_token[:20]}...")
+                print("🎯 Dashboard access confirmed for super_admin role")
+            
+            return True
+        else:
+            print("🚨 CRITICAL AUTHENTICATION ISSUES FOUND")
+            print("🔧 REQUIRED FIXES:")
+            
+            if not fives_token:
+                print("   1. fives@eternalsgg.com cannot login - password may not be set")
+                print("   2. Create/reset password for fives@eternalsgg.com")
+                print("   3. Verify user exists in database with super_admin role")
+            
+            if dashboard_tests_passed < len(dashboard_endpoints):
+                print("   4. Some dashboard endpoints not accessible")
+                print("   5. Check role-based access control implementation")
+            
+            print("   6. Verify JWT token generation and validation")
+            print("   7. Check user account active status")
+            
+            return False
+
     def test_super_admin_setup(self):
         """Test Super Admin Setup for fives@eternalsgg.com - CRITICAL USER MANAGEMENT TASK"""
         print("\n" + "="*60)
