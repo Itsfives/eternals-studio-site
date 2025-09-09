@@ -34,7 +34,7 @@ class AuthenticationDebugger:
             "details": details
         })
 
-    def make_request(self, method, endpoint, data=None, token=None, expected_status=200):
+    def make_request(self, method, endpoint, data=None, token=None, expected_status=200, form_data=False):
         """Make API request with proper error handling"""
         url = f"{self.api_url}/{endpoint}"
         headers = {'Content-Type': 'application/json'}
@@ -46,7 +46,8 @@ class AuthenticationDebugger:
             if method == 'GET':
                 response = requests.get(url, headers=headers, timeout=10)
             elif method == 'POST':
-                if 'multipart/form-data' in headers.get('Content-Type', ''):
+                if form_data or endpoint == 'auth/login':
+                    # Use form data for login endpoint
                     response = requests.post(url, data=data, headers={k:v for k,v in headers.items() if k != 'Content-Type'}, timeout=10)
                 else:
                     response = requests.post(url, json=data, headers=headers, timeout=10)
