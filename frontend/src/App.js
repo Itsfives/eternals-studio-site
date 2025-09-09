@@ -3902,6 +3902,7 @@ const OverviewTab = ({ stats }) => (
 const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
   const { showToast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
   const [selectedClient, setSelectedClient] = useState(null);
   const [showClientDetails, setShowClientDetails] = useState(false);
   const [showAddClientModal, setShowAddClientModal] = useState(false);
@@ -3919,14 +3920,35 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
     country: '',
     website: '',
     industry: '',
-    notes: ''
+    notes: '',
+    client_type: 'regular'
   });
+
+  const clientCategories = [
+    { value: 'all', label: 'All Clients', color: 'bg-gray-100 text-gray-700' },
+    { value: 'regular', label: 'Store Purchasers', color: 'bg-blue-100 text-blue-700' },
+    { value: 'partner', label: 'Partners', color: 'bg-green-100 text-green-700' },
+    { value: 'contractual', label: 'Contractual Work', color: 'bg-purple-100 text-purple-700' },
+    { value: 'vip', label: 'VIP Clients', color: 'bg-yellow-100 text-yellow-700' },
+    { value: 'enterprise', label: 'Enterprise', color: 'bg-red-100 text-red-700' }
+  ];
   
-  const filteredClients = clients.filter(client => 
-    client.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (client.company && client.company.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredClients = clients.filter(client => {
+    const matchesSearch = client.full_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         client.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         (client.company && client.company.toLowerCase().includes(searchTerm.toLowerCase()));
+    const matchesCategory = categoryFilter === 'all' || client.client_type === categoryFilter;
+    return matchesSearch && matchesCategory;
+  });
+
+  const getCategoryInfo = (clientType) => {
+    return clientCategories.find(cat => cat.value === clientType) || clientCategories[1]; // Default to 'regular'
+  };
+
+  const getClientCountByCategory = (category) => {
+    if (category === 'all') return clients.length;
+    return clients.filter(client => client.client_type === category).length;
+  };
 
   const handleViewClient = (client) => {
     setSelectedClient(client);
