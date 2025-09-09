@@ -370,8 +370,10 @@
   run_ui: false
 
 ## test_plan:
-  current_focus: []
-  stuck_tasks: []
+  current_focus:
+    - "Password Setup for Super Admin fives@eternalsgg.com"
+  stuck_tasks:
+    - "Password Setup for Super Admin fives@eternalsgg.com"
   test_all: false
   test_priority: "high_first"
 
