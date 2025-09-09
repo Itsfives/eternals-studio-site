@@ -1442,7 +1442,7 @@ async def update_project_status(project_id: str, status: str, current_user: User
 @api_router.get("/admin/analytics")
 async def get_dashboard_analytics(current_user: User = Depends(get_current_user)):
     """Get dashboard analytics data"""
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.CLIENT_MANAGER]:
         raise HTTPException(status_code=403, detail="Admin access required")
     
     # Count various entities
