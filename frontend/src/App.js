@@ -4725,6 +4725,43 @@ const TestimonialsTab = ({ testimonials, onApprove }) => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && testimonialToDelete && (
+        <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Testimonial</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this testimonial? This action cannot be undone.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                <h4 className="font-semibold text-red-900 dark:text-red-300">
+                  {testimonialToDelete.client_name || testimonialToDelete.name}
+                </h4>
+                <p className="text-sm text-red-700 dark:text-red-400 mt-1">
+                  {testimonialToDelete.content.substring(0, 100)}...
+                </p>
+              </div>
+
+              <div className="flex justify-end space-x-2">
+                <Button variant="outline" onClick={() => setShowDeleteModal(false)}>
+                  Cancel
+                </Button>
+                <Button 
+                  variant="destructive" 
+                  onClick={handleDeleteTestimonial}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete Testimonial
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
