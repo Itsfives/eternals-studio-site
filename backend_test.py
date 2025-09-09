@@ -2470,6 +2470,7 @@ class EternalsStudioAPITester:
         
         # Run test suites in order
         test_results.append(("Authentication", self.test_user_registration_and_login()))
+        test_results.append(("Authentication Debug", self.test_authentication_debug()))  # CRITICAL DEBUG TEST
         test_results.append(("Super Admin Setup", self.test_super_admin_setup()))  # CRITICAL TEST
         test_results.append(("OAuth Endpoints", self.test_oauth_endpoints()))
         test_results.append(("OAuth Callback Error Handling", self.test_oauth_callback_error_handling()))
