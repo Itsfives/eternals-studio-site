@@ -4282,6 +4282,24 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
                     placeholder="https://example.com"
                   />
                 </div>
+                <div>
+                  <Label htmlFor="client_type">Client Category</Label>
+                  <Select 
+                    value={newClientForm.client_type} 
+                    onValueChange={(value) => setNewClientForm({...newClientForm, client_type: value})}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select category" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {clientCategories.slice(1).map(category => (
+                        <SelectItem key={category.value} value={category.value}>
+                          {category.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               <div>
