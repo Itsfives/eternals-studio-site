@@ -1416,7 +1416,7 @@ async def toggle_user_status(user_id: str, current_user: User = Depends(get_curr
 @api_router.get("/admin/projects", response_model=List[Project])
 async def get_all_admin_projects(current_user: User = Depends(get_current_user)):
     """Get all projects for admin dashboard"""
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.CLIENT_MANAGER]:
         raise HTTPException(status_code=403, detail="Admin access required")
     
     projects = await db.projects.find().to_list(length=None)
