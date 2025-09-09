@@ -4045,14 +4045,41 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
         <CardContent>
           {/* Search and Filter */}
           <div className="mb-6">
-            <div className="relative">
-              <Input
-                placeholder="Search clients by name, email, or company..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-              <Users className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <Input
+                  placeholder="Search clients by name, email, or company..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-10"
+                />
+                <Users className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+              </div>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="w-48">
+                  <SelectValue placeholder="Filter by category" />
+                </SelectTrigger>
+                <SelectContent>
+                  {clientCategories.map(category => (
+                    <SelectItem key={category.value} value={category.value}>
+                      {category.label} ({getClientCountByCategory(category.value)})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Category Statistics */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {clientCategories.slice(1).map(category => (
+                <div 
+                  key={category.value}
+                  className={`px-3 py-1 rounded-full text-sm ${category.color} cursor-pointer transition-opacity hover:opacity-80`}
+                  onClick={() => setCategoryFilter(category.value)}
+                >
+                  {category.label}: {getClientCountByCategory(category.value)}
+                </div>
+              ))}
             </div>
           </div>
 
