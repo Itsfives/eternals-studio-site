@@ -3981,7 +3981,10 @@ const ClientManagementTab = ({ clients, onAssignManager, onViewPortal }) => {
               <CardTitle>Client Management</CardTitle>
               <CardDescription>Manage client accounts and assignments</CardDescription>
             </div>
-            <Button className="bg-teal-600 hover:bg-teal-700">
+            <Button 
+              className="bg-teal-600 hover:bg-teal-700"
+              onClick={() => setShowAddClientModal(true)}
+            >
               <Plus className="w-4 h-4 mr-2" />
               Add New Client
             </Button>
