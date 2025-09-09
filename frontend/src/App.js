@@ -4358,6 +4358,8 @@ const TestimonialsTab = ({ testimonials, onApprove }) => {
   const [editingTestimonial, setEditingTestimonial] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editForm, setEditForm] = useState({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [testimonialToDelete, setTestimonialToDelete] = useState(null);
 
   const pendingTestimonials = testimonials.filter(t => !t.approved);
   const approvedTestimonials = testimonials.filter(t => t.approved);
@@ -4416,6 +4418,30 @@ const TestimonialsTab = ({ testimonials, onApprove }) => {
       }
     } catch (error) {
       showToast('Error updating testimonial featured status', 'error');
+    }
+  };
+
+  const handleDeleteTestimonial = async () => {
+    if (!testimonialToDelete) return;
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/testimonials/${testimonialToDelete.id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (response.ok) {
+        showToast('Testimonial deleted successfully!');
+        setShowDeleteModal(false);
+        setTestimonialToDelete(null);
+        window.location.reload();
+      } else {
+        throw new Error('Failed to delete testimonial');
+      }
+    } catch (error) {
+      showToast('Error deleting testimonial', 'error');
     }
   };
 
