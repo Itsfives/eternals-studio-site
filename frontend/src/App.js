@@ -206,6 +206,27 @@ const AuthProvider = ({ children }) => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchUserInfo();
+      
+      // Set up response interceptor to handle auth errors globally
+      const responseInterceptor = axios.interceptors.response.use(
+        (response) => response,
+        (error) => {
+          // Only handle authentication errors, not all errors
+          if (error.response?.status === 401 && error.config.url !== `${API}/auth/login`) {
+            console.log('Authentication expired, logging out user');
+            localStorage.removeItem('token');
+            setToken(null);
+            setUser(null);
+            delete axios.defaults.headers.common['Authorization'];
+          }
+          return Promise.reject(error);
+        }
+      );
+
+      // Cleanup interceptor on unmount
+      return () => {
+        axios.interceptors.response.eject(responseInterceptor);
+      };
     }
   }, [token]);
 
