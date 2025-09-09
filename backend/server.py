@@ -1425,7 +1425,7 @@ async def get_all_admin_projects(current_user: User = Depends(get_current_user))
 @api_router.put("/projects/{project_id}/status")
 async def update_project_status(project_id: str, status: str, current_user: User = Depends(get_current_user)):
     """Update project status"""
-    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.EDITOR]:
+    if current_user.role not in [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.CLIENT_MANAGER]:
         raise HTTPException(status_code=403, detail="Admin access required")
     
     result = await db.projects.update_one(
